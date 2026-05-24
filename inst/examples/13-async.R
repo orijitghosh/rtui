@@ -95,8 +95,9 @@ quick_app(
       update(state$app, "status",
              content = paste0("[green]", event$timer_id, " completed![/green]"))
       update(state$app, "pb", progress = 100)
+      result_str <- paste(deparse(event$value), collapse = " ")
       log_write(state$app, "results",
-                paste(event$timer_id, "=> OK:", deparse(event$value)),
+                paste(event$timer_id, "=> OK:", result_str),
                 markup = FALSE)
       notify(state$app, paste(event$timer_id, "finished!"), severity = "info")
     } else {
@@ -112,8 +113,8 @@ quick_app(
   },
 
   bindings = list(
-    binding("q", "quit_app", "Quit"),
-    binding("d", "toggle_dark", "Dark mode")
+    binding("q", "quit_app", "Quit", priority = TRUE),
+    binding("d", "toggle_dark", "Dark mode", priority = TRUE)
   ),
   on_action = function(event, state) {
     if (event$value == "quit_app") return(quit(state))
