@@ -42,3 +42,21 @@ masked_input(
 ## Value
 
 An `rtui_spec` list.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+quick_app(
+  layout = vstack(
+    static("Phone:"),
+    masked_input(template = "999-999-9999", id = "phone"),
+    static("Postcode:"),
+    masked_input(template = "AA99 9AA", id = "postcode"),
+    static("Date:"),
+    masked_input(template = "99/99/9999", id = "date"),
+    id = "root"
+  )
+)
+} # }
+```

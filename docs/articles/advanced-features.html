@@ -474,10 +474,93 @@ auto-generated one:</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="background-tasks">Background tasks<a class="anchor" aria-label="anchor" href="#background-tasks"></a>
+</h2>
+<p>Long-running computations block the terminal UI.
+<code><a href="../reference/run_async.html">run_async()</a></code> solves this by running R code in a separate
+background process via the <code>callr</code> package.</p>
+<div class="section level3">
+<h3 id="running-a-task">Running a task<a class="anchor" aria-label="anchor" href="#running-a-task"></a>
+</h3>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">on_click</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  compute_btn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/update.html">update</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"status"</span>, content <span class="op">=</span> <span class="st">"Computing..."</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="fu"><a href="../reference/run_async.html">run_async</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>  <span class="co"># simulate heavy work</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>result <span class="op">=</span> <span class="fl">42</span>, rows <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>, name <span class="op">=</span> <span class="st">"heavy_compute"</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">state</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>The function passed to <code><a href="../reference/run_async.html">run_async()</a></code> must be
+<strong>self-contained</strong> — it runs in a separate R process and
+cannot access variables from the calling session. Pass data through the
+<code>args</code> parameter:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/run_async.html">run_async</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="op">}</span>, name <span class="op">=</span> <span class="st">"simulate"</span>, args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="handling-results">Handling results<a class="anchor" aria-label="anchor" href="#handling-results"></a>
+</h3>
+<p>Use <code>on_task</code> to receive completion events:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">on_task</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">event</span><span class="op">$</span><span class="va">widget_id</span> <span class="op">==</span> <span class="st">"__async_ok"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># event$value contains the return value of fn</span></span>
+<span>    <span class="fu"><a href="../reference/update.html">update</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"status"</span>,</span>
+<span>           content <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Done:"</span>, <span class="va">event</span><span class="op">$</span><span class="va">value</span><span class="op">$</span><span class="va">result</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/notify.html">notify</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Task complete!"</span>, severity <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="co"># event$widget_id == "__async_error"</span></span>
+<span>    <span class="co"># event$value contains the error message</span></span>
+<span>    <span class="fu"><a href="../reference/update.html">update</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"status"</span>,</span>
+<span>           content <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Error:"</span>, <span class="va">event</span><span class="op">$</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="../reference/notify.html">notify</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Task failed!"</span>, severity <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">state</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p><code>event$timer_id</code> is the task name, so you can distinguish
+between multiple concurrent tasks.</p>
+</div>
+<div class="section level3">
+<h3 id="cancelling-tasks">Cancelling tasks<a class="anchor" aria-label="anchor" href="#cancelling-tasks"></a>
+</h3>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/cancel_async.html">cancel_async</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"heavy_compute"</span><span class="op">)</span></span></code></pre></div>
+<p>This kills the background process and stops its polling timer.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="hot-reload">Hot reload<a class="anchor" aria-label="anchor" href="#hot-reload"></a>
+</h2>
+<p>During development, <code><a href="../reference/dev_app.html">dev_app()</a></code> watches a <code>.R</code>
+file and automatically restarts the app when the file changes:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># From a terminal:</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>Rscript <span class="sc">-</span>e <span class="st">"rtui::dev_app('my_app.R')"</span></span></code></pre></div>
+<p>This starts a polling loop that:</p>
+<ol style="list-style-type: decimal">
+<li>Runs your <code>.R</code> file via <code>Rscript</code> in a
+subprocess</li>
+<li>Checks the file’s modification time every second (configurable with
+<code>poll</code>)</li>
+<li>When the file changes, kills the running app and restarts it</li>
+<li>Continues until you press <code>Ctrl+C</code>
+</li>
+</ol>
+<p>If the app crashes (syntax error, runtime error),
+<code><a href="../reference/dev_app.html">dev_app()</a></code> waits for another file save before restarting —
+no need to manually restart the watcher.</p>
+</div>
+<div class="section level2">
 <h2 id="dark-mode">Dark mode<a class="anchor" aria-label="anchor" href="#dark-mode"></a>
 </h2>
 <p>Toggle between dark and light mode:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Start in light mode</span></span>
 <span><span class="fu"><a href="../reference/quick_app.html">quick_app</a></span><span class="op">(</span>dark <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -492,7 +575,7 @@ auto-generated one:</p>
 <h2 id="clipboard">Clipboard<a class="anchor" aria-label="anchor" href="#clipboard"></a>
 </h2>
 <p>Copy text to the system clipboard:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/copy_to_clipboard.html">copy_to_clipboard</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Text to copy"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/notify.html">notify</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Copied to clipboard!"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -500,7 +583,7 @@ auto-generated one:</p>
 <h2 id="notifications">Notifications<a class="anchor" aria-label="anchor" href="#notifications"></a>
 </h2>
 <p>Show transient toast notifications:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/notify.html">notify</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Operation successful"</span>, severity <span class="op">=</span> <span class="st">"info"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/notify.html">notify</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Check your input"</span>, severity <span class="op">=</span> <span class="st">"warning"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/notify.html">notify</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Connection failed!"</span>, severity <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span></code></pre></div>
@@ -510,7 +593,7 @@ auto-generated one:</p>
 </h2>
 <p>The <code><a href="../reference/log_view.html">log_view()</a></code> widget creates an append-only scrolling
 log, useful for status messages, debug output, or activity feeds:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/log_view.html">log_view</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"activity_log"</span>, max_lines <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Write plain text</span></span>
@@ -530,7 +613,7 @@ log, useful for status messages, debug output, or activity feeds:</p>
 </h2>
 <p>Here is a complete app that uses screens, timers, key bindings, the
 command palette, and forms together:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/orijitghosh/rtui" class="external-link">rtui</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/quick_app.html">quick_app</a></span><span class="op">(</span></span>

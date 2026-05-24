@@ -17,5 +17,33 @@ option_list(items, id = NULL, classes = NULL)
 An \code{rtui_spec} list.
 }
 \description{
-Create an option list widget
+A scrollable list of selectable options. Fires \code{on_change} events
+when the user highlights or selects an item.
+}
+\examples{
+\dontrun{
+quick_app(
+  layout = vstack(
+    option_list(items = c("Apple", "Banana", "Cherry", "Date"),
+                id = "fruits"),
+    static("Pick a fruit", id = "msg"),
+    button("Update list", id = "update_btn"),
+    id = "root"
+  ),
+  on_change = list(
+    fruits = function(event, state) {
+      update(state$app, "msg", content = paste("Picked:", event$value))
+      state
+    }
+  ),
+  on_click = list(
+    update_btn = function(event, state) {
+      # Replace items dynamically
+      update(state$app, "fruits", items = c("Fig", "Grape", "Kiwi"))
+      state
+    }
+  )
+)
+}
+
 }

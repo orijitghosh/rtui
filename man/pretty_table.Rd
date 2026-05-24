@@ -19,5 +19,18 @@ pretty_table(df, title = NULL, id = NULL, classes = NULL)
 An \code{rtui_spec} list.
 }
 \description{
-Create a pretty table widget (rich-formatted)
+Renders a data.frame as a formatted static table (non-interactive).
+For an interactive table with sorting and selection, see \code{\link[=data_table]{data_table()}}.
+}
+\examples{
+\dontrun{
+quick_app(
+  layout = vstack(
+    pretty_table(head(mtcars, 5), title = "Motor Trend Cars", id = "tbl"),
+    pretty_table(head(iris, 3), title = "Iris Dataset"),
+    id = "root"
+  )
+)
+}
+
 }

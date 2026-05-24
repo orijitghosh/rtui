@@ -166,6 +166,12 @@ reference:
   - set_worker
   - cancel_worker
 
+- title: Background tasks
+  desc: Run long-running R code without blocking the UI.
+  contents:
+  - run_async
+  - cancel_async
+
 - title: Key bindings
   desc: Keyboard shortcuts and actions.
   contents:
@@ -188,6 +194,11 @@ reference:
   contents:
   - tui_theme
   - list_themes
+
+- title: Development
+  desc: Development and iteration tools.
+  contents:
+  - dev_app
 
 - title: Setup
   desc: Installation helpers.

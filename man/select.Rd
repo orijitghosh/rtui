@@ -33,3 +33,27 @@ An \code{rtui_spec} list.
 \description{
 Create a select dropdown widget
 }
+\examples{
+\dontrun{
+quick_app(
+  layout = vstack(
+    # Simple options
+    select(c("Red", "Green", "Blue"), id = "color",
+           prompt = "Pick a colour..."),
+    # Named options (display => value)
+    select(c("Small (S)" = "s", "Medium (M)" = "m", "Large (L)" = "l"),
+           id = "size"),
+    static("", id = "result"),
+    id = "root"
+  ),
+  on_change = list(
+    color = function(event, state) {
+      update(state$app, "result",
+             content = paste("Colour:", event$value))
+      state
+    }
+  )
+)
+}
+
+}

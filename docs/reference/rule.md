@@ -25,3 +25,19 @@ rule(label = NULL, id = NULL, classes = NULL)
 ## Value
 
 An `rtui_spec` list.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+quick_app(
+  layout = vstack(
+    text("Section 1"),
+    rule(),
+    text("Section 2"),
+    rule(label = "End"),
+    id = "root"
+  )
+)
+} # }
+```

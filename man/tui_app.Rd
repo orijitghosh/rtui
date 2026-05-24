@@ -12,6 +12,7 @@ tui_app(
   on_change = NULL,
   on_submit = NULL,
   on_timer = NULL,
+  on_task = NULL,
   on_action = NULL,
   on_screen_result = NULL,
   on_quit = NULL,
@@ -42,6 +43,11 @@ Single function or named list by widget id.}
 
 \item{on_timer}{Callback for timer events: \verb{function(event, state)}.
 \code{event$timer_id} identifies which timer fired.}
+
+\item{on_task}{Callback for async task completion events:
+\verb{function(event, state)}. \code{event$timer_id} is the task name,
+\code{event$value} is the result (or error message), and \code{event$widget_id}
+is \code{"__async_ok"} or \code{"__async_error"}. See \code{\link[=run_async]{run_async()}}.}
 
 \item{on_action}{Callback for action events from key bindings:
 \verb{function(event, state)} where \code{event$value} is the action name.}

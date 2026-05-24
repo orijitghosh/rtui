@@ -19,3 +19,28 @@ An \code{rtui_spec} list.
 \description{
 Create a radio set (group of radio buttons)
 }
+\examples{
+\dontrun{
+quick_app(
+  layout = vstack(
+    static("Choose a size:"),
+    radio_set(
+      radio_button("Small"),
+      radio_button("Medium", value = TRUE),
+      radio_button("Large"),
+      id = "size"
+    ),
+    static("", id = "chosen"),
+    id = "root"
+  ),
+  on_change = list(
+    size = function(event, state) {
+      update(state$app, "chosen",
+             content = paste("Selected:", event$value))
+      state
+    }
+  )
+)
+}
+
+}

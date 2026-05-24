@@ -29,3 +29,23 @@ switch_input(value = FALSE, id = NULL, classes = NULL, tooltip = NULL)
 ## Value
 
 An `rtui_spec` list.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+quick_app(
+  layout = vstack(
+    hstack(static("Dark mode: "), switch_input(value = TRUE, id = "dark")),
+    hstack(static("Sound: "), switch_input(value = FALSE, id = "sound")),
+    id = "root"
+  ),
+  on_change = list(
+    dark = function(event, state) {
+      dark_toggle(state$app, event$value)
+      state
+    }
+  )
+)
+} # }
+```

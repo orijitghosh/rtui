@@ -77,6 +77,33 @@
     <p>An <code>rtui_spec</code> list.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="quick_app.html">quick_app</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  layout <span class="op">=</span> <span class="fu"><a href="vstack.html">vstack</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="static.html">static</a></span><span class="op">(</span><span class="st">"Choose a size:"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">radio_set</span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="radio_button.html">radio_button</a></span><span class="op">(</span><span class="st">"Small"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="radio_button.html">radio_button</a></span><span class="op">(</span><span class="st">"Medium"</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      <span class="fu"><a href="radio_button.html">radio_button</a></span><span class="op">(</span><span class="st">"Large"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>      id <span class="op">=</span> <span class="st">"size"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="static.html">static</a></span><span class="op">(</span><span class="st">""</span>, id <span class="op">=</span> <span class="st">"chosen"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"root"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  on_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    size <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="fu"><a href="update.html">update</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"chosen"</span>,</span></span>
+<span class="r-in"><span>             content <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Selected:"</span>, <span class="va">event</span><span class="op">$</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>      <span class="va">state</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -17,6 +17,10 @@
 #'   Single function or named list by widget id.
 #' @param on_timer Callback for timer events: `function(event, state)`.
 #'   `event$timer_id` identifies which timer fired.
+#' @param on_task Callback for async task completion events:
+#'   `function(event, state)`. `event$timer_id` is the task name,
+#'   `event$value` is the result (or error message), and `event$widget_id`
+#'   is `"__async_ok"` or `"__async_error"`. See [run_async()].
 #' @param on_action Callback for action events from key bindings:
 #'   `function(event, state)` where `event$value` is the action name.
 #' @param on_screen_result Callback for screen dismiss results:
@@ -34,7 +38,7 @@
 #' @export
 tui_app <- function(layout, on_mount = NULL, on_key = NULL, on_click = NULL,
                     on_change = NULL, on_submit = NULL, on_timer = NULL,
-                    on_action = NULL, on_screen_result = NULL,
+                    on_task = NULL, on_action = NULL, on_screen_result = NULL,
                     on_quit = NULL, css = NULL, title = NULL,
                     sub_title = NULL, dark = TRUE, bindings = NULL,
                     reactive = NULL) {
@@ -43,7 +47,7 @@ tui_app <- function(layout, on_mount = NULL, on_key = NULL, on_click = NULL,
   }
   # Validate simple function-or-NULL handlers
   for (nm in c("on_mount", "on_key", "on_quit", "on_timer",
-               "on_action", "on_screen_result")) {
+               "on_task", "on_action", "on_screen_result")) {
     val <- get(nm)
     if (!is.null(val) && !is.function(val)) {
       abort_spec(paste0("`", nm, "` must be a function or NULL."))
@@ -85,6 +89,7 @@ tui_app <- function(layout, on_mount = NULL, on_key = NULL, on_click = NULL,
     on_change = on_change,
     on_submit = on_submit,
     on_timer = on_timer,
+    on_task = on_task,
     on_action = on_action,
     on_screen_result = on_screen_result,
     on_quit = on_quit,
@@ -114,7 +119,8 @@ RtuiApp <- R6::R6Class(
     initialize = function(layout, on_mount = NULL, on_key = NULL,
                           on_click = NULL, on_change = NULL,
                           on_submit = NULL, on_timer = NULL,
-                          on_action = NULL, on_screen_result = NULL,
+                          on_task = NULL, on_action = NULL,
+                          on_screen_result = NULL,
                           on_quit = NULL, css = NULL, title = NULL,
                           sub_title = NULL, dark = TRUE, bindings = NULL,
                           reactive = NULL) {
@@ -126,6 +132,7 @@ RtuiApp <- R6::R6Class(
         change = on_change,
         submit = on_submit,
         timer = on_timer,
+        task = on_task,
         action = on_action,
         screen_result = on_screen_result,
         quit = on_quit
@@ -210,9 +217,17 @@ RtuiApp <- R6::R6Class(
     .py_app = NULL,
     .exit_requested = FALSE,
     .exit_result = NULL,
+    .async_tasks = list(),
 
     dispatch = function(event_dict) {
       event <- as_r_event(event_dict)
+
+      # Intercept async polling timers
+      if (event$type == "timer" && grepl("^__async_poll_", event$timer_id %||% "")) {
+        task_name <- sub("^__async_poll_", "", event$timer_id)
+        return(private$check_async(task_name))
+      }
+
       handler <- self$handlers[[event$type]]
       if (is.null(handler)) return(self$state$as_list())
 
@@ -233,6 +248,67 @@ RtuiApp <- R6::R6Class(
         error = function(e) {
           cli::cli_warn(c(
             "x" = paste0("Error in ", event$type, " callback."),
+            "i" = conditionMessage(e)
+          ))
+          return(NULL)
+        }
+      )
+      if (is.null(result)) return(self$state$as_list())
+
+      if (inherits(result, "rtui_quit")) {
+        private$.exit_requested <- TRUE
+        private$.exit_result <- result$result
+        if (!is.null(private$.py_app)) {
+          private$.py_app$request_exit(result$result)
+        }
+        return(self$state$as_list())
+      }
+
+      if (inherits(result, "RtuiState")) {
+        self$state <- result
+      } else if (is.list(result)) {
+        self$state$data <- result
+      }
+
+      self$state$as_list()
+    },
+
+    check_async = function(task_name) {
+      proc <- private$.async_tasks[[task_name]]
+      if (is.null(proc)) {
+        tryCatch(
+          clear_timer(self, paste0("__async_poll_", task_name)),
+          error = function(e) NULL
+        )
+        return(self$state$as_list())
+      }
+
+      if (proc$is_alive()) return(self$state$as_list())
+
+      tryCatch(
+        clear_timer(self, paste0("__async_poll_", task_name)),
+        error = function(e) NULL
+      )
+      private$.async_tasks[[task_name]] <- NULL
+
+      task_event <- tryCatch({
+        result <- proc$get_result()
+        list(type = "task", timer_id = task_name,
+             widget_id = "__async_ok", value = result)
+      }, error = function(e) {
+        list(type = "task", timer_id = task_name,
+             widget_id = "__async_error", value = conditionMessage(e))
+      })
+
+      handler <- self$handlers[["task"]]
+      if (is.null(handler)) return(self$state$as_list())
+
+      event <- structure(task_event, class = "rtui_event")
+      result <- tryCatch(
+        handler(event, self$state),
+        error = function(e) {
+          cli::cli_warn(c(
+            "x" = "Error in task callback.",
             "i" = conditionMessage(e)
           ))
           return(NULL)

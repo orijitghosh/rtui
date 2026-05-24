@@ -31,3 +31,19 @@ Template uses special characters: \code{A} (letter), \code{9} (digit), \code{!} 
 \code{>} (force upper following), \code{<} (force lower following). Other characters are
 literal separators. Example: \code{"999-999-9999"} for phone, \code{"AA99 AA"} for UK postcode.
 }
+\examples{
+\dontrun{
+quick_app(
+  layout = vstack(
+    static("Phone:"),
+    masked_input(template = "999-999-9999", id = "phone"),
+    static("Postcode:"),
+    masked_input(template = "AA99 9AA", id = "postcode"),
+    static("Date:"),
+    masked_input(template = "99/99/9999", id = "date"),
+    id = "root"
+  )
+)
+}
+
+}

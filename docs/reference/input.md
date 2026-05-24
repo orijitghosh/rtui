@@ -45,3 +45,32 @@ input(
 ## Value
 
 An `rtui_spec` list.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# Text input with change and submit handlers
+quick_app(
+  layout = vstack(
+    input(placeholder = "Type your name...", id = "name"),
+    input(placeholder = "Age", id = "age", validators = "integer"),
+    static("", id = "output"),
+    id = "root"
+  ),
+  on_submit = list(
+    name = function(event, state) {
+      update(state$app, "output",
+             content = paste("Hello,", event$value))
+      state
+    }
+  ),
+  on_change = list(
+    name = function(event, state) {
+      # event$value contains the current text
+      state
+    }
+  )
+)
+} # }
+```

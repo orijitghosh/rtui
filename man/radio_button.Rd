@@ -21,3 +21,11 @@ An \code{rtui_spec} list.
 \description{
 Create a radio button widget (use inside radio_set)
 }
+\examples{
+\dontrun{
+# See radio_set() for a complete example
+radio_button("Option A")
+radio_button("Option B", value = TRUE)  # pre-selected
+}
+
+}

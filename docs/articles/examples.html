@@ -83,7 +83,7 @@
 
     
     
-<p>rtui ships with 12 ready-to-run example apps in
+<p>rtui ships with 14 ready-to-run example apps in
 <code>inst/examples/</code>. Each one is self-contained and demonstrates
 a progressively richer set of features.</p>
 <blockquote>
@@ -279,6 +279,42 @@ Warnings are logged and notified.</p>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="background-tasks">13 — Background Tasks<a class="anchor" aria-label="anchor" href="#background-tasks"></a>
+</h2>
+<p><strong>Features:</strong> <code><a href="../reference/run_async.html">run_async()</a></code>,
+<code><a href="../reference/cancel_async.html">cancel_async()</a></code>, <code>on_task</code> handler,
+<code><a href="../reference/log_view.html">log_view()</a></code>, <code><a href="../reference/progress_bar.html">progress_bar()</a></code>, error
+handling.</p>
+<p>Launch background R processes without freezing the UI. Run a slow
+computation, see results arrive asynchronously, or cancel a running
+task.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Run a background task</span></span>
+<span><span class="fu"><a href="../reference/run_async.html">run_async</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span></span>
+<span>  <span class="fl">42</span></span>
+<span><span class="op">}</span>, name <span class="op">=</span> <span class="st">"my_task"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Handle completion</span></span>
+<span><span class="va">on_task</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">event</span><span class="op">$</span><span class="va">widget_id</span> <span class="op">==</span> <span class="st">"__async_ok"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/notify.html">notify</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Result:"</span>, <span class="va">event</span><span class="op">$</span><span class="va">value</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">state</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="hot-reload-development">14 — Hot Reload Development<a class="anchor" aria-label="anchor" href="#hot-reload-development"></a>
+</h2>
+<p><strong>Features:</strong> <code><a href="../reference/dev_app.html">dev_app()</a></code>, file watching,
+automatic restart.</p>
+<p>A development tool that watches your <code>.R</code> file and
+restarts the TUI whenever you save. Edit in your favourite editor, save,
+and see changes instantly.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Launch from terminal:</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>Rscript <span class="sc">-</span>e <span class="st">"rtui::dev_app('my_app.R')"</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="showcase-apps">Showcase apps<a class="anchor" aria-label="anchor" href="#showcase-apps"></a>
 </h2>
 <p>Beyond these examples, rtui includes 8 full showcase apps in
@@ -324,7 +360,7 @@ Warnings are logged and notified.</p>
 </tbody>
 </table>
 <p>Run any showcase:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">Rscript</span> spikes/showcase_pomodoro.R</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">Rscript</span> spikes/showcase_pomodoro.R</span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

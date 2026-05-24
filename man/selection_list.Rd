@@ -17,5 +17,26 @@ selection_list(items, id = NULL, classes = NULL)
 An \code{rtui_spec} list.
 }
 \description{
-Create a selection list (multi-select)
+Like \code{\link[=option_list]{option_list()}} but allows the user to toggle multiple items on/off.
+}
+\examples{
+\dontrun{
+quick_app(
+  layout = vstack(
+    static("Select permissions:"),
+    selection_list(items = c("Read", "Write", "Execute"),
+                   id = "perms"),
+    static("", id = "chosen"),
+    id = "root"
+  ),
+  on_change = list(
+    perms = function(event, state) {
+      update(state$app, "chosen",
+             content = paste("Selected:", toString(event$value)))
+      state
+    }
+  )
+)
+}
+
 }

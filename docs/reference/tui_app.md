@@ -16,6 +16,7 @@ tui_app(
   on_change = NULL,
   on_submit = NULL,
   on_timer = NULL,
+  on_task = NULL,
   on_action = NULL,
   on_screen_result = NULL,
   on_quit = NULL,
@@ -62,6 +63,14 @@ tui_app(
 
   Callback for timer events: `function(event, state)`. `event$timer_id`
   identifies which timer fired.
+
+- on_task:
+
+  Callback for async task completion events: `function(event, state)`.
+  `event$timer_id` is the task name, `event$value` is the result (or
+  error message), and `event$widget_id` is `"__async_ok"` or
+  `"__async_error"`. See
+  [`run_async()`](https://orijitghosh.github.io/rtui/reference/run_async.md).
 
 - on_action:
 

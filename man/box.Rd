@@ -29,3 +29,17 @@ An \code{rtui_spec} list.
 \description{
 Create a box widget with optional border
 }
+\examples{
+\dontrun{
+# Box with a border and title
+quick_app(
+  layout = vstack(
+    box(text("Important notice"), border = "round", title = "Alert"),
+    box(text("Heavy border"), border = "heavy"),
+    box(text("Double border"), border = "double", title = "Info"),
+    id = "root"
+  )
+)
+}
+
+}

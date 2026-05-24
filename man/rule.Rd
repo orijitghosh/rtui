@@ -19,3 +19,17 @@ An \code{rtui_spec} list.
 \description{
 Create a horizontal rule (divider) widget
 }
+\examples{
+\dontrun{
+quick_app(
+  layout = vstack(
+    text("Section 1"),
+    rule(),
+    text("Section 2"),
+    rule(label = "End"),
+    id = "root"
+  )
+)
+}
+
+}

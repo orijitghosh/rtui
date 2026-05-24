@@ -31,5 +31,41 @@ When \code{TRUE}, each click toggles ascending/descending sort.}
 An \code{rtui_spec} list.
 }
 \description{
-Create a data table widget
+A full-featured interactive table with sorting, row/cell/column
+selection, and zebra striping. For a quick one-liner data explorer,
+see \code{\link[=data_viewer]{data_viewer()}}.
+}
+\examples{
+\dontrun{
+# Interactive sortable table
+quick_app(
+  layout = vstack(
+    header(),
+    data_table(mtcars, id = "cars",
+               cursor = "row",
+               zebra_stripes = TRUE,
+               sortable = TRUE),
+    footer()
+  ),
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  }
+)
+
+# Dynamically add rows
+on_click = list(
+  add_btn = function(event, state) {
+    new_row <- data.frame(mpg = 25, cyl = 4, disp = 100)
+    update(state$app, "cars", add_rows = as.list(new_row))
+    state
+  },
+  clear_btn = function(event, state) {
+    update(state$app, "cars", clear_data = TRUE)
+    state
+  }
+)
+}
+
 }

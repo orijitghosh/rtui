@@ -4,66 +4,7 @@
 \alias{quick_app}
 \title{Run a TUI app in one call}
 \usage{
-quick_app(
-  layout,
-  on_mount = NULL,
-  on_key = NULL,
-  on_click = NULL,
-  on_change = NULL,
-  on_submit = NULL,
-  on_timer = NULL,
-  on_action = NULL,
-  on_screen_result = NULL,
-  on_quit = NULL,
-  css = NULL,
-  title = NULL,
-  sub_title = NULL,
-  dark = TRUE,
-  bindings = NULL,
-  reactive = NULL
-)
-}
-\arguments{
-\item{layout}{A widget spec defining the app layout.}
-
-\item{on_mount}{Callback for the mount event: \verb{function(event, state)}.}
-
-\item{on_key}{Callback for key events: \verb{function(event, state)}.}
-
-\item{on_click}{Callback for click/press events. Either a single function
-\verb{function(event, state)}, or a \strong{named list} of per-widget handlers
-(e.g. \code{list(save_btn = function(event, state) {...})}).}
-
-\item{on_change}{Callback for value-change events. Same signature as
-\code{on_click} — single function or named list by widget id.}
-
-\item{on_submit}{Callback for input submit events (Enter in an Input).
-Single function or named list by widget id.}
-
-\item{on_timer}{Callback for timer events: \verb{function(event, state)}.
-\code{event$timer_id} identifies which timer fired.}
-
-\item{on_action}{Callback for action events from key bindings:
-\verb{function(event, state)} where \code{event$value} is the action name.}
-
-\item{on_screen_result}{Callback for screen dismiss results:
-\verb{function(event, state)} where \code{event$value} is the result.}
-
-\item{on_quit}{Callback for quit event: \verb{function(event, state)}.}
-
-\item{css}{Optional Textual CSS string.}
-
-\item{title}{Optional app title (shown in header).}
-
-\item{sub_title}{Optional app subtitle (shown in header).}
-
-\item{dark}{Whether to use dark mode (default TRUE).}
-
-\item{bindings}{Optional list of key bindings created with \code{\link[=binding]{binding()}}.
-Bindings are shown in the footer and dispatch \code{"action"} events.}
-
-\item{reactive}{Optional reactive bindings created with \code{\link[=reactive]{reactive()}}.
-Auto-updates widgets when state values change.}
+quick_app(...)
 }
 \value{
 The final \code{RtuiState} object (invisibly).

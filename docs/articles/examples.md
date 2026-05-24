@@ -1,6 +1,6 @@
 # Example Gallery
 
-rtui ships with 12 ready-to-run example apps in `inst/examples/`. Each
+rtui ships with 14 ready-to-run example apps in `inst/examples/`. Each
 one is self-contained and demonstrates a progressively richer set of
 features.
 
@@ -236,6 +236,51 @@ reactive = reactive(
     ~ update(.app, "mem_bar", progress = .x)
   )
 )
+```
+
+## 13 — Background Tasks
+
+**Features:**
+[`run_async()`](https://orijitghosh.github.io/rtui/reference/run_async.md),
+[`cancel_async()`](https://orijitghosh.github.io/rtui/reference/cancel_async.md),
+`on_task` handler,
+[`log_view()`](https://orijitghosh.github.io/rtui/reference/log_view.md),
+[`progress_bar()`](https://orijitghosh.github.io/rtui/reference/progress_bar.md),
+error handling.
+
+Launch background R processes without freezing the UI. Run a slow
+computation, see results arrive asynchronously, or cancel a running
+task.
+
+``` r
+# Run a background task
+run_async(state$app, function() {
+  Sys.sleep(3)
+  42
+}, name = "my_task")
+
+# Handle completion
+on_task = function(event, state) {
+  if (event$widget_id == "__async_ok") {
+    notify(state$app, paste("Result:", event$value))
+  }
+  state
+}
+```
+
+## 14 — Hot Reload Development
+
+**Features:**
+[`dev_app()`](https://orijitghosh.github.io/rtui/reference/dev_app.md),
+file watching, automatic restart.
+
+A development tool that watches your `.R` file and restarts the TUI
+whenever you save. Edit in your favourite editor, save, and see changes
+instantly.
+
+``` r
+# Launch from terminal:
+Rscript -e "rtui::dev_app('my_app.R')"
 ```
 
 ## Showcase apps

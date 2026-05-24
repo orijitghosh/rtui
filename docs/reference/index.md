@@ -216,6 +216,15 @@ Scheduled and repeating tasks.
 - [`cancel_worker()`](https://orijitghosh.github.io/rtui/reference/cancel_worker.md)
   : Cancel a running worker
 
+## Background tasks
+
+Run long-running R code without blocking the UI.
+
+- [`run_async()`](https://orijitghosh.github.io/rtui/reference/run_async.md)
+  : Run a function asynchronously in a background process
+- [`cancel_async()`](https://orijitghosh.github.io/rtui/reference/cancel_async.md)
+  : Cancel a running async task
+
 ## Key bindings
 
 Keyboard shortcuts and actions.
@@ -249,6 +258,13 @@ Built-in colour themes.
   : Get a built-in theme CSS string
 - [`list_themes()`](https://orijitghosh.github.io/rtui/reference/list_themes.md)
   : List available theme names
+
+## Development
+
+Development and iteration tools.
+
+- [`dev_app()`](https://orijitghosh.github.io/rtui/reference/dev_app.md)
+  : Run an app with hot reload
 
 ## Setup
 

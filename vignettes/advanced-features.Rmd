@@ -409,6 +409,91 @@ tui_form(
 )
 ```
 
+## Background tasks
+
+Long-running computations block the terminal UI. `run_async()` solves this
+by running R code in a separate background process via the `callr` package.
+
+### Running a task
+
+```{r}
+on_click = list(
+  compute_btn = function(event, state) {
+    update(state$app, "status", content = "Computing...")
+
+    run_async(state$app, function() {
+      Sys.sleep(5)  # simulate heavy work
+      list(result = 42, rows = 1000)
+    }, name = "heavy_compute")
+
+    state
+  }
+)
+```
+
+The function passed to `run_async()` must be **self-contained** — it runs
+in a separate R process and cannot access variables from the calling session.
+Pass data through the `args` parameter:
+
+```{r}
+run_async(state$app, function(n) {
+  rnorm(n)
+}, name = "simulate", args = list(n = 10000))
+```
+
+### Handling results
+
+Use `on_task` to receive completion events:
+
+```{r}
+on_task = function(event, state) {
+  if (event$widget_id == "__async_ok") {
+    # event$value contains the return value of fn
+    update(state$app, "status",
+           content = paste("Done:", event$value$result))
+    notify(state$app, "Task complete!", severity = "info")
+  } else {
+    # event$widget_id == "__async_error"
+    # event$value contains the error message
+    update(state$app, "status",
+           content = paste("Error:", event$value))
+    notify(state$app, "Task failed!", severity = "error")
+  }
+  state
+}
+```
+
+`event$timer_id` is the task name, so you can distinguish between multiple
+concurrent tasks.
+
+### Cancelling tasks
+
+```{r}
+cancel_async(state$app, "heavy_compute")
+```
+
+This kills the background process and stops its polling timer.
+
+## Hot reload
+
+During development, `dev_app()` watches a `.R` file and automatically
+restarts the app when the file changes:
+
+```r
+# From a terminal:
+Rscript -e "rtui::dev_app('my_app.R')"
+```
+
+This starts a polling loop that:
+
+1. Runs your `.R` file via `Rscript` in a subprocess
+2. Checks the file's modification time every second (configurable with `poll`)
+3. When the file changes, kills the running app and restarts it
+4. Continues until you press `Ctrl+C`
+
+If the app crashes (syntax error, runtime error), `dev_app()` waits for
+another file save before restarting — no need to manually restart the watcher.
+
 ## Dark mode
 
 Toggle between dark and light mode:

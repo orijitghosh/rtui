@@ -29,3 +29,13 @@ radio_button(label, value = FALSE, id = NULL, classes = NULL)
 ## Value
 
 An `rtui_spec` list.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# See radio_set() for a complete example
+radio_button("Option A")
+radio_button("Option B", value = TRUE)  # pre-selected
+} # }
+```
