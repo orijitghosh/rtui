@@ -23,6 +23,15 @@ install_python_deps <- function(envname = "r-rtui", python = NULL) {
       if (!is.null(python)) args$python <- python
       do.call(reticulate::virtualenv_create, args)
 
+      py_ver <- reticulate::py_eval(
+        "'.'.join(map(str, __import__('sys').version_info[:2]))"
+      )
+      if (numeric_version(py_ver) < "3.10") {
+        abort_install(paste0(
+          "Python >= 3.10 is required for Textual, but found Python ", py_ver, "."
+        ))
+      }
+
       reticulate::virtualenv_install(
         envname = envname,
         packages = packages,

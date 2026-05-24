@@ -2,7 +2,7 @@
 
 > Full-screen terminal user interfaces from R — powered by Python's [Textual](https://textual.textualize.io/) framework.
 
-**[Documentation](https://orijitghosh.github.io/rtui/)** | [Example Gallery](https://orijitghosh.github.io/rtui/articles/examples.html) | [Getting Started](https://orijitghosh.github.io/rtui/articles/getting-started.html)
+[**Documentation**](https://orijitghosh.github.io/rtui/) \| [Example Gallery](https://orijitghosh.github.io/rtui/articles/examples.html) \| [Getting Started](https://orijitghosh.github.io/rtui/articles/getting-started.html)
 
 **rtui** gives R users 35+ widgets, 12 chart types, CSS-like styling, reactive state, screens, timers, key bindings, a command palette, and 10 built-in themes — all without writing a single line of Python. Under the hood it uses [reticulate](https://rstudio.github.io/reticulate/) to bridge R and Textual in a single process.
 
@@ -135,7 +135,7 @@ quick_app(
 rtui ships with 12 runnable examples in `inst/examples/`:
 
 | Example | Features |
-|---------|----------|
+|----|----|
 | **01-hello** | Minimal app — text, box, key handler |
 | **02-list-detail** | Master-detail with list_view and update() |
 | **03-data-table** | Interactive data.frame table |

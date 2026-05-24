@@ -1,27 +1,56 @@
 /*
- * rtui pkgdown theme — terminal-inspired dark design
- * Palette: Catppuccin Mocha meets terminal green/cyan accents
+ * rtui pkgdown theme — warm, readable design with light/dark toggle
+ * Light by default, dark mode via [data-bs-theme="dark"]
  */
 
-/* ── Foundations ────────────────────────────────────────────────── */
+/* ── Import fonts ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ── Light palette (default) ──────────────────────────────────────── */
 
 :root {
-  --rtui-bg:         #1a1410;   /* deep espresso */
-  --rtui-bg-surface: #231c15;   /* warm dark brown */
-  --rtui-bg-card:    #2e2419;   /* card brown */
-  --rtui-bg-code:    #151010;   /* near-black warm */
-  --rtui-text:       #e8dcc8;   /* warm cream */
-  --rtui-text-muted: #b8a88e;   /* tan */
-  --rtui-accent:     #e09f5e;   /* amber/burnt orange */
-  --rtui-accent2:    #d4764e;   /* rust */
-  --rtui-green:      #8fae6b;   /* olive green */
-  --rtui-cyan:       #c1a05e;   /* golden wheat */
-  --rtui-pink:       #c47a5a;   /* terracotta */
-  --rtui-yellow:     #e8c170;   /* harvest gold */
-  --rtui-red:        #bf5b4b;   /* brick red */
-  --rtui-border:     #4a3828;   /* warm border */
-  --rtui-glow:       rgba(224, 159, 94, 0.2);
+  --rtui-bg:         #faf8f5;
+  --rtui-bg-surface: #f0ece5;
+  --rtui-bg-card:    #ffffff;
+  --rtui-bg-code:    #f5f0e8;
+  --rtui-text:       #2d2a26;
+  --rtui-text-muted: #6b6560;
+  --rtui-accent:     #c87137;
+  --rtui-accent2:    #a85d2a;
+  --rtui-green:      #4a7c50;
+  --rtui-cyan:       #8b6914;
+  --rtui-yellow:     #b8860b;
+  --rtui-red:        #b5453a;
+  --rtui-border:     #e0d6c8;
+  --rtui-glow:       rgba(200, 113, 55, 0.15);
+  --rtui-shadow:     rgba(0, 0, 0, 0.06);
+  --rtui-nav-bg:     #ffffff;
+  --rtui-nav-border: #e0d6c8;
 }
+
+/* ── Dark palette ─────────────────────────────────────────────────── */
+
+[data-bs-theme="dark"] {
+  --rtui-bg:         #1a1410;
+  --rtui-bg-surface: #231c15;
+  --rtui-bg-card:    #2e2419;
+  --rtui-bg-code:    #151010;
+  --rtui-text:       #e8dcc8;
+  --rtui-text-muted: #b8a88e;
+  --rtui-accent:     #e09f5e;
+  --rtui-accent2:    #d4764e;
+  --rtui-green:      #8fae6b;
+  --rtui-cyan:       #c1a05e;
+  --rtui-yellow:     #e8c170;
+  --rtui-red:        #bf5b4b;
+  --rtui-border:     #4a3828;
+  --rtui-glow:       rgba(224, 159, 94, 0.2);
+  --rtui-shadow:     rgba(0, 0, 0, 0.4);
+  --rtui-nav-bg:     #231c15;
+  --rtui-nav-border: #4a3828;
+}
+
+/* ── Foundations ───────────────────────────────────────────────────── */
 
 body {
   background-color: var(--rtui-bg) !important;
@@ -29,12 +58,12 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* ── Navbar ────────────────────────────────────────────────────── */
+/* ── Navbar ────────────────────────────────────────────────────────── */
 
 .navbar {
-  background: var(--rtui-bg-surface) !important;
-  border-bottom: 2px solid var(--rtui-border) !important;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+  background: var(--rtui-nav-bg) !important;
+  border-bottom: 2px solid var(--rtui-nav-border) !important;
+  box-shadow: 0 2px 12px var(--rtui-shadow);
 }
 
 .navbar-brand {
@@ -51,18 +80,18 @@ body {
   font-family: 'JetBrains Mono', monospace;
 }
 
-.navbar-dark .navbar-nav .nav-link {
+.navbar .nav-link {
   color: var(--rtui-text-muted) !important;
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link.active {
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
   color: var(--rtui-accent) !important;
 }
 
-/* ── Headings ──────────────────────────────────────────────────── */
+/* ── Headings ─────────────────────────────────────────────────────── */
 
 h1, h2, h3, h4, h5, h6,
 .page-header h1 {
@@ -87,7 +116,7 @@ h3 {
   color: var(--rtui-accent2) !important;
 }
 
-/* ── Links ─────────────────────────────────────────────────────── */
+/* ── Links ────────────────────────────────────────────────────────── */
 
 a {
   color: var(--rtui-accent) !important;
@@ -96,11 +125,11 @@ a {
 }
 
 a:hover {
-  color: var(--rtui-cyan) !important;
+  color: var(--rtui-accent2) !important;
   text-decoration: underline;
 }
 
-/* ── Code blocks ───────────────────────────────────────────────── */
+/* ── Code blocks ──────────────────────────────────────────────────── */
 
 pre {
   background-color: var(--rtui-bg-code) !important;
@@ -109,6 +138,9 @@ pre {
   border-radius: 8px !important;
   font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace !important;
   font-size: 0.875rem !important;
+  padding: 1em 1.25em !important;
+  box-shadow: inset 0 1px 4px var(--rtui-shadow);
+  position: relative;
 }
 
 pre code {
@@ -120,13 +152,6 @@ pre code {
   font-size: inherit !important;
 }
 
-pre {
-  padding: 1em 1.25em !important;
-  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3);
-  position: relative;
-}
-
-/* Terminal-style prompt indicator on code blocks */
 pre::before {
   content: "R";
   position: absolute;
@@ -147,15 +172,15 @@ code {
 
 /* Inline code */
 p code, li code, td code, .alert code {
-  background-color: var(--rtui-bg-card) !important;
-  color: var(--rtui-cyan) !important;
+  background-color: var(--rtui-bg-code) !important;
+  color: var(--rtui-accent2) !important;
   padding: 0.15em 0.4em !important;
   border-radius: 4px !important;
   border: 1px solid var(--rtui-border);
   font-size: 0.85em;
 }
 
-/* ── Tables ────────────────────────────────────────────────────── */
+/* ── Tables ───────────────────────────────────────────────────────── */
 
 .table {
   color: var(--rtui-text) !important;
@@ -163,7 +188,7 @@ p code, li code, td code, .alert code {
 }
 
 .table th {
-  background-color: var(--rtui-bg-card) !important;
+  background-color: var(--rtui-bg-surface) !important;
   color: var(--rtui-accent) !important;
   border-color: var(--rtui-border) !important;
   font-weight: 600;
@@ -177,16 +202,17 @@ p code, li code, td code, .alert code {
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-  background-color: rgba(49, 50, 68, 0.4) !important;
+  background-color: var(--rtui-bg-surface) !important;
   color: var(--rtui-text) !important;
 }
 
-/* ── Cards and sections ────────────────────────────────────────── */
+/* ── Cards and sections ───────────────────────────────────────────── */
 
 .card {
   background-color: var(--rtui-bg-card) !important;
   border: 1px solid var(--rtui-border) !important;
   border-radius: 8px !important;
+  box-shadow: 0 1px 4px var(--rtui-shadow);
 }
 
 .card-header {
@@ -194,7 +220,7 @@ p code, li code, td code, .alert code {
   border-bottom: 1px solid var(--rtui-border) !important;
 }
 
-/* ── Reference page ────────────────────────────────────────────── */
+/* ── Reference page ───────────────────────────────────────────────── */
 
 .section-title {
   color: var(--rtui-accent2) !important;
@@ -209,13 +235,12 @@ dd {
   color: var(--rtui-text-muted);
 }
 
-/* Function signature */
 .ref-heading {
   border-left: 3px solid var(--rtui-accent);
   padding-left: 0.75em;
 }
 
-/* ── Sidebar / TOC ─────────────────────────────────────────────── */
+/* ── Sidebar / TOC ────────────────────────────────────────────────── */
 
 .sidebar, .pkgdown-sidebar {
   background-color: var(--rtui-bg-surface) !important;
@@ -230,10 +255,10 @@ dd {
   color: var(--rtui-accent) !important;
 }
 
-/* ── Blockquotes (used for callout boxes) ──────────────────────── */
+/* ── Blockquotes ──────────────────────────────────────────────────── */
 
 blockquote {
-  background-color: var(--rtui-bg-card) !important;
+  background-color: var(--rtui-bg-surface) !important;
   border-left: 4px solid var(--rtui-yellow) !important;
   border-radius: 0 8px 8px 0;
   padding: 1em 1.25em !important;
@@ -245,7 +270,7 @@ blockquote strong {
   color: var(--rtui-yellow) !important;
 }
 
-/* ── Footer ────────────────────────────────────────────────────── */
+/* ── Footer ───────────────────────────────────────────────────────── */
 
 .pkgdown-footer, footer {
   background-color: var(--rtui-bg-surface) !important;
@@ -253,12 +278,12 @@ blockquote strong {
   color: var(--rtui-text-muted) !important;
 }
 
-/* ── Dropdown menus ────────────────────────────────────────────── */
+/* ── Dropdown menus ───────────────────────────────────────────────── */
 
 .dropdown-menu {
   background-color: var(--rtui-bg-card) !important;
   border: 1px solid var(--rtui-border) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 4px 16px var(--rtui-shadow) !important;
 }
 
 .dropdown-item {
@@ -270,10 +295,10 @@ blockquote strong {
   color: var(--rtui-accent) !important;
 }
 
-/* ── Search ────────────────────────────────────────────────────── */
+/* ── Search ───────────────────────────────────────────────────────── */
 
 .form-control, .search-input {
-  background-color: var(--rtui-bg-code) !important;
+  background-color: var(--rtui-bg-card) !important;
   border: 1px solid var(--rtui-border) !important;
   color: var(--rtui-text) !important;
 }
@@ -283,14 +308,14 @@ blockquote strong {
   box-shadow: 0 0 0 3px var(--rtui-glow) !important;
 }
 
-/* ── Badges / labels ───────────────────────────────────────────── */
+/* ── Badges ───────────────────────────────────────────────────────── */
 
 .badge {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.75em;
 }
 
-/* ── Home page hero tweaks ─────────────────────────────────────── */
+/* ── Home page hero ───────────────────────────────────────────────── */
 
 .page-header {
   background: linear-gradient(135deg, var(--rtui-bg-surface), var(--rtui-bg-card)) !important;
@@ -303,14 +328,14 @@ blockquote strong {
   font-size: 1.15rem;
 }
 
-/* ── Horizontal rules ──────────────────────────────────────────── */
+/* ── Horizontal rules ─────────────────────────────────────────────── */
 
 hr {
   border-color: var(--rtui-border) !important;
   opacity: 0.6;
 }
 
-/* ── Scrollbar styling ─────────────────────────────────────────── */
+/* ── Scrollbar styling ────────────────────────────────────────────── */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -330,14 +355,18 @@ hr {
   background: var(--rtui-accent);
 }
 
-/* ── Selection highlight ───────────────────────────────────────── */
+/* ── Selection highlight ──────────────────────────────────────────── */
 
 ::selection {
   background-color: var(--rtui-accent);
+  color: #ffffff;
+}
+
+[data-bs-theme="dark"] ::selection {
   color: var(--rtui-bg);
 }
 
-/* ── Smooth transitions ───────────────────────────────────────── */
+/* ── Smooth color transitions ─────────────────────────────────────── */
 
 *, *::before, *::after {
   transition-property: color, background-color, border-color, box-shadow;
@@ -345,10 +374,54 @@ hr {
   transition-timing-function: ease;
 }
 
-/* Don't transition layout properties */
 pre, code, img, svg {
   transition: none !important;
 }
 
-/* ── Import monospace font ─────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+/* ── Copy-to-clipboard button on code blocks ──────────────────────── */
+
+div.sourceCode {
+  position: relative;
+}
+
+.btn-copy-ex {
+  position: absolute;
+  top: 0.4em;
+  right: 0.4em;
+  z-index: 10;
+  padding: 0.2em 0.5em;
+  font-size: 0.75rem;
+  background-color: var(--rtui-bg-surface) !important;
+  color: var(--rtui-text-muted) !important;
+  border: 1px solid var(--rtui-border) !important;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+div.sourceCode:hover .btn-copy-ex {
+  opacity: 1;
+}
+
+.btn-copy-ex:hover {
+  background-color: var(--rtui-accent) !important;
+  color: #ffffff !important;
+  border-color: var(--rtui-accent) !important;
+}
+
+/* ── Dark mode toggle (lightswitch) ───────────────────────────────── */
+
+#dropdown-lightswitch {
+  color: var(--rtui-text-muted) !important;
+  border: none;
+  background: transparent;
+  padding: 0.4em 0.5em;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+#dropdown-lightswitch:hover {
+  color: var(--rtui-accent) !important;
+}

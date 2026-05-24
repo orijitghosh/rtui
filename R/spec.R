@@ -14,7 +14,7 @@ new_spec <- function(kind, id = NULL, classes = NULL, props = list(),
 
 validate_id <- function(id, call = rlang::caller_env()) {
   if (is.null(id)) return(invisible(NULL))
-  if (!is.character(id) || length(id) != 1L || nchar(id) == 0L) {
+  if (!is.character(id) || length(id) != 1L || is.na(id) || nchar(id) == 0L) {
     abort_spec("`id` must be a non-empty single character string.", call = call)
   }
   invisible(NULL)

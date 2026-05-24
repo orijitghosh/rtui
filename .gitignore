@@ -6,6 +6,8 @@
 *.o
 *.so
 *.dll
+__pycache__/
+*.pyc
 
 # AI/planning artifacts — do not publish
 .claude/

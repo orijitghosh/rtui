@@ -1,4 +1,4 @@
-#' @importFrom rlang abort
+#' @importFrom rlang abort `%||%`
 NULL
 
 abort_spec <- function(message, ..., call = rlang::caller_env()) {

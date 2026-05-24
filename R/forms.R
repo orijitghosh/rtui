@@ -81,6 +81,12 @@ tui_form <- function(..., submit_label = "Submit", id = NULL, classes = NULL) {
     } else {
       field_ids[i] <- field_spec$id
     }
+    if (any(duplicated(field_ids[seq_len(i)]))) {
+      abort_spec(paste0(
+        "Duplicate form field id '", field_ids[i],
+        "'. Use distinct names or set explicit `id` on fields."
+      ))
+    }
     # Create a labelled row
     label_spec <- static(paste0(label_text, ":"), id = paste0("__label_", field_id))
     children <- c(children, list(label_spec), list(field_spec))

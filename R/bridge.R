@@ -39,4 +39,3 @@ as_r_event <- function(event_dict) {
   )
 }
 
-`%||%` <- function(x, y) if (is.null(x)) y else x

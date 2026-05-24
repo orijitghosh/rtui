@@ -43,8 +43,9 @@ class RtuiApp(App):
         bindings: Optional[list] = None,
         **kwargs,
     ):
-        # Set up bindings BEFORE super().__init__() so Textual sees them
-        # when it caches the binding map during App initialization.
+        # Create a unique subclass so CSS/bindings don't leak between instances
+        unique_cls = type(f"RtuiApp_{id(self)}", (RtuiApp,), {})
+        self.__class__ = unique_cls
         if bindings:
             self._setup_bindings(bindings)
         if css_text:
@@ -494,8 +495,8 @@ class RtuiApp(App):
                     ["xclip", "-selection", "clipboard"],
                     input=text.encode(), check=True, timeout=5,
                 )
-        except Exception:
-            pass  # Silently fail if clipboard tool not available
+        except Exception as exc:
+            self.log.warning(f"Clipboard copy failed: {exc}")
 
     # --- Command palette support ---
     def register_commands(self, commands: list) -> None:

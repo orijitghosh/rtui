@@ -231,13 +231,14 @@ RtuiApp <- R6::R6Class(
       result <- tryCatch(
         handler(event, self$state),
         error = function(e) {
-          abort_callback(
-            c("x" = paste0("Error in ", event$type, " callback."),
-              "i" = conditionMessage(e)),
-            parent = e
-          )
+          cli::cli_warn(c(
+            "x" = paste0("Error in ", event$type, " callback."),
+            "i" = conditionMessage(e)
+          ))
+          return(NULL)
         }
       )
+      if (is.null(result)) return(self$state$as_list())
 
       if (inherits(result, "rtui_quit")) {
         private$.exit_requested <- TRUE
@@ -299,29 +300,7 @@ validate_handler_or_map <- function(val, label) {
 #' @inheritParams tui_app
 #' @return The final `RtuiState` object (invisibly).
 #' @export
-quick_app <- function(layout, on_mount = NULL, on_key = NULL, on_click = NULL,
-                      on_change = NULL, on_submit = NULL, on_timer = NULL,
-                      on_action = NULL, on_screen_result = NULL,
-                      on_quit = NULL, css = NULL, title = NULL,
-                      sub_title = NULL, dark = TRUE, bindings = NULL,
-                      reactive = NULL) {
-  app <- tui_app(
-    layout = layout,
-    on_mount = on_mount,
-    on_key = on_key,
-    on_click = on_click,
-    on_change = on_change,
-    on_submit = on_submit,
-    on_timer = on_timer,
-    on_action = on_action,
-    on_screen_result = on_screen_result,
-    on_quit = on_quit,
-    css = css,
-    title = title,
-    sub_title = sub_title,
-    dark = dark,
-    bindings = bindings,
-    reactive = reactive
-  )
+quick_app <- function(...) {
+  app <- tui_app(...)
   app$run()
 }

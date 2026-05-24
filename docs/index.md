@@ -3,7 +3,7 @@
 > Full-screen terminal user interfaces from R — powered by Python’s
 > [Textual](https://textual.textualize.io/) framework.
 
-**[Documentation](https://orijitghosh.github.io/rtui/)** \| [Example
+[**Documentation**](https://orijitghosh.github.io/rtui/) \| [Example
 Gallery](https://orijitghosh.github.io/rtui/articles/examples.html) \|
 [Getting
 Started](https://orijitghosh.github.io/rtui/articles/getting-started.html)
