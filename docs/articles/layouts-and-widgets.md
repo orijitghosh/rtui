@@ -6,7 +6,9 @@ every one with practical examples you can copy and run.
 > **Terminal only:** All examples in this guide must be saved as `.R`
 > files and run from a real terminal with `Rscript my_app.R`. rtui apps
 > do **not** work in RStudio, R GUI, Jupyter, or any embedded R console.
-> See [Getting Started](getting-started.md) for setup instructions.
+> See [Getting
+> Started](https://orijitghosh.github.io/rtui/articles/getting-started.md)
+> for setup instructions.
 
 ## How layouts work
 
@@ -103,9 +105,10 @@ quick_app(
 
 ### center() and middle() – Alignment
 
-[`center()`](../reference/center.md) centres children horizontally;
-[`middle()`](../reference/middle.md) centres vertically. Combine them
-for perfect centring:
+[`center()`](https://orijitghosh.github.io/rtui/reference/center.md)
+centres children horizontally;
+[`middle()`](https://orijitghosh.github.io/rtui/reference/middle.md)
+centres vertically. Combine them for perfect centring:
 
 ``` r
 center(
@@ -207,7 +210,8 @@ update(state$app, "greeting", content = "Goodbye world")
 
 ### static() – Rich text
 
-Like [`text()`](../reference/text.md) but supports [Rich
+Like [`text()`](https://orijitghosh.github.io/rtui/reference/text.md)
+but supports [Rich
 markup](https://rich.readthedocs.io/en/latest/markup.html) for colours,
 bold, italic, etc.:
 
@@ -487,8 +491,9 @@ update(state$app, "fruits", items = c("Fig", "Grape", "Kiwi"))
 
 ### selection_list() – Multi-select list
 
-Like [`option_list()`](../reference/option_list.md) but allows multiple
-selections:
+Like
+[`option_list()`](https://orijitghosh.github.io/rtui/reference/option_list.md)
+but allows multiple selections:
 
 ``` r
 selection_list(

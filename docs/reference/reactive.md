@@ -1,8 +1,10 @@
 # Define reactive bindings between state keys and widgets
 
 Reactive bindings auto-update widgets when state values change. Instead
-of manually calling [`update()`](update.md) after every `state$set()`,
-declare the relationship once and let rtui handle the rest.
+of manually calling
+[`update()`](https://orijitghosh.github.io/rtui/reference/update.md)
+after every `state$set()`, declare the relationship once and let rtui
+handle the rest.
 
 ## Usage
 
@@ -41,8 +43,10 @@ reactive(...)
 
 ## Value
 
-A list of class `"rtui_reactive"` to pass to [`tui_app()`](tui_app.md)
-or [`quick_app()`](quick_app.md).
+A list of class `"rtui_reactive"` to pass to
+[`tui_app()`](https://orijitghosh.github.io/rtui/reference/tui_app.md)
+or
+[`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md).
 
 ## Examples
 

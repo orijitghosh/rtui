@@ -64,8 +64,8 @@ use_virtualenv("r-rtui", required = TRUE)
 ## Your first app
 
 The fastest way to get started is
-[`quick_app()`](../reference/quick_app.md), which builds and runs an app
-in a single call:
+[`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md),
+which builds and runs an app in a single call:
 
 ``` r
 library(rtui)
@@ -155,11 +155,17 @@ quick_app(
 
 ### What’s happening here?
 
-1.  **Layout**: [`vstack()`](../reference/vstack.md) stacks children
-    vertically. Inside we use [`center()`](../reference/center.md) and
-    [`middle()`](../reference/middle.md) to centre the content.
-    [`digits()`](../reference/digits.md) shows large-format numbers, and
-    [`button()`](../reference/button.md) creates clickable buttons.
+1.  **Layout**:
+    [`vstack()`](https://orijitghosh.github.io/rtui/reference/vstack.md)
+    stacks children vertically. Inside we use
+    [`center()`](https://orijitghosh.github.io/rtui/reference/center.md)
+    and
+    [`middle()`](https://orijitghosh.github.io/rtui/reference/middle.md)
+    to centre the content.
+    [`digits()`](https://orijitghosh.github.io/rtui/reference/digits.md)
+    shows large-format numbers, and
+    [`button()`](https://orijitghosh.github.io/rtui/reference/button.md)
+    creates clickable buttons.
 
 2.  **Event handling**: `on_click` is a named list mapping widget ids to
     handler functions. Each handler receives `event` (with click
@@ -172,13 +178,16 @@ quick_app(
 
 4.  **Key bindings**: `binding("q", "quit_app", "Quit")` maps the `q`
     key to an action called `"quit_app"`. The `on_action` handler checks
-    `event$value` and calls [`quit()`](../reference/quit.md) to exit.
+    `event$value` and calls
+    [`quit()`](https://orijitghosh.github.io/rtui/reference/quit.md) to
+    exit.
 
 ## The two-step pattern: tui_app() + run()
 
-[`quick_app()`](../reference/quick_app.md) is a convenience wrapper. For
-more control, use [`tui_app()`](../reference/tui_app.md) to create the
-app object, then call `$run()`:
+[`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md)
+is a convenience wrapper. For more control, use
+[`tui_app()`](https://orijitghosh.github.io/rtui/reference/tui_app.md)
+to create the app object, then call `$run()`:
 
 ``` r
 app <- tui_app(
@@ -276,13 +285,18 @@ Severity levels: `"info"`, `"warning"`, `"error"`.
 
 Now that you have the basics, explore these guides:
 
-- **[Layouts and Widgets](layouts-and-widgets.md)**: All containers and
-  widgets with examples
-- **[State, Events, and Reactivity](state-events-reactivity.md)**: Deep
-  dive into handlers, state management, and reactive bindings
-- **[Charts and Data Visualisation](charts-and-data.md)**: Terminal
-  charts and ggplot2 rendering
-- **[Advanced Features](advanced-features.md)**: Screens, timers, key
-  bindings, command palette, forms, and workers
-- **[Example Gallery](examples.md)**: 12 runnable example apps with
-  progressive complexity
+- **[Layouts and
+  Widgets](https://orijitghosh.github.io/rtui/articles/layouts-and-widgets.md)**:
+  All containers and widgets with examples
+- **[State, Events, and
+  Reactivity](https://orijitghosh.github.io/rtui/articles/state-events-reactivity.md)**:
+  Deep dive into handlers, state management, and reactive bindings
+- **[Charts and Data
+  Visualisation](https://orijitghosh.github.io/rtui/articles/charts-and-data.md)**:
+  Terminal charts and ggplot2 rendering
+- **[Advanced
+  Features](https://orijitghosh.github.io/rtui/articles/advanced-features.md)**:
+  Screens, timers, key bindings, command palette, forms, and workers
+- **[Example
+  Gallery](https://orijitghosh.github.io/rtui/articles/examples.md)**:
+  12 runnable example apps with progressive complexity

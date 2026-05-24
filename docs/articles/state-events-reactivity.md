@@ -34,12 +34,15 @@ function(event, state) {
 - **`state`**: A mutable `RtuiState` object. Your persistent store
   across all events.
 - **Return value**: Must return `state` (or
-  [`quit()`](../reference/quit.md) to exit).
+  [`quit()`](https://orijitghosh.github.io/rtui/reference/quit.md) to
+  exit).
 
 ## Available event types
 
-Pass handlers to [`tui_app()`](../reference/tui_app.md) or
-[`quick_app()`](../reference/quick_app.md):
+Pass handlers to
+[`tui_app()`](https://orijitghosh.github.io/rtui/reference/tui_app.md)
+or
+[`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md):
 
 ``` r
 quick_app(
@@ -102,7 +105,8 @@ on_change = function(event, state) {
 ### on_submit
 
 Fires when the user presses Enter in an
-[`input()`](../reference/input.md) widget:
+[`input()`](https://orijitghosh.github.io/rtui/reference/input.md)
+widget:
 
 ``` r
 on_submit = list(
@@ -223,8 +227,9 @@ state$as_list()
 ```
 
 State persists across all events within a single app run. After the app
-exits, [`quick_app()`](../reference/quick_app.md) returns the final
-state invisibly.
+exits,
+[`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md)
+returns the final state invisibly.
 
 ### Patterns for state
 
@@ -276,7 +281,8 @@ on_click = list(
 
 ## Reactive bindings
 
-Reactive bindings eliminate manual [`update()`](../reference/update.md)
+Reactive bindings eliminate manual
+[`update()`](https://orijitghosh.github.io/rtui/reference/update.md)
 calls. Instead of this:
 
 ``` r
@@ -312,12 +318,14 @@ quick_app(
 
 Whenever `state$set("count", value)` is called, the `"display"` widget’s
 value is automatically updated. No manual
-[`update()`](../reference/update.md) needed.
+[`update()`](https://orijitghosh.github.io/rtui/reference/update.md)
+needed.
 
 ### Binding types
 
-The [`reactive()`](../reference/reactive.md) function accepts three
-binding forms:
+The
+[`reactive()`](https://orijitghosh.github.io/rtui/reference/reactive.md)
+function accepts three binding forms:
 
 **1. Widget id (string)** – auto-update the widget’s value:
 
@@ -372,8 +380,9 @@ reactive(
 
 ## Updating widgets
 
-The [`update()`](../reference/update.md) function modifies a widget by
-id. Different widgets support different properties:
+The [`update()`](https://orijitghosh.github.io/rtui/reference/update.md)
+function modifies a widget by id. Different widgets support different
+properties:
 
 ``` r
 # Text content (text, static, markdown)
@@ -408,8 +417,8 @@ update(state$app, "section", collapsed = FALSE)
 
 ## Quitting the app
 
-Return [`quit()`](../reference/quit.md) from any handler to exit the
-app:
+Return [`quit()`](https://orijitghosh.github.io/rtui/reference/quit.md)
+from any handler to exit the app:
 
 ``` r
 on_key = function(event, state) {

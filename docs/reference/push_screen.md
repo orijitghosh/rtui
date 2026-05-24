@@ -1,7 +1,8 @@
 # Push a screen onto the screen stack
 
 The current screen is preserved and a new screen is shown on top. Use
-[`pop_screen()`](pop_screen.md) from a callback to dismiss it.
+[`pop_screen()`](https://orijitghosh.github.io/rtui/reference/pop_screen.md)
+from a callback to dismiss it.
 
 ## Usage
 
@@ -17,7 +18,8 @@ push_screen(app, screen)
 
 - screen:
 
-  A screen spec created with [`tui_screen()`](tui_screen.md).
+  A screen spec created with
+  [`tui_screen()`](https://orijitghosh.github.io/rtui/reference/tui_screen.md).
 
 ## Value
 

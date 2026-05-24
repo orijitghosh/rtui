@@ -27,11 +27,15 @@ An `rtui_spec` list.
 
 ## Details
 
-Available chart types: [`plot_bar()`](plot_bar.md),
-[`plot_line()`](plot_line.md), [`plot_scatter()`](plot_scatter.md),
-[`plot_hist()`](plot_hist.md), [`plot_box()`](plot_box.md),
-[`plot_stacked_bar()`](plot_stacked_bar.md),
-[`plot_multiple_bar()`](plot_multiple_bar.md),
-[`plot_heatmap()`](plot_heatmap.md),
-[`plot_candlestick()`](plot_candlestick.md),
-[`plot_error()`](plot_error.md), [`plot_event()`](plot_event.md).
+Available chart types:
+[`plot_bar()`](https://orijitghosh.github.io/rtui/reference/plot_bar.md),
+[`plot_line()`](https://orijitghosh.github.io/rtui/reference/plot_line.md),
+[`plot_scatter()`](https://orijitghosh.github.io/rtui/reference/plot_scatter.md),
+[`plot_hist()`](https://orijitghosh.github.io/rtui/reference/plot_hist.md),
+[`plot_box()`](https://orijitghosh.github.io/rtui/reference/plot_box.md),
+[`plot_stacked_bar()`](https://orijitghosh.github.io/rtui/reference/plot_stacked_bar.md),
+[`plot_multiple_bar()`](https://orijitghosh.github.io/rtui/reference/plot_multiple_bar.md),
+[`plot_heatmap()`](https://orijitghosh.github.io/rtui/reference/plot_heatmap.md),
+[`plot_candlestick()`](https://orijitghosh.github.io/rtui/reference/plot_candlestick.md),
+[`plot_error()`](https://orijitghosh.github.io/rtui/reference/plot_error.md),
+[`plot_event()`](https://orijitghosh.github.io/rtui/reference/plot_event.md).

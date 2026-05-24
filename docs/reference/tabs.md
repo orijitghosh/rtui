@@ -12,7 +12,8 @@ tabs(..., id = NULL, classes = NULL)
 
 - ...:
 
-  Tab pane specs created with [`tab_pane()`](tab_pane.md).
+  Tab pane specs created with
+  [`tab_pane()`](https://orijitghosh.github.io/rtui/reference/tab_pane.md).
 
 - id:
 

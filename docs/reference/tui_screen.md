@@ -1,8 +1,9 @@
 # Create a screen spec
 
-Screens are used with [`push_screen()`](push_screen.md) to create
-multi-page apps and modal dialogs. A screen has its own layout and
-optional CSS.
+Screens are used with
+[`push_screen()`](https://orijitghosh.github.io/rtui/reference/push_screen.md)
+to create multi-page apps and modal dialogs. A screen has its own layout
+and optional CSS.
 
 ## Usage
 

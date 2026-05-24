@@ -402,8 +402,8 @@ id and assigns recognized properties. Unknown properties raise
 `RtuiSpecError`.
 
 No diffing of full layouts in v0.1 — only explicit
-[`update()`](reference/update.md) calls cause re-render. Textual handles
-its own internal diff/repaint.
+[`update()`](https://orijitghosh.github.io/rtui/reference/update.md)
+calls cause re-render. Textual handles its own internal diff/repaint.
 
 ------------------------------------------------------------------------
 
@@ -413,7 +413,7 @@ its own internal diff/repaint.
 |----|----|----|
 | Cold app start ([`library(rtui)`](https://github.com/orijitghosh/rtui) to first paint) | ≤ 2.0 s | 4.0 s |
 | Keypress to handler invocation (in-R latency) | ≤ 15 ms p95 | 50 ms p95 |
-| [`update()`](reference/update.md) to repaint | ≤ 30 ms p95 | 100 ms p95 |
+| [`update()`](https://orijitghosh.github.io/rtui/reference/update.md) to repaint | ≤ 30 ms p95 | 100 ms p95 |
 | `data_table` initial render, 10k rows × 20 cols | ≤ 1.5 s | 3.0 s |
 | Memory overhead at idle (1 app, 10 widgets) | ≤ 80 MB RSS | 150 MB RSS |
 
@@ -451,7 +451,7 @@ implementation. Each spike is a throwaway script committed under
 |----|----|----|
 | S1 | Can Textual’s asyncio loop run on the main thread without freezing R’s REPL on exit? | Launch a 5-second auto-exit Textual app from R via reticulate; R returns control cleanly. |
 | S2 | Can a Python-side asyncio handler synchronously invoke an R callback and receive a return value? | Round-trip an integer through a key event handler, verified by R-side assertion. |
-| S3 | Does pinning `textual==0.85.*` install cleanly on Linux/macOS/Windows under reticulate? | [`install_python_deps()`](reference/install_python_deps.md) succeeds on all three CI runners. |
+| S3 | Does pinning `textual==0.85.*` install cleanly on Linux/macOS/Windows under reticulate? | [`install_python_deps()`](https://orijitghosh.github.io/rtui/reference/install_python_deps.md) succeeds on all three CI runners. |
 | S4 | What is observed keypress→callback latency in the chosen architecture? | Measured median latency reported; informs §9 ceilings. |
 
 **If S1 or S2 fails**, escalate to subprocess architecture (§3.3);
@@ -480,7 +480,8 @@ Block on results before continuing.
 
 - All widget constructors with full argument validation
 - `tui_state`
-- `events.R`, [`quit()`](reference/quit.md)
+- `events.R`,
+  [`quit()`](https://orijitghosh.github.io/rtui/reference/quit.md)
 - 100% test coverage on `R/widgets-*.R`, `R/state.R`, `R/events.R`
   (verified by `covr`)
 - No reticulate calls anywhere in this phase
@@ -494,15 +495,16 @@ Block on results before continuing.
 
 ### Phase 4 — Bridge
 
-- [`install_python_deps()`](reference/install_python_deps.md)
+- [`install_python_deps()`](https://orijitghosh.github.io/rtui/reference/install_python_deps.md)
 - `.onLoad` lazy-imports the shim
 - `RtuiApp$run()` end-to-end with `on_mount`, `on_key`,
-  [`quit()`](reference/quit.md)
+  [`quit()`](https://orijitghosh.github.io/rtui/reference/quit.md)
 - Examples 01–02 working manually
 
 ### Phase 5 — Updates and remaining widgets
 
-- [`update()`](reference/update.md), [`notify()`](reference/notify.md)
+- [`update()`](https://orijitghosh.github.io/rtui/reference/update.md),
+  [`notify()`](https://orijitghosh.github.io/rtui/reference/notify.md)
 - `data_table`, `log_view`
 - Examples 03–04 working
 
@@ -569,9 +571,9 @@ These constraints bind the build agent across the entire engagement.
 8.  **No mocking the bridge in unit tests.** Spec-layer tests must not
     import reticulate. Bridge tests must use the real shim.
 9.  **Reproducible installs.**
-    [`install_python_deps()`](reference/install_python_deps.md) must
-    produce identical environments across runs given identical R and
-    Python interpreter versions. No floating dependencies.
+    [`install_python_deps()`](https://orijitghosh.github.io/rtui/reference/install_python_deps.md)
+    must produce identical environments across runs given identical R
+    and Python interpreter versions. No floating dependencies.
 10. **Public API freeze after Phase 2.** §4.1 surface is final.
     Additions require a PRD revision.
 

@@ -1,8 +1,9 @@
 # Register commands for the command palette
 
-Registers a list of [`command()`](command.md) objects that appear in the
-Textual command palette (Ctrl+P). When a command is selected, it
-dispatches an `"action"` event to `on_action`.
+Registers a list of
+[`command()`](https://orijitghosh.github.io/rtui/reference/command.md)
+objects that appear in the Textual command palette (Ctrl+P). When a
+command is selected, it dispatches an `"action"` event to `on_action`.
 
 ## Usage
 
@@ -18,7 +19,9 @@ register_commands(app, commands)
 
 - commands:
 
-  A list of [`command()`](command.md) objects.
+  A list of
+  [`command()`](https://orijitghosh.github.io/rtui/reference/command.md)
+  objects.
 
 ## Value
 

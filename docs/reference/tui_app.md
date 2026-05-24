@@ -95,12 +95,14 @@ tui_app(
 
 - bindings:
 
-  Optional list of key bindings created with [`binding()`](binding.md).
+  Optional list of key bindings created with
+  [`binding()`](https://orijitghosh.github.io/rtui/reference/binding.md).
   Bindings are shown in the footer and dispatch `"action"` events.
 
 - reactive:
 
-  Optional reactive bindings created with [`reactive()`](reactive.md).
+  Optional reactive bindings created with
+  [`reactive()`](https://orijitghosh.github.io/rtui/reference/reactive.md).
   Auto-updates widgets when state values change.
 
 ## Value

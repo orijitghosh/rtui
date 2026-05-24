@@ -7,8 +7,8 @@ Mutable TUI state object
 ## Details
 
 An R6 class for managing mutable app state. Created by
-[`tui_state()`](tui_state.md). Supports reactive bindings that
-auto-update widgets when values change.
+[`tui_state()`](https://orijitghosh.github.io/rtui/reference/tui_state.md).
+Supports reactive bindings that auto-update widgets when values change.
 
 ## Active bindings
 
@@ -18,7 +18,9 @@ auto-update widgets when values change.
 
 - `app`:
 
-  Access the running app (for calling [`update()`](update.md), etc.)
+  Access the running app (for calling
+  [`update()`](https://orijitghosh.github.io/rtui/reference/update.md),
+  etc.)
 
 ## Methods
 

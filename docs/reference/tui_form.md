@@ -15,9 +15,12 @@ tui_form(..., submit_label = "Submit", id = NULL, classes = NULL)
 - ...:
 
   Named form field specs. Each should be an `rtui_spec` for an input
-  widget (e.g. [`input()`](input.md), [`select()`](select.md),
-  [`checkbox()`](checkbox.md), [`switch_input()`](switch_input.md)). The
-  name is used as both the widget id and the display label.
+  widget (e.g.
+  [`input()`](https://orijitghosh.github.io/rtui/reference/input.md),
+  [`select()`](https://orijitghosh.github.io/rtui/reference/select.md),
+  [`checkbox()`](https://orijitghosh.github.io/rtui/reference/checkbox.md),
+  [`switch_input()`](https://orijitghosh.github.io/rtui/reference/switch_input.md)).
+  The name is used as both the widget id and the display label.
 
 - submit_label:
 

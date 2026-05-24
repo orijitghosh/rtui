@@ -65,9 +65,10 @@ on_screen_result = function(event, state) {
 
 ### Built-in dialogs
 
-For common cases, rtui provides [`confirm()`](../reference/confirm.md)
-and [`alert()`](../reference/alert.md) which build and push a styled
-dialog screen in one call:
+For common cases, rtui provides
+[`confirm()`](https://orijitghosh.github.io/rtui/reference/confirm.md)
+and [`alert()`](https://orijitghosh.github.io/rtui/reference/alert.md)
+which build and push a styled dialog screen in one call:
 
 ``` r
 # Confirmation dialog (Yes/No)
@@ -208,8 +209,8 @@ on_timer = function(event, state) {
 ## Workers
 
 Workers are convenience wrappers around
-[`set_interval()`](../reference/set_interval.md) for background polling
-patterns:
+[`set_interval()`](https://orijitghosh.github.io/rtui/reference/set_interval.md)
+for background polling patterns:
 
 ``` r
 # Start polling every 5 seconds
@@ -249,7 +250,9 @@ on_timer = function(event, state) {
 ## Key bindings
 
 Key bindings map keyboard shortcuts to named actions. They are shown
-automatically in the [`footer()`](../reference/footer.md) widget.
+automatically in the
+[`footer()`](https://orijitghosh.github.io/rtui/reference/footer.md)
+widget.
 
 ### Defining bindings
 
@@ -331,8 +334,8 @@ on_action = function(event, state) {
 
 ## Forms
 
-[`tui_form()`](../reference/tui_form.md) builds structured input forms
-with labelled fields and a submit button:
+[`tui_form()`](https://orijitghosh.github.io/rtui/reference/tui_form.md)
+builds structured input forms with labelled fields and a submit button:
 
 ``` r
 library(rtui)
@@ -383,8 +386,8 @@ quick_app(
     underscores)
 2.  The form auto-generates a `"__form_submit"` button
 3.  Handle the button click with `on_click` and use
-    [`collect_form()`](../reference/collect_form.md) to gather all
-    current values
+    [`collect_form()`](https://orijitghosh.github.io/rtui/reference/collect_form.md)
+    to gather all current values
 
 ### Custom field ids
 
@@ -435,9 +438,10 @@ notify(state$app, "Connection failed!", severity = "error")
 
 ## Log view
 
-The [`log_view()`](../reference/log_view.md) widget creates an
-append-only scrolling log, useful for status messages, debug output, or
-activity feeds:
+The
+[`log_view()`](https://orijitghosh.github.io/rtui/reference/log_view.md)
+widget creates an append-only scrolling log, useful for status messages,
+debug output, or activity feeds:
 
 ``` r
 log_view(id = "activity_log", max_lines = 500)
@@ -596,5 +600,8 @@ refresh_tasks <- function(state) {
 ```
 
 > **Important**: Helper functions like `refresh_tasks()` must be defined
-> *before* the [`quick_app()`](../reference/quick_app.md) call, because
-> [`quick_app()`](../reference/quick_app.md) runs the app immediately.
+> *before* the
+> [`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md)
+> call, because
+> [`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md)
+> runs the app immediately.

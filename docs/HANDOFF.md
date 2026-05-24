@@ -31,57 +31,71 @@ pure R, no Python dependency:
 - `R/spec.R` — internal `new_spec()`, validators (`validate_id`,
   `validate_classes`, `validate_children`), `compact()`,
   `print.rtui_spec()`
-- `R/widgets-containers.R` — [`vstack()`](reference/vstack.md),
-  [`hstack()`](reference/hstack.md), [`grid()`](reference/grid.md),
-  [`container()`](reference/container.md),
-  [`scroll()`](reference/scroll.md), [`center()`](reference/center.md),
-  [`middle()`](reference/middle.md)
-- `R/widgets-display.R` — [`text()`](reference/text.md),
-  [`box()`](reference/box.md), [`static()`](reference/static.md),
-  [`log_view()`](reference/log_view.md),
-  [`markdown()`](reference/markdown.md),
-  [`progress_bar()`](reference/progress_bar.md),
-  [`sparkline()`](reference/sparkline.md),
-  [`rule()`](reference/rule.md), [`loading()`](reference/loading.md),
-  [`digits()`](reference/digits.md),
-  [`placeholder()`](reference/placeholder.md),
-  [`pretty_table()`](reference/pretty_table.md)
-- `R/widgets-input.R` — [`input()`](reference/input.md),
-  [`button()`](reference/button.md),
-  [`list_view()`](reference/list_view.md),
-  [`data_table()`](reference/data_table.md),
-  [`checkbox()`](reference/checkbox.md),
-  [`radio_button()`](reference/radio_button.md),
-  [`radio_set()`](reference/radio_set.md),
-  [`select()`](reference/select.md),
-  [`switch_input()`](reference/switch_input.md),
-  [`text_area()`](reference/text_area.md),
-  [`option_list()`](reference/option_list.md),
-  [`selection_list()`](reference/selection_list.md)
-- `R/widgets-nav.R` — [`tabs()`](reference/tabs.md),
-  [`tab_pane()`](reference/tab_pane.md),
-  [`header()`](reference/header.md), [`footer()`](reference/footer.md),
-  [`collapsible()`](reference/collapsible.md),
-  [`content_switcher()`](reference/content_switcher.md),
-  [`tree()`](reference/tree.md)
-- `R/state.R` — [`tui_state()`](reference/tui_state.md), `RtuiState` R6
-  class with get/set/as_list/data active binding
-- `R/events.R` — [`event_key()`](reference/event_key.md),
-  [`event_change()`](reference/event_change.md),
-  [`event_click()`](reference/event_click.md),
-  [`quit()`](reference/quit.md)
+- `R/widgets-containers.R` —
+  [`vstack()`](https://orijitghosh.github.io/rtui/reference/vstack.md),
+  [`hstack()`](https://orijitghosh.github.io/rtui/reference/hstack.md),
+  [`grid()`](https://orijitghosh.github.io/rtui/reference/grid.md),
+  [`container()`](https://orijitghosh.github.io/rtui/reference/container.md),
+  [`scroll()`](https://orijitghosh.github.io/rtui/reference/scroll.md),
+  [`center()`](https://orijitghosh.github.io/rtui/reference/center.md),
+  [`middle()`](https://orijitghosh.github.io/rtui/reference/middle.md)
+- `R/widgets-display.R` —
+  [`text()`](https://orijitghosh.github.io/rtui/reference/text.md),
+  [`box()`](https://orijitghosh.github.io/rtui/reference/box.md),
+  [`static()`](https://orijitghosh.github.io/rtui/reference/static.md),
+  [`log_view()`](https://orijitghosh.github.io/rtui/reference/log_view.md),
+  [`markdown()`](https://orijitghosh.github.io/rtui/reference/markdown.md),
+  [`progress_bar()`](https://orijitghosh.github.io/rtui/reference/progress_bar.md),
+  [`sparkline()`](https://orijitghosh.github.io/rtui/reference/sparkline.md),
+  [`rule()`](https://orijitghosh.github.io/rtui/reference/rule.md),
+  [`loading()`](https://orijitghosh.github.io/rtui/reference/loading.md),
+  [`digits()`](https://orijitghosh.github.io/rtui/reference/digits.md),
+  [`placeholder()`](https://orijitghosh.github.io/rtui/reference/placeholder.md),
+  [`pretty_table()`](https://orijitghosh.github.io/rtui/reference/pretty_table.md)
+- `R/widgets-input.R` —
+  [`input()`](https://orijitghosh.github.io/rtui/reference/input.md),
+  [`button()`](https://orijitghosh.github.io/rtui/reference/button.md),
+  [`list_view()`](https://orijitghosh.github.io/rtui/reference/list_view.md),
+  [`data_table()`](https://orijitghosh.github.io/rtui/reference/data_table.md),
+  [`checkbox()`](https://orijitghosh.github.io/rtui/reference/checkbox.md),
+  [`radio_button()`](https://orijitghosh.github.io/rtui/reference/radio_button.md),
+  [`radio_set()`](https://orijitghosh.github.io/rtui/reference/radio_set.md),
+  [`select()`](https://orijitghosh.github.io/rtui/reference/select.md),
+  [`switch_input()`](https://orijitghosh.github.io/rtui/reference/switch_input.md),
+  [`text_area()`](https://orijitghosh.github.io/rtui/reference/text_area.md),
+  [`option_list()`](https://orijitghosh.github.io/rtui/reference/option_list.md),
+  [`selection_list()`](https://orijitghosh.github.io/rtui/reference/selection_list.md)
+- `R/widgets-nav.R` —
+  [`tabs()`](https://orijitghosh.github.io/rtui/reference/tabs.md),
+  [`tab_pane()`](https://orijitghosh.github.io/rtui/reference/tab_pane.md),
+  [`header()`](https://orijitghosh.github.io/rtui/reference/header.md),
+  [`footer()`](https://orijitghosh.github.io/rtui/reference/footer.md),
+  [`collapsible()`](https://orijitghosh.github.io/rtui/reference/collapsible.md),
+  [`content_switcher()`](https://orijitghosh.github.io/rtui/reference/content_switcher.md),
+  [`tree()`](https://orijitghosh.github.io/rtui/reference/tree.md)
+- `R/state.R` —
+  [`tui_state()`](https://orijitghosh.github.io/rtui/reference/tui_state.md),
+  `RtuiState` R6 class with get/set/as_list/data active binding
+- `R/events.R` —
+  [`event_key()`](https://orijitghosh.github.io/rtui/reference/event_key.md),
+  [`event_change()`](https://orijitghosh.github.io/rtui/reference/event_change.md),
+  [`event_click()`](https://orijitghosh.github.io/rtui/reference/event_click.md),
+  [`quit()`](https://orijitghosh.github.io/rtui/reference/quit.md)
 - `R/errors.R` — error hierarchy: `rtui_error` → `rtui_spec_error`,
   `rtui_python_error`, `rtui_no_tty`, `rtui_install_error`,
   `rtui_callback_error`
-- `R/terminal.R` — [`check_terminal()`](reference/check_terminal.md) —
-  detects dumb term, RStudio, Positron, non-tty
-- `R/app.R` — [`tui_app()`](reference/tui_app.md), `RtuiApp` R6 class
-  (run/exit/dispatch)
-- `R/update.R` — [`update()`](reference/update.md),
-  [`notify()`](reference/notify.md)
+- `R/terminal.R` —
+  [`check_terminal()`](https://orijitghosh.github.io/rtui/reference/check_terminal.md)
+  — detects dumb term, RStudio, Positron, non-tty
+- `R/app.R` —
+  [`tui_app()`](https://orijitghosh.github.io/rtui/reference/tui_app.md),
+  `RtuiApp` R6 class (run/exit/dispatch)
+- `R/update.R` —
+  [`update()`](https://orijitghosh.github.io/rtui/reference/update.md),
+  [`notify()`](https://orijitghosh.github.io/rtui/reference/notify.md)
 - `R/bridge.R` — `load_shim()`, `as_r_event()`, `%||%`
 - `R/install.R` —
-  [`install_python_deps()`](reference/install_python_deps.md)
+  [`install_python_deps()`](https://orijitghosh.github.io/rtui/reference/install_python_deps.md)
 - `R/zzz.R` — `.onLoad` lazy virtualenv activation
 
 **Phase 3 — Python Shim (SCAFFOLDED)** -

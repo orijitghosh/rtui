@@ -3,6 +3,11 @@
 > Full-screen terminal user interfaces from R — powered by Python’s
 > [Textual](https://textual.textualize.io/) framework.
 
+**[Documentation](https://orijitghosh.github.io/rtui/)** \| [Example
+Gallery](https://orijitghosh.github.io/rtui/articles/examples.html) \|
+[Getting
+Started](https://orijitghosh.github.io/rtui/articles/getting-started.html)
+
 **rtui** gives R users 35+ widgets, 12 chart types, CSS-like styling,
 reactive state, screens, timers, key bindings, a command palette, and 10
 built-in themes — all without writing a single line of Python. Under the
@@ -16,16 +21,16 @@ bridge R and Textual in a single process.
 | Category | Highlights |
 |----|----|
 | **Widgets** | Button, Input, TextArea, Select, Checkbox, Switch, RadioSet, DataTable, OptionList, SelectionList, Tabs, Tree, DirectoryTree, ProgressBar, Sparkline, Digits, Markdown, RichLog, Loading, Rule, and more |
-| **Layouts** | [`vstack()`](reference/vstack.md), [`hstack()`](reference/hstack.md), [`grid()`](reference/grid.md), [`center()`](reference/center.md), [`middle()`](reference/middle.md), [`scroll()`](reference/scroll.md), [`collapsible()`](reference/collapsible.md), [`tabs()`](reference/tabs.md) |
-| **Charts** | 12 chart types via plotext — bar, line, scatter, histogram, box, heatmap, candlestick, stacked/grouped bar, and more. Plus [`plot_ggplot()`](reference/plot_ggplot.md) to render ggplot2 objects in the terminal |
-| **State** | Mutable [`tui_state()`](reference/tui_state.md) with reactive bindings that auto-update widgets |
-| **Screens** | [`push_screen()`](reference/push_screen.md) / [`pop_screen()`](reference/pop_screen.md) for multi-page apps and modal dialogs |
-| **Dialogs** | Built-in [`confirm()`](reference/confirm.md) and [`alert()`](reference/alert.md) modal dialogs |
-| **Timers** | [`set_timer()`](reference/set_timer.md), [`set_interval()`](reference/set_interval.md), [`clear_timer()`](reference/clear_timer.md) for animations and polling |
-| **Key bindings** | Declarative [`binding()`](reference/binding.md) objects shown in the footer |
-| **Command palette** | `Ctrl+P` command palette with custom commands via [`register_commands()`](reference/register_commands.md) |
+| **Layouts** | [`vstack()`](https://orijitghosh.github.io/rtui/reference/vstack.md), [`hstack()`](https://orijitghosh.github.io/rtui/reference/hstack.md), [`grid()`](https://orijitghosh.github.io/rtui/reference/grid.md), [`center()`](https://orijitghosh.github.io/rtui/reference/center.md), [`middle()`](https://orijitghosh.github.io/rtui/reference/middle.md), [`scroll()`](https://orijitghosh.github.io/rtui/reference/scroll.md), [`collapsible()`](https://orijitghosh.github.io/rtui/reference/collapsible.md), [`tabs()`](https://orijitghosh.github.io/rtui/reference/tabs.md) |
+| **Charts** | 12 chart types via plotext — bar, line, scatter, histogram, box, heatmap, candlestick, stacked/grouped bar, and more. Plus [`plot_ggplot()`](https://orijitghosh.github.io/rtui/reference/plot_ggplot.md) to render ggplot2 objects in the terminal |
+| **State** | Mutable [`tui_state()`](https://orijitghosh.github.io/rtui/reference/tui_state.md) with reactive bindings that auto-update widgets |
+| **Screens** | [`push_screen()`](https://orijitghosh.github.io/rtui/reference/push_screen.md) / [`pop_screen()`](https://orijitghosh.github.io/rtui/reference/pop_screen.md) for multi-page apps and modal dialogs |
+| **Dialogs** | Built-in [`confirm()`](https://orijitghosh.github.io/rtui/reference/confirm.md) and [`alert()`](https://orijitghosh.github.io/rtui/reference/alert.md) modal dialogs |
+| **Timers** | [`set_timer()`](https://orijitghosh.github.io/rtui/reference/set_timer.md), [`set_interval()`](https://orijitghosh.github.io/rtui/reference/set_interval.md), [`clear_timer()`](https://orijitghosh.github.io/rtui/reference/clear_timer.md) for animations and polling |
+| **Key bindings** | Declarative [`binding()`](https://orijitghosh.github.io/rtui/reference/binding.md) objects shown in the footer |
+| **Command palette** | `Ctrl+P` command palette with custom commands via [`register_commands()`](https://orijitghosh.github.io/rtui/reference/register_commands.md) |
 | **Themes** | 10 built-in colour themes (Dracula, Nord, Monokai, Gruvbox, Catppuccin, and more) |
-| **Convenience** | [`quick_app()`](reference/quick_app.md) for one-call apps, [`data_viewer()`](reference/data_viewer.md) for instant data exploration, `file_browser()` for directory browsing |
+| **Convenience** | [`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md) for one-call apps, [`data_viewer()`](https://orijitghosh.github.io/rtui/reference/data_viewer.md) for instant data exploration, `file_browser()` for directory browsing |
 
 ------------------------------------------------------------------------
 
@@ -214,38 +219,43 @@ Layouts are built with container functions that accept child widgets:
 
 ### Widgets
 
-**Display:** [`text()`](reference/text.md),
-[`static()`](reference/static.md),
-[`markdown()`](reference/markdown.md),
-[`digits()`](reference/digits.md),
-[`pretty_table()`](reference/pretty_table.md),
-[`sparkline()`](reference/sparkline.md),
-[`progress_bar()`](reference/progress_bar.md),
-[`rule()`](reference/rule.md), [`loading()`](reference/loading.md),
-[`placeholder()`](reference/placeholder.md),
-[`log_view()`](reference/log_view.md)
+**Display:**
+[`text()`](https://orijitghosh.github.io/rtui/reference/text.md),
+[`static()`](https://orijitghosh.github.io/rtui/reference/static.md),
+[`markdown()`](https://orijitghosh.github.io/rtui/reference/markdown.md),
+[`digits()`](https://orijitghosh.github.io/rtui/reference/digits.md),
+[`pretty_table()`](https://orijitghosh.github.io/rtui/reference/pretty_table.md),
+[`sparkline()`](https://orijitghosh.github.io/rtui/reference/sparkline.md),
+[`progress_bar()`](https://orijitghosh.github.io/rtui/reference/progress_bar.md),
+[`rule()`](https://orijitghosh.github.io/rtui/reference/rule.md),
+[`loading()`](https://orijitghosh.github.io/rtui/reference/loading.md),
+[`placeholder()`](https://orijitghosh.github.io/rtui/reference/placeholder.md),
+[`log_view()`](https://orijitghosh.github.io/rtui/reference/log_view.md)
 
-**Input:** [`input()`](reference/input.md),
-[`button()`](reference/button.md),
-[`checkbox()`](reference/checkbox.md),
-[`switch_input()`](reference/switch_input.md),
-[`select()`](reference/select.md),
-[`radio_set()`](reference/radio_set.md),
-[`radio_button()`](reference/radio_button.md),
-[`text_area()`](reference/text_area.md),
-[`masked_input()`](reference/masked_input.md),
-[`option_list()`](reference/option_list.md),
-[`selection_list()`](reference/selection_list.md),
-[`list_view()`](reference/list_view.md),
-[`data_table()`](reference/data_table.md)
+**Input:**
+[`input()`](https://orijitghosh.github.io/rtui/reference/input.md),
+[`button()`](https://orijitghosh.github.io/rtui/reference/button.md),
+[`checkbox()`](https://orijitghosh.github.io/rtui/reference/checkbox.md),
+[`switch_input()`](https://orijitghosh.github.io/rtui/reference/switch_input.md),
+[`select()`](https://orijitghosh.github.io/rtui/reference/select.md),
+[`radio_set()`](https://orijitghosh.github.io/rtui/reference/radio_set.md),
+[`radio_button()`](https://orijitghosh.github.io/rtui/reference/radio_button.md),
+[`text_area()`](https://orijitghosh.github.io/rtui/reference/text_area.md),
+[`masked_input()`](https://orijitghosh.github.io/rtui/reference/masked_input.md),
+[`option_list()`](https://orijitghosh.github.io/rtui/reference/option_list.md),
+[`selection_list()`](https://orijitghosh.github.io/rtui/reference/selection_list.md),
+[`list_view()`](https://orijitghosh.github.io/rtui/reference/list_view.md),
+[`data_table()`](https://orijitghosh.github.io/rtui/reference/data_table.md)
 
-**Navigation:** [`header()`](reference/header.md),
-[`footer()`](reference/footer.md), [`tabs()`](reference/tabs.md),
-[`tab_pane()`](reference/tab_pane.md),
-[`collapsible()`](reference/collapsible.md),
-[`content_switcher()`](reference/content_switcher.md),
-[`tree()`](reference/tree.md),
-[`directory_tree()`](reference/directory_tree.md)
+**Navigation:**
+[`header()`](https://orijitghosh.github.io/rtui/reference/header.md),
+[`footer()`](https://orijitghosh.github.io/rtui/reference/footer.md),
+[`tabs()`](https://orijitghosh.github.io/rtui/reference/tabs.md),
+[`tab_pane()`](https://orijitghosh.github.io/rtui/reference/tab_pane.md),
+[`collapsible()`](https://orijitghosh.github.io/rtui/reference/collapsible.md),
+[`content_switcher()`](https://orijitghosh.github.io/rtui/reference/content_switcher.md),
+[`tree()`](https://orijitghosh.github.io/rtui/reference/tree.md),
+[`directory_tree()`](https://orijitghosh.github.io/rtui/reference/directory_tree.md)
 
 ### Events & handlers
 
@@ -288,8 +298,9 @@ state$app                  # the running app (for update/notify)
 
 ### Reactive bindings
 
-Skip manual [`update()`](reference/update.md) calls — bind state keys to
-widgets:
+Skip manual
+[`update()`](https://orijitghosh.github.io/rtui/reference/update.md)
+calls — bind state keys to widgets:
 
 ``` r
 quick_app(
@@ -335,15 +346,17 @@ p <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
 plot_ggplot(app, "chart_id", p)
 ```
 
-Available: [`plot_bar()`](reference/plot_bar.md),
-[`plot_line()`](reference/plot_line.md),
-[`plot_scatter()`](reference/plot_scatter.md), `plot_histogram()`,
-[`plot_box()`](reference/plot_box.md),
-[`plot_heatmap()`](reference/plot_heatmap.md),
-[`plot_candlestick()`](reference/plot_candlestick.md),
-[`plot_stacked_bar()`](reference/plot_stacked_bar.md),
-[`plot_multiple_bar()`](reference/plot_multiple_bar.md), `plot_pie()`,
-`plot_area()`, `plot_table()`
+Available:
+[`plot_bar()`](https://orijitghosh.github.io/rtui/reference/plot_bar.md),
+[`plot_line()`](https://orijitghosh.github.io/rtui/reference/plot_line.md),
+[`plot_scatter()`](https://orijitghosh.github.io/rtui/reference/plot_scatter.md),
+`plot_histogram()`,
+[`plot_box()`](https://orijitghosh.github.io/rtui/reference/plot_box.md),
+[`plot_heatmap()`](https://orijitghosh.github.io/rtui/reference/plot_heatmap.md),
+[`plot_candlestick()`](https://orijitghosh.github.io/rtui/reference/plot_candlestick.md),
+[`plot_stacked_bar()`](https://orijitghosh.github.io/rtui/reference/plot_stacked_bar.md),
+[`plot_multiple_bar()`](https://orijitghosh.github.io/rtui/reference/plot_multiple_bar.md),
+`plot_pie()`, `plot_area()`, `plot_table()`
 
 ### Themes
 
@@ -406,7 +419,8 @@ Press `Ctrl+P` to open the palette.
       └── factory.py ← maps spec "kind" → Textual widget class
 
 Event flow: **Textual event → Python handler → R callback →
-[`update()`](reference/update.md) → Python applies patches**
+[`update()`](https://orijitghosh.github.io/rtui/reference/update.md) →
+Python applies patches**
 
 ------------------------------------------------------------------------
 

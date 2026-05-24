@@ -3,7 +3,8 @@
 Workers are timers that poll an R function at a given interval. The
 worker fires `"timer"` events at each tick; handle with
 `app$handlers$timer`. This is a convenience wrapper around
-[`set_interval()`](set_interval.md) for polling patterns.
+[`set_interval()`](https://orijitghosh.github.io/rtui/reference/set_interval.md)
+for polling patterns.
 
 ## Usage
 

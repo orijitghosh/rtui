@@ -3,7 +3,8 @@
 Key bindings map keyboard shortcuts to named actions. When the user
 presses the bound key, an `"action"` event is dispatched with
 `event$value` set to the action name. Bindings are shown in the
-[`footer()`](footer.md) widget automatically.
+[`footer()`](https://orijitghosh.github.io/rtui/reference/footer.md)
+widget automatically.
 
 ## Usage
 

@@ -11,9 +11,12 @@ the ability to render ggplot2 objects as terminal charts.
 
 ## Setting up a chart
 
-Charts are drawn on [`text_plot()`](../reference/text_plot.md) widgets.
-First, add a [`text_plot()`](../reference/text_plot.md) to your layout,
-then call `plot_*()` functions from handlers to draw data:
+Charts are drawn on
+[`text_plot()`](https://orijitghosh.github.io/rtui/reference/text_plot.md)
+widgets. First, add a
+[`text_plot()`](https://orijitghosh.github.io/rtui/reference/text_plot.md)
+to your layout, then call `plot_*()` functions from handlers to draw
+data:
 
 ``` r
 library(rtui)
@@ -319,10 +322,11 @@ quick_app(
 
 ## Rendering ggplot2 objects
 
-If you use ggplot2, [`plot_ggplot()`](../reference/plot_ggplot.md) can
-render your plots directly in the terminal. It extracts layer data from
-the ggplot object and maps each geom to the appropriate terminal chart
-type.
+If you use ggplot2,
+[`plot_ggplot()`](https://orijitghosh.github.io/rtui/reference/plot_ggplot.md)
+can render your plots directly in the terminal. It extracts layer data
+from the ggplot object and maps each geom to the appropriate terminal
+chart type.
 
 ``` r
 library(rtui)
@@ -359,8 +363,8 @@ quick_app(
 
 ### Supported geoms
 
-[`plot_ggplot()`](../reference/plot_ggplot.md) handles these ggplot2
-geom types:
+[`plot_ggplot()`](https://orijitghosh.github.io/rtui/reference/plot_ggplot.md)
+handles these ggplot2 geom types:
 
 | ggplot2 geom | Terminal chart type |
 |----|----|
@@ -436,8 +440,9 @@ quick_app(
 
 ## Data tables
 
-For tabular data, [`data_table()`](../reference/data_table.md) provides
-a full interactive table with sorting and selection:
+For tabular data,
+[`data_table()`](https://orijitghosh.github.io/rtui/reference/data_table.md)
+provides a full interactive table with sorting and selection:
 
 ``` r
 quick_app(

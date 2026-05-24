@@ -2,8 +2,10 @@
 
 Returns a Textual CSS string that styles the app with a named colour
 theme. Pass the result to the `css` parameter of
-[`tui_app()`](tui_app.md) or [`quick_app()`](quick_app.md), or append it
-to your own CSS.
+[`tui_app()`](https://orijitghosh.github.io/rtui/reference/tui_app.md)
+or
+[`quick_app()`](https://orijitghosh.github.io/rtui/reference/quick_app.md),
+or append it to your own CSS.
 
 ## Usage
 
