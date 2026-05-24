@@ -12,5 +12,5 @@
 rtui_PRD.md
 HANDOFF.md
 
-# pkgdown build output (deploy from CI or rebuild)
-docs/
+# pkgdown build output — committed for GitHub Pages
+# docs/
