@@ -1,0 +1,566 @@
+# Charts and Data Visualisation
+
+rtui includes 12 chart types rendered directly in the terminal using
+[plotext](https://github.com/piccolomo/plotext) via
+[textual-plotext](https://github.com/Textualize/textual-plotext), plus
+the ability to render ggplot2 objects as terminal charts.
+
+> **Terminal only:** All examples must be saved as `.R` files and run
+> from a real terminal (`Rscript my_app.R`). rtui apps do **not** work
+> in RStudio, R GUI, Jupyter, or any embedded R console.
+
+## Setting up a chart
+
+Charts are drawn on [`text_plot()`](../reference/text_plot.md) widgets.
+First, add a [`text_plot()`](../reference/text_plot.md) to your layout,
+then call `plot_*()` functions from handlers to draw data:
+
+``` r
+library(rtui)
+
+quick_app(
+  title = "My Chart",
+  layout = vstack(
+    header(),
+    text_plot(id = "chart"),
+    footer()
+  ),
+  on_mount = function(event, state) {
+    plot_bar(state$app, "chart",
+             labels = c("A", "B", "C", "D"),
+             values = c(25, 40, 15, 30),
+             title = "Sales by Region",
+             color = "cyan")
+    state
+  },
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  },
+  css = "#chart { height: 1fr; }"
+)
+```
+
+## Chart types
+
+### Bar chart
+
+``` r
+plot_bar(state$app, "chart",
+         labels = c("Mon", "Tue", "Wed", "Thu", "Fri"),
+         values = c(120, 200, 150, 180, 220),
+         title = "Daily Visitors",
+         color = "green",
+         xlabel = "Day",
+         ylabel = "Visitors")
+
+# Horizontal orientation
+plot_bar(state$app, "chart",
+         labels = c("R", "Python", "Julia"),
+         values = c(80, 95, 40),
+         orientation = "horizontal",
+         color = "blue")
+```
+
+### Line chart
+
+``` r
+x <- 1:50
+y <- cumsum(rnorm(50))
+
+plot_line(state$app, "chart",
+          x = x, y = y,
+          title = "Random Walk",
+          color = "cyan",
+          marker = "braille",
+          xlabel = "Step",
+          ylabel = "Value")
+```
+
+The `marker` parameter controls the drawing style: `"braille"` (highest
+resolution), `"dot"`, `"hd"`, `"fhd"`, or standard characters.
+
+### Scatter plot
+
+``` r
+plot_scatter(state$app, "chart",
+             x = mtcars$wt,
+             y = mtcars$mpg,
+             title = "Weight vs. MPG",
+             color = "magenta",
+             marker = "braille",
+             xlabel = "Weight (1000 lbs)",
+             ylabel = "Miles per Gallon")
+```
+
+### Histogram
+
+``` r
+plot_hist(state$app, "chart",
+          data = rnorm(1000),
+          bins = 20,
+          title = "Normal Distribution",
+          color = "yellow",
+          xlabel = "Value",
+          ylabel = "Frequency")
+```
+
+### Box plot
+
+Compare distributions across groups:
+
+``` r
+plot_box(state$app, "chart",
+         data = list(
+           "4 cyl" = mtcars$mpg[mtcars$cyl == 4],
+           "6 cyl" = mtcars$mpg[mtcars$cyl == 6],
+           "8 cyl" = mtcars$mpg[mtcars$cyl == 8]
+         ),
+         title = "MPG by Cylinders",
+         xlabel = "Cylinders",
+         ylabel = "MPG")
+```
+
+### Stacked bar chart
+
+Show composition across categories:
+
+``` r
+plot_stacked_bar(state$app, "chart",
+                 labels = c("Q1", "Q2", "Q3", "Q4"),
+                 data = list(
+                   "Product A" = c(10, 15, 12, 18),
+                   "Product B" = c(8, 12, 15, 10),
+                   "Product C" = c(5, 8, 7, 12)
+                 ),
+                 title = "Quarterly Revenue by Product",
+                 colors = c("red", "green", "blue"))
+```
+
+### Grouped bar chart
+
+Side-by-side comparison:
+
+``` r
+plot_multiple_bar(state$app, "chart",
+                  labels = c("2022", "2023", "2024"),
+                  data = list(
+                    Revenue = c(100, 150, 200),
+                    Expenses = c(80, 110, 130),
+                    Profit = c(20, 40, 70)
+                  ),
+                  title = "Financial Overview",
+                  colors = c("green", "red", "cyan"))
+```
+
+### Heatmap
+
+Visualise matrix data as colour intensity:
+
+``` r
+mat <- matrix(runif(50), nrow = 5, ncol = 10)
+
+plot_heatmap(state$app, "chart",
+             matrix = mat,
+             title = "Activity Heatmap",
+             xlabel = "Hour",
+             ylabel = "Day")
+
+# Works with data.frames too
+plot_heatmap(state$app, "chart",
+             matrix = cor(mtcars[, 1:6]),
+             title = "Correlation Matrix")
+```
+
+### Candlestick chart
+
+Financial OHLC data:
+
+``` r
+dates <- format(Sys.Date() - 9:0, "%m/%d")
+
+plot_candlestick(state$app, "chart",
+                 dates = dates,
+                 data = list(
+                   open  = c(100, 102, 101, 105, 103,
+                             107, 106, 110, 108, 112),
+                   high  = c(104, 105, 106, 108, 107,
+                             110, 111, 114, 112, 115),
+                   low   = c(98, 100, 99, 103, 101,
+                             105, 104, 108, 106, 110),
+                   close = c(102, 101, 105, 103, 107,
+                             106, 110, 108, 112, 114)
+                 ),
+                 title = "ACME Corp Stock",
+                 colors = c("green", "red"))
+```
+
+### Error bars
+
+``` r
+x <- 1:5
+y <- c(10, 20, 15, 25, 18)
+yerr <- c(2, 3, 1, 4, 2)
+
+plot_error(state$app, "chart",
+           x = x, y = y, yerr = yerr,
+           title = "Measurements with Error",
+           color = "cyan")
+```
+
+### Event plot
+
+Mark events along a timeline:
+
+``` r
+events <- c(5, 12, 23, 35, 42)
+
+plot_event(state$app, "chart",
+           positions = events,
+           title = "System Events",
+           color = "red",
+           xlabel = "Time (minutes)")
+```
+
+## Chart options
+
+All `plot_*()` functions share common parameters:
+
+| Parameter          | Description                                        |
+|--------------------|----------------------------------------------------|
+| `title`            | Chart title displayed above the plot               |
+| `color` / `colors` | Colour name(s): `"red"`, `"green"`, `"cyan"`, etc. |
+| `xlabel`           | X-axis label                                       |
+| `ylabel`           | Y-axis label                                       |
+| `clear`            | Clear previous plot data first (default `TRUE`)    |
+| `orientation`      | `"vertical"` or `"horizontal"` (bar/box charts)    |
+
+## Layering multiple series
+
+Set `clear = FALSE` to overlay data on an existing plot:
+
+``` r
+on_mount = function(event, state) {
+  x <- 1:100
+
+  # First series (clears canvas)
+  plot_line(state$app, "chart",
+            x = x, y = sin(x / 10),
+            title = "Trigonometric Functions",
+            color = "cyan", marker = "braille",
+            clear = TRUE)
+
+  # Second series (overlay)
+  plot_line(state$app, "chart",
+            x = x, y = cos(x / 10),
+            color = "magenta", marker = "braille",
+            clear = FALSE)
+
+  # Third series
+  plot_line(state$app, "chart",
+            x = x, y = sin(x / 10) * cos(x / 20),
+            color = "yellow", marker = "braille",
+            clear = FALSE)
+
+  state
+}
+```
+
+## Live-updating charts
+
+Combine charts with timers for real-time visualisation:
+
+``` r
+library(rtui)
+
+quick_app(
+  title = "Live Chart",
+  layout = vstack(
+    header(),
+    text_plot(id = "chart"),
+    sparkline(c(0), id = "spark"),
+    footer()
+  ),
+
+  on_mount = function(event, state) {
+    state$set("values", numeric(0))
+    set_interval(state$app, 0.5, "update_chart")
+    state
+  },
+
+  on_timer = function(event, state) {
+    if (event$timer_id == "update_chart") {
+      vals <- c(state$get("values"), runif(1, 0, 100))
+      if (length(vals) > 50) vals <- tail(vals, 50)
+      state$set("values", vals)
+
+      plot_line(state$app, "chart",
+                x = seq_along(vals), y = vals,
+                title = "Live Sensor Data",
+                color = "cyan", marker = "braille")
+
+      update(state$app, "spark", data = vals)
+    }
+    state
+  },
+
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  },
+  css = "
+    #chart { height: 1fr; }
+    #spark { height: 3; }
+  "
+)
+```
+
+## Rendering ggplot2 objects
+
+If you use ggplot2, [`plot_ggplot()`](../reference/plot_ggplot.md) can
+render your plots directly in the terminal. It extracts layer data from
+the ggplot object and maps each geom to the appropriate terminal chart
+type.
+
+``` r
+library(rtui)
+library(ggplot2)
+
+quick_app(
+  title = "ggplot in Terminal",
+  layout = vstack(
+    header(),
+    text_plot(id = "chart"),
+    footer()
+  ),
+
+  on_mount = function(event, state) {
+    p <- ggplot(mtcars, aes(wt, mpg)) +
+      geom_point() +
+      geom_smooth(method = "lm") +
+      labs(title = "Weight vs. MPG",
+           x = "Weight (1000 lbs)",
+           y = "Miles per Gallon")
+
+    plot_ggplot(state$app, "chart", p)
+    state
+  },
+
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  },
+  css = "#chart { height: 1fr; }"
+)
+```
+
+### Supported geoms
+
+[`plot_ggplot()`](../reference/plot_ggplot.md) handles these ggplot2
+geom types:
+
+| ggplot2 geom | Terminal chart type |
+|----|----|
+| [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html), [`geom_jitter()`](https://ggplot2.tidyverse.org/reference/geom_jitter.html) | Scatter |
+| [`geom_line()`](https://ggplot2.tidyverse.org/reference/geom_path.html), [`geom_path()`](https://ggplot2.tidyverse.org/reference/geom_path.html), [`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html), [`geom_step()`](https://ggplot2.tidyverse.org/reference/geom_path.html) | Line |
+| [`geom_col()`](https://ggplot2.tidyverse.org/reference/geom_bar.html), [`geom_bar()`](https://ggplot2.tidyverse.org/reference/geom_bar.html) | Bar |
+| [`geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html), [`geom_freqpoly()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html) | Bar (pre-binned) |
+| [`geom_boxplot()`](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) | Box |
+| Other geoms with x/y data | Falls back to scatter |
+
+Labels and titles from ggplot’s
+[`labs()`](https://ggplot2.tidyverse.org/reference/labs.html) are
+preserved.
+
+### ggplot2 gallery example
+
+Cycle through multiple ggplot2 charts using tabs:
+
+``` r
+library(rtui)
+library(ggplot2)
+
+plots <- list(
+  scatter = ggplot(mtcars, aes(wt, mpg)) + geom_point() +
+    labs(title = "Scatter: Weight vs MPG"),
+  histogram = ggplot(mtcars, aes(mpg)) + geom_histogram(bins = 10) +
+    labs(title = "Histogram: MPG Distribution"),
+  bar = ggplot(mtcars, aes(factor(cyl))) + geom_bar() +
+    labs(title = "Bar: Cars by Cylinder Count"),
+  box = ggplot(mtcars, aes(factor(cyl), mpg)) + geom_boxplot() +
+    labs(title = "Box: MPG by Cylinders")
+)
+
+quick_app(
+  title = "ggplot Gallery",
+  layout = vstack(
+    header(),
+    tabs(
+      tab_pane("Scatter", text_plot(id = "p1"), title = "Scatter", id = "t1"),
+      tab_pane("Histogram", text_plot(id = "p2"), title = "Histogram", id = "t2"),
+      tab_pane("Bar", text_plot(id = "p3"), title = "Bar", id = "t3"),
+      tab_pane("Box", text_plot(id = "p4"), title = "Box", id = "t4"),
+      id = "chart_tabs"
+    ),
+    footer()
+  ),
+
+  on_mount = function(event, state) {
+    set_timer(state$app, 0.2, "draw_plots")
+    state
+  },
+
+  on_timer = function(event, state) {
+    if (event$timer_id == "draw_plots") {
+      plot_ggplot(state$app, "p1", plots$scatter)
+      plot_ggplot(state$app, "p2", plots$histogram)
+      plot_ggplot(state$app, "p3", plots$bar)
+      plot_ggplot(state$app, "p4", plots$box)
+    }
+    state
+  },
+
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  },
+  css = paste0(tui_theme("monokai"), "
+    TextPlot { height: 1fr; }
+  ")
+)
+```
+
+## Data tables
+
+For tabular data, [`data_table()`](../reference/data_table.md) provides
+a full interactive table with sorting and selection:
+
+``` r
+quick_app(
+  title = "Data Explorer",
+  layout = vstack(
+    header(),
+    data_table(
+      iris,
+      id = "iris_table",
+      cursor = "row",
+      zebra_stripes = TRUE,
+      sortable = TRUE
+    ),
+    footer()
+  ),
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  }
+)
+```
+
+Or use the one-liner convenience function:
+
+``` r
+data_viewer(iris)
+```
+
+### Dynamic table updates
+
+Add rows, clear, or rebuild tables at runtime:
+
+``` r
+# Add new rows (pass as list)
+new_rows <- data.frame(
+  Sepal.Length = 5.0,
+  Sepal.Width = 3.5,
+  Petal.Length = 1.5,
+  Petal.Width = 0.2,
+  Species = "setosa"
+)
+update(state$app, "iris_table", add_rows = as.list(new_rows))
+
+# Clear all data
+update(state$app, "iris_table", clear_data = TRUE)
+```
+
+## Sparklines
+
+Sparklines are compact, inline charts perfect for dashboards:
+
+``` r
+sparkline(c(1, 4, 2, 7, 3, 8, 5, 9), id = "cpu_spark")
+
+# Update with new data
+update(state$app, "cpu_spark", data = new_values)
+```
+
+## Combining charts in a dashboard
+
+``` r
+library(rtui)
+
+quick_app(
+  title = "Sales Dashboard",
+  layout = vstack(
+    header(),
+    hstack(
+      vstack(
+        static("[bold]Revenue[/bold]"),
+        text_plot(id = "revenue_chart"),
+        id = "left_panel"
+      ),
+      vstack(
+        static("[bold]Distribution[/bold]"),
+        text_plot(id = "dist_chart"),
+        id = "right_panel"
+      )
+    ),
+    hstack(
+      sparkline(c(0), id = "trend1"),
+      sparkline(c(0), id = "trend2"),
+      sparkline(c(0), id = "trend3")
+    ),
+    footer()
+  ),
+
+  on_mount = function(event, state) {
+    # Revenue bar chart
+    plot_bar(state$app, "revenue_chart",
+             labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun"),
+             values = c(42, 55, 38, 67, 72, 61),
+             title = "Monthly Revenue ($K)",
+             color = "green")
+
+    # Distribution histogram
+    plot_hist(state$app, "dist_chart",
+              data = rlnorm(500, meanlog = 3, sdlog = 0.5),
+              bins = 15,
+              title = "Order Size Distribution",
+              color = "cyan")
+
+    # Sparkline trends
+    update(state$app, "trend1", data = cumsum(rnorm(20)))
+    update(state$app, "trend2", data = cumsum(rnorm(20)))
+    update(state$app, "trend3", data = cumsum(rnorm(20)))
+
+    state
+  },
+
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  },
+  css = paste0(
+    tui_theme("ocean"),
+    "
+    #left_panel, #right_panel { width: 1fr; padding: 0 1; }
+    TextPlot { height: 1fr; }
+    Sparkline { height: 3; margin: 0 2; }
+    "
+  )
+)
+```

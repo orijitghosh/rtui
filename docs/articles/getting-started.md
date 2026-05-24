@@ -1,0 +1,286 @@
+# Getting Started with rtui
+
+## What is rtui?
+
+rtui lets you build full-screen terminal user interfaces (TUIs) from R.
+It wraps Python’s [Textual](https://textual.textualize.io/) framework
+via [reticulate](https://rstudio.github.io/reticulate/), giving you
+access to 35+ widgets, 12 chart types, CSS-like styling, reactive state,
+screens, timers, key bindings, a command palette, and 10 built-in colour
+themes – all without writing a single line of Python.
+
+> **Terminal only:** rtui apps require a real terminal emulator (Windows
+> Terminal, iTerm2, Terminal.app, or any xterm-compatible terminal).
+> They will **not** work in the RStudio console, R GUI, Jupyter
+> notebooks, or any embedded R console. Always save your code as a `.R`
+> file and run it with `Rscript`.
+
+## Installation
+
+### Step 1: Install the R package
+
+``` r
+# From a local checkout
+devtools::install_local("path/to/rtui")
+
+# Or from GitHub (when published)
+# devtools::install_github("ariji/rtui")
+```
+
+### Step 2: Install Python dependencies
+
+rtui needs Python \>= 3.9 with the `textual` and `textual-plotext`
+packages. A one-time setup function handles everything:
+
+``` r
+rtui::install_python_deps()
+```
+
+This creates a virtualenv called `r-rtui` and installs the required
+Python packages into it.
+
+### Windows-specific setup
+
+On Windows, avoid using the Microsoft Store version of Python. Instead,
+use a standard Python install from
+[python.org](https://www.python.org/).
+
+Add these lines at the top of your scripts (before
+[`library(rtui)`](https://github.com/orijitghosh/rtui)):
+
+``` r
+Sys.setenv(RETICULATE_PYTHON_ENV = "r-rtui")
+library(reticulate)
+use_virtualenv("r-rtui", required = TRUE)
+```
+
+### Requirements
+
+- R \>= 4.1
+- Python \>= 3.9
+- A real terminal (not the RStudio console – use Windows Terminal,
+  iTerm2, Terminal.app, or any xterm-compatible terminal)
+
+## Your first app
+
+The fastest way to get started is
+[`quick_app()`](../reference/quick_app.md), which builds and runs an app
+in a single call:
+
+``` r
+library(rtui)
+
+quick_app(
+  title = "Hello",
+  layout = center(
+    middle(
+      text("Hello from rtui!")
+    )
+  )
+)
+```
+
+Run this from a real terminal:
+
+``` bash
+Rscript my_app.R
+```
+
+You should see a full-screen app with “Hello from rtui!” centred on
+screen. Press `Ctrl+C` to exit.
+
+## One-liner data viewer
+
+Want to explore a data frame interactively? One line:
+
+``` r
+data_viewer(mtcars)
+```
+
+This opens a full-screen sortable data table. Click column headers to
+sort. Press `q` to quit.
+
+## A counter app
+
+Let’s build something interactive – a counter with increment, decrement,
+and reset buttons:
+
+``` r
+library(rtui)
+
+quick_app(
+  title = "Counter",
+  layout = vstack(
+    header(),
+    center(middle(vstack(
+      digits("0", id = "count"),
+      hstack(
+        button("-1", id = "dec"),
+        button("+1", id = "inc"),
+        button("Reset", id = "reset")
+      )
+    ))),
+    footer()
+  ),
+
+  on_click = list(
+    inc = function(event, state) {
+      n <- state$get("n", 0L) + 1L
+      state$set("n", n)
+      update(state$app, "count", value = as.character(n))
+      state
+    },
+    dec = function(event, state) {
+      n <- state$get("n", 0L) - 1L
+      state$set("n", n)
+      update(state$app, "count", value = as.character(n))
+      state
+    },
+    reset = function(event, state) {
+      state$set("n", 0L)
+      update(state$app, "count", value = "0")
+      state
+    }
+  ),
+
+  bindings = list(
+    binding("q", "quit_app", "Quit", priority = TRUE)
+  ),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  }
+)
+```
+
+### What’s happening here?
+
+1.  **Layout**: [`vstack()`](../reference/vstack.md) stacks children
+    vertically. Inside we use [`center()`](../reference/center.md) and
+    [`middle()`](../reference/middle.md) to centre the content.
+    [`digits()`](../reference/digits.md) shows large-format numbers, and
+    [`button()`](../reference/button.md) creates clickable buttons.
+
+2.  **Event handling**: `on_click` is a named list mapping widget ids to
+    handler functions. Each handler receives `event` (with click
+    details) and `state` (mutable key-value store). Handlers must return
+    `state`.
+
+3.  **Updating widgets**: `update(state$app, "count", value = "5")`
+    changes the digits widget’s display. Every widget can be updated by
+    id.
+
+4.  **Key bindings**: `binding("q", "quit_app", "Quit")` maps the `q`
+    key to an action called `"quit_app"`. The `on_action` handler checks
+    `event$value` and calls [`quit()`](../reference/quit.md) to exit.
+
+## The two-step pattern: tui_app() + run()
+
+[`quick_app()`](../reference/quick_app.md) is a convenience wrapper. For
+more control, use [`tui_app()`](../reference/tui_app.md) to create the
+app object, then call `$run()`:
+
+``` r
+app <- tui_app(
+  title = "My App",
+  layout = vstack(
+    header(),
+    text("Built with tui_app()", id = "msg"),
+    footer()
+  ),
+  on_key = function(event, state) {
+    if (event$key == "q") return(quit())
+    state
+  }
+)
+
+# Inspect before running
+print(app)
+
+# Run it
+app$run()
+```
+
+This is useful when you want to inspect or modify the app object before
+launching.
+
+## Running apps (terminal only!)
+
+TUI apps take over the entire terminal screen. They will **not** work
+in:
+
+- **RStudio** (neither the console nor the terminal pane)
+- **R GUI** (Rgui.exe on Windows, R.app on macOS)
+- **Jupyter notebooks**
+- **Emacs ESS / VS Code R console** or any other embedded R console
+
+You must save your code as a `.R` file and run it from a **real terminal
+emulator**:
+
+``` bash
+# macOS / Linux
+Rscript my_app.R
+
+# Windows (PowerShell)
+& "C:\Program Files\R\R-4.4.3\bin\Rscript.exe" my_app.R
+```
+
+## Dark and light mode
+
+Apps default to dark mode. Toggle at creation or at runtime:
+
+``` r
+# Start in light mode
+quick_app(title = "Light", dark = FALSE, layout = ...)
+
+# Toggle at runtime from a handler
+on_action = function(event, state) {
+  if (event$value == "toggle_dark") dark_toggle(state$app)
+  state
+}
+```
+
+## Applying a theme
+
+rtui ships with 10 colour themes. Pass one to the `css` parameter:
+
+``` r
+quick_app(
+  title = "Themed App",
+  layout = vstack(header(), text("Dracula theme!"), footer()),
+  css = tui_theme("dracula")
+)
+```
+
+Available themes: `dracula`, `nord`, `monokai`, `solarized_dark`,
+`solarized_light`, `gruvbox`, `catppuccin`, `ocean`, `forest`, `sunset`.
+
+List them all:
+
+``` r
+list_themes()
+```
+
+## Notifications
+
+Show transient notification toasts from any handler:
+
+``` r
+notify(state$app, "File saved!", severity = "info")
+notify(state$app, "Disk full!", severity = "error")
+```
+
+Severity levels: `"info"`, `"warning"`, `"error"`.
+
+## What’s next?
+
+Now that you have the basics, explore these guides:
+
+- **[Layouts and Widgets](layouts-and-widgets.md)**: All containers and
+  widgets with examples
+- **[State, Events, and Reactivity](state-events-reactivity.md)**: Deep
+  dive into handlers, state management, and reactive bindings
+- **[Charts and Data Visualisation](charts-and-data.md)**: Terminal
+  charts and ggplot2 rendering
+- **[Advanced Features](advanced-features.md)**: Screens, timers, key
+  bindings, command palette, forms, and workers

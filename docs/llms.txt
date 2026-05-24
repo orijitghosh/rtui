@@ -1,0 +1,606 @@
+# rtui
+
+> Full-screen terminal user interfaces from R — powered by Python’s
+> [Textual](https://textual.textualize.io/) framework.
+
+**rtui** gives R users 35+ widgets, 12 chart types, CSS-like styling,
+reactive state, screens, timers, key bindings, a command palette, and 10
+built-in themes — all without writing a single line of Python. Under the
+hood it uses [reticulate](https://rstudio.github.io/reticulate/) to
+bridge R and Textual in a single process.
+
+------------------------------------------------------------------------
+
+## Features
+
+| Category | Highlights |
+|----|----|
+| **Widgets** | Button, Input, TextArea, Select, Checkbox, Switch, RadioSet, DataTable, OptionList, SelectionList, Tabs, Tree, DirectoryTree, ProgressBar, Sparkline, Digits, Markdown, RichLog, Loading, Rule, and more |
+| **Layouts** | [`vstack()`](reference/vstack.md), [`hstack()`](reference/hstack.md), [`grid()`](reference/grid.md), [`center()`](reference/center.md), [`middle()`](reference/middle.md), [`scroll()`](reference/scroll.md), [`collapsible()`](reference/collapsible.md), [`tabs()`](reference/tabs.md) |
+| **Charts** | 12 chart types via plotext — bar, line, scatter, histogram, box, heatmap, candlestick, stacked/grouped bar, and more. Plus [`plot_ggplot()`](reference/plot_ggplot.md) to render ggplot2 objects in the terminal |
+| **State** | Mutable [`tui_state()`](reference/tui_state.md) with reactive bindings that auto-update widgets |
+| **Screens** | [`push_screen()`](reference/push_screen.md) / [`pop_screen()`](reference/pop_screen.md) for multi-page apps and modal dialogs |
+| **Dialogs** | Built-in [`confirm()`](reference/confirm.md) and [`alert()`](reference/alert.md) modal dialogs |
+| **Timers** | [`set_timer()`](reference/set_timer.md), [`set_interval()`](reference/set_interval.md), [`clear_timer()`](reference/clear_timer.md) for animations and polling |
+| **Key bindings** | Declarative [`binding()`](reference/binding.md) objects shown in the footer |
+| **Command palette** | `Ctrl+P` command palette with custom commands via [`register_commands()`](reference/register_commands.md) |
+| **Themes** | 10 built-in colour themes (Dracula, Nord, Monokai, Gruvbox, Catppuccin, and more) |
+| **Convenience** | [`quick_app()`](reference/quick_app.md) for one-call apps, [`data_viewer()`](reference/data_viewer.md) for instant data exploration, `file_browser()` for directory browsing |
+
+------------------------------------------------------------------------
+
+## Installation
+
+``` r
+# Install the R package (from source)
+devtools::install_local("path/to/rtui")
+
+# Install Python dependencies (one-time setup)
+rtui::install_python_deps()
+```
+
+**Requirements:** R \>= 4.1, Python \>= 3.9 (not Microsoft Store Python
+on Windows).
+
+> **Important: rtui apps must be run from a real terminal** (Windows
+> Terminal, iTerm2, Terminal.app, or any xterm-compatible terminal).
+> They will **not** work in the RStudio console, R GUI, Jupyter
+> notebooks, or any embedded console. Save your code as a `.R` file and
+> run it with `Rscript`.
+
+### Windows setup
+
+``` r
+# Point reticulate to the rtui virtualenv
+Sys.setenv(RETICULATE_PYTHON_ENV = "r-rtui")
+library(reticulate)
+use_virtualenv("r-rtui", required = TRUE)
+```
+
+------------------------------------------------------------------------
+
+## Quick start
+
+> **Reminder:** All examples below must be saved as `.R` files and run
+> from a real terminal with `Rscript my_app.R`. They will not work from
+> RStudio or R GUI.
+
+### Hello world
+
+``` r
+library(rtui)
+
+quick_app(
+  title = "Hello",
+  layout = center(
+    middle(
+      text("Hello from rtui!")
+    )
+  )
+)
+```
+
+### One-liner data explorer
+
+``` r
+data_viewer(mtcars)
+```
+
+Opens an interactive, scrollable, sortable data table. Press `q` to
+quit.
+
+### Counter app
+
+``` r
+library(rtui)
+
+quick_app(
+  title = "Counter",
+  layout = vstack(
+    header(),
+    center(middle(vstack(
+      digits("0", id = "count"),
+      hstack(
+        button("-1", id = "dec"),
+        button("+1", id = "inc"),
+        button("Reset", id = "reset")
+      )
+    ))),
+    footer()
+  ),
+
+  on_click = list(
+    inc = function(event, state) {
+      n <- state$get("n", 0L) + 1L
+      state$set("n", n)
+      update(state$app, "count", value = as.character(n))
+      state
+    },
+    dec = function(event, state) {
+      n <- state$get("n", 0L) - 1L
+      state$set("n", n)
+      update(state$app, "count", value = as.character(n))
+      state
+    },
+    reset = function(event, state) {
+      state$set("n", 0L)
+      update(state$app, "count", value = "0")
+      state
+    }
+  ),
+
+  bindings = list(
+    binding("q", "quit_app", "Quit", priority = TRUE)
+  ),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  }
+)
+```
+
+------------------------------------------------------------------------
+
+## Showcase apps
+
+rtui ships with 8 demo apps in `spikes/` that demonstrate real-world
+usage:
+
+| App | Description |
+|----|----|
+| **Stock Tracker** | Live (simulated) stock prices, candlestick charts, sparklines |
+| **System Monitor** | Real-time CPU, memory, disk usage with sparklines and process table |
+| **Log Viewer** | Coloured log output with severity filter, search, and pause/resume |
+| **CSV Explorer** | Browse R datasets with sortable tables and 5 chart types |
+| **ggplot Explorer** | 8 ggplot2 examples rendered as terminal charts, command palette |
+| **Pomodoro Timer** | Big-digit countdown, work/break cycles, session history |
+| **Git Dashboard** | Commit log, file type stats, contributor charts for any git repo |
+| **Markdown Notes** | Create, edit, search, and delete notes with live markdown preview |
+
+Run any showcase from a real terminal:
+
+``` powershell
+# Windows
+& "C:\Program Files\R\R-4.4.3\bin\Rscript.exe" spikes/showcase_pomodoro.R
+
+# macOS/Linux
+Rscript spikes/showcase_pomodoro.R
+```
+
+------------------------------------------------------------------------
+
+## Concepts
+
+### Layout
+
+Layouts are built with container functions that accept child widgets:
+
+| Function           | Description                    |
+|--------------------|--------------------------------|
+| `vstack(...)`      | Stack children vertically      |
+| `hstack(...)`      | Stack children horizontally    |
+| `grid(...)`        | CSS grid layout                |
+| `center(...)`      | Center horizontally            |
+| `middle(...)`      | Center vertically              |
+| `scroll(...)`      | Scrollable container           |
+| `box(child)`       | Container with optional border |
+| `collapsible(...)` | Collapsible section with title |
+| `tabs(...)`        | Tabbed content container       |
+
+### Widgets
+
+**Display:** [`text()`](reference/text.md),
+[`static()`](reference/static.md),
+[`markdown()`](reference/markdown.md),
+[`digits()`](reference/digits.md),
+[`pretty_table()`](reference/pretty_table.md),
+[`sparkline()`](reference/sparkline.md),
+[`progress_bar()`](reference/progress_bar.md),
+[`rule()`](reference/rule.md), [`loading()`](reference/loading.md),
+[`placeholder()`](reference/placeholder.md),
+[`log_view()`](reference/log_view.md)
+
+**Input:** [`input()`](reference/input.md),
+[`button()`](reference/button.md),
+[`checkbox()`](reference/checkbox.md),
+[`switch_input()`](reference/switch_input.md),
+[`select()`](reference/select.md),
+[`radio_set()`](reference/radio_set.md),
+[`radio_button()`](reference/radio_button.md),
+[`text_area()`](reference/text_area.md),
+[`masked_input()`](reference/masked_input.md),
+[`option_list()`](reference/option_list.md),
+[`selection_list()`](reference/selection_list.md),
+[`list_view()`](reference/list_view.md),
+[`data_table()`](reference/data_table.md)
+
+**Navigation:** [`header()`](reference/header.md),
+[`footer()`](reference/footer.md), [`tabs()`](reference/tabs.md),
+[`tab_pane()`](reference/tab_pane.md),
+[`collapsible()`](reference/collapsible.md),
+[`content_switcher()`](reference/content_switcher.md),
+[`tree()`](reference/tree.md),
+[`directory_tree()`](reference/directory_tree.md)
+
+### Events & handlers
+
+Handlers are `function(event, state)` that return `state`:
+
+``` r
+tui_app(
+  ...,
+  on_mount   = function(event, state) { ... },  # App started
+  on_click   = function(event, state) { ... },  # Button/item click
+  on_change  = function(event, state) { ... },  # Value changed
+  on_key     = function(event, state) { ... },  # Key pressed
+  on_submit  = function(event, state) { ... },  # Enter in Input
+  on_timer   = function(event, state) { ... },  # Timer fired
+  on_action  = function(event, state) { ... },  # Key binding action
+  on_screen_result = function(event, state) { ... }  # Screen dismissed
+)
+```
+
+**Per-widget-id routing** — pass a named list instead of a function:
+
+``` r
+on_click = list(
+  save_btn   = function(event, state) { ... },
+  cancel_btn = function(event, state) { ... },
+  .default   = function(event, state) { ... }   # catch-all
+)
+```
+
+### State
+
+State is a mutable key-value store passed to every handler:
+
+``` r
+state$set("count", 10)
+state$get("count")        # 10
+state$get("missing", 0)   # 0 (default)
+state$app                  # the running app (for update/notify)
+```
+
+### Reactive bindings
+
+Skip manual [`update()`](reference/update.md) calls — bind state keys to
+widgets:
+
+``` r
+quick_app(
+  layout = vstack(
+    digits("0", id = "display"),
+    button("+1", id = "inc"),
+    id = "root"
+  ),
+  reactive = reactive(count = "display"),
+  on_click = list(
+    inc = function(event, state) {
+      state$set("count", state$get("count", 0L) + 1L)
+      state
+    }
+  )
+)
+```
+
+### Updating widgets
+
+``` r
+update(app, "widget_id", content = "new text")  # text, static, markdown
+update(app, "widget_id", value = "new value")   # input, digits, switch
+update(app, "widget_id", label = "new label")   # button, checkbox
+update(app, "widget_id", disabled = TRUE)        # any widget
+update(app, "widget_id", display = FALSE)        # show/hide
+```
+
+### Charts
+
+12 chart types with `plot_*()` functions:
+
+``` r
+# Bar chart
+plot_bar(app, "chart_id",
+         labels = c("A", "B", "C"),
+         values = c(10, 25, 15),
+         title = "Sales", color = "cyan")
+
+# Render a ggplot2 object in the terminal
+library(ggplot2)
+p <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
+plot_ggplot(app, "chart_id", p)
+```
+
+Available: [`plot_bar()`](reference/plot_bar.md),
+[`plot_line()`](reference/plot_line.md),
+[`plot_scatter()`](reference/plot_scatter.md), `plot_histogram()`,
+[`plot_box()`](reference/plot_box.md),
+[`plot_heatmap()`](reference/plot_heatmap.md),
+[`plot_candlestick()`](reference/plot_candlestick.md),
+[`plot_stacked_bar()`](reference/plot_stacked_bar.md),
+[`plot_multiple_bar()`](reference/plot_multiple_bar.md), `plot_pie()`,
+`plot_area()`, `plot_table()`
+
+### Themes
+
+``` r
+# Apply a built-in theme
+css = tui_theme("dracula")
+
+# List all themes
+list_themes()
+#> "dracula" "nord" "monokai" "solarized_dark" "solarized_light"
+#> "gruvbox" "catppuccin" "ocean" "forest" "sunset"
+```
+
+### Screens and dialogs
+
+``` r
+# One-line confirmation dialog
+confirm(state$app, "Delete this item?")
+
+# Handle the result
+on_screen_result = function(event, state) {
+  if (isTRUE(event$value)) {
+    # user confirmed
+  }
+  state
+}
+```
+
+### Timers
+
+``` r
+set_timer(state$app, 2, "my_timer")     # One-shot (2 seconds)
+set_interval(state$app, 1, "tick")      # Repeating (every 1 second)
+clear_timer(state$app, "tick")           # Cancel
+```
+
+### Command palette
+
+``` r
+register_commands(state$app, list(
+  command("Reset Data", "reset", "Clear all data"),
+  command("Export CSV", "export", "Save to CSV file")
+))
+```
+
+Press `Ctrl+P` to open the palette.
+
+------------------------------------------------------------------------
+
+## Architecture
+
+    R (your app code)
+      │
+      ├── quick_app() / tui_app()       ← layout specs (nested R lists)
+      ├── RtuiApp R6 class              ← state, event dispatch
+      └── reticulate bridge
+            ↓
+    Python (rtui_shim)
+      ├── app.py    ← Textual App subclass, widget tree, event routing
+      └── factory.py ← maps spec "kind" → Textual widget class
+
+Event flow: **Textual event → Python handler → R callback →
+[`update()`](reference/update.md) → Python applies patches**
+
+------------------------------------------------------------------------
+
+## Convenience functions
+
+| Function             | Description                     |
+|----------------------|---------------------------------|
+| `quick_app(...)`     | Build + run in one call         |
+| `data_viewer(df)`    | Interactive data.frame explorer |
+| `browse_files(path)` | Terminal file browser           |
+
+------------------------------------------------------------------------
+
+## License
+
+MIT
+
+# Package index
+
+## App lifecycle
+
+Create and run TUI applications.
+
+- [`tui_app()`](tui_app.md) : Create a TUI application
+- [`quick_app()`](quick_app.md) : Run a TUI app in one call
+- [`quit()`](quit.md) : Signal app termination from a callback
+
+## Convenience apps
+
+One-call apps for common tasks.
+
+- [`data_viewer()`](data_viewer.md) : Interactive data viewer
+- [`browse_files()`](browse_files.md) : Interactive file browser
+
+## Layout containers
+
+Arrange widgets spatially.
+
+- [`vstack()`](vstack.md) : Create a vertical stack layout
+- [`hstack()`](hstack.md) : Create a horizontal stack layout
+- [`grid()`](grid.md) : Create a grid layout
+- [`center()`](center.md) : Create a center-aligned container
+- [`middle()`](middle.md) : Create a middle-aligned container (vertical
+  centering)
+- [`scroll()`](scroll.md) : Create a scrollable container
+- [`container()`](container.md) : Create a plain block container
+- [`box()`](box.md) : Create a box widget with optional border
+
+## Navigation widgets
+
+Tabs, headers, footers, collapsibles, and trees.
+
+- [`header()`](header.md) : Create a header widget
+- [`footer()`](footer.md) : Create a footer widget
+- [`tabs()`](tabs.md) : Create a tabbed pane container
+- [`tab_pane()`](tab_pane.md) : Create a single tab pane
+- [`collapsible()`](collapsible.md) : Create a collapsible section
+- [`content_switcher()`](content_switcher.md) : Create a content
+  switcher (shows one child at a time)
+- [`tree()`](tree.md) : Create a tree widget
+- [`directory_tree()`](directory_tree.md) : Create a directory tree
+  widget
+
+## Display widgets
+
+Show text, data, and visual indicators.
+
+- [`text()`](text.md) : Create a text widget
+- [`static()`](static.md) : Create a static rich text widget
+- [`markdown()`](markdown.md) : Create a markdown display widget
+- [`digits()`](digits.md) : Create a large digits display widget
+- [`pretty_table()`](pretty_table.md) : Create a pretty table widget
+  (rich-formatted)
+- [`sparkline()`](sparkline.md) : Create a sparkline widget
+- [`progress_bar()`](progress_bar.md) : Create a progress bar widget
+- [`rule()`](rule.md) : Create a horizontal rule (divider) widget
+- [`loading()`](loading.md) : Create a loading indicator widget
+- [`placeholder()`](placeholder.md) : Create a placeholder widget
+- [`log_view()`](log_view.md) : Create an append-only log view widget
+
+## Input widgets
+
+Buttons, text fields, selects, and lists.
+
+- [`button()`](button.md) : Create a button widget
+- [`input()`](input.md) : Create a text input widget
+- [`text_area()`](text_area.md) : Create a multi-line text area widget
+- [`masked_input()`](masked_input.md) : Create a masked input widget
+- [`checkbox()`](checkbox.md) : Create a checkbox widget
+- [`switch_input()`](switch_input.md) : Create a switch (toggle) widget
+- [`select()`](select.md) : Create a select dropdown widget
+- [`radio_set()`](radio_set.md) : Create a radio set (group of radio
+  buttons)
+- [`radio_button()`](radio_button.md) : Create a radio button widget
+  (use inside radio_set)
+- [`data_table()`](data_table.md) : Create a data table widget
+- [`option_list()`](option_list.md) : Create an option list widget
+- [`selection_list()`](selection_list.md) : Create a selection list
+  (multi-select)
+- [`list_view()`](list_view.md) : Create a list view widget
+
+## Charts
+
+Terminal charts powered by plotext.
+
+- [`text_plot()`](text_plot.md) : Create a text-based plot widget
+- [`plot_bar()`](plot_bar.md) : Draw a bar chart on a plot widget
+- [`plot_line()`](plot_line.md) : Draw a line plot on a plot widget
+- [`plot_scatter()`](plot_scatter.md) : Draw a scatter plot on a plot
+  widget
+- [`plot_hist()`](plot_hist.md) : Draw a histogram on a plot widget
+- [`plot_box()`](plot_box.md) : Draw a box plot on a plot widget
+- [`plot_heatmap()`](plot_heatmap.md) : Draw a heatmap on a plot widget
+- [`plot_candlestick()`](plot_candlestick.md) : Draw a candlestick chart
+  on a plot widget
+- [`plot_stacked_bar()`](plot_stacked_bar.md) : Draw a stacked bar chart
+  on a plot widget
+- [`plot_multiple_bar()`](plot_multiple_bar.md) : Draw a grouped
+  (multiple) bar chart on a plot widget
+- [`plot_error()`](plot_error.md) : Draw error bars on a plot widget
+- [`plot_event()`](plot_event.md) : Draw an event plot on a plot widget
+- [`plot_ggplot()`](plot_ggplot.md) : Render a ggplot2 object on a
+  text_plot widget
+
+## Widget updates
+
+Modify widgets at runtime.
+
+- [`update()`](update.md) : Update a widget by id
+- [`notify()`](notify.md) : Show a notification
+- [`log_write()`](log_write.md) : Write a line to a log_view widget
+- [`dark_toggle()`](dark_toggle.md) : Toggle dark mode
+- [`copy_to_clipboard()`](copy_to_clipboard.md) : Copy text to system
+  clipboard
+
+## Events
+
+Event constructors (internal/testing).
+
+- [`event_change()`](event_change.md) : Wrap a function as a
+  change-event handler
+- [`event_click()`](event_click.md) : Wrap a function as a click-event
+  handler
+- [`event_key()`](event_key.md) : Wrap a function as a key-event handler
+
+## State and reactivity
+
+Manage mutable app state.
+
+- [`tui_state()`](tui_state.md) : Create a mutable TUI state object
+- [`reactive()`](reactive.md) : Define reactive bindings between state
+  keys and widgets
+
+## Screens and dialogs
+
+Multi-screen apps and modal dialogs.
+
+- [`tui_screen()`](tui_screen.md) : Create a screen spec
+- [`push_screen()`](push_screen.md) : Push a screen onto the screen
+  stack
+- [`pop_screen()`](pop_screen.md) : Pop the current screen from the
+  stack
+- [`confirm()`](confirm.md) : Show a confirmation dialog
+- [`alert()`](alert.md) : Show an alert dialog
+
+## Timers and workers
+
+Scheduled and repeating tasks.
+
+- [`set_timer()`](set_timer.md) : Create a one-shot timer
+- [`set_interval()`](set_interval.md) : Create a repeating interval
+  timer
+- [`clear_timer()`](clear_timer.md) : Cancel a running timer
+- [`set_worker()`](set_worker.md) : Start a background worker
+- [`cancel_worker()`](cancel_worker.md) : Cancel a running worker
+
+## Key bindings
+
+Keyboard shortcuts and actions.
+
+- [`binding()`](binding.md) : Create a key binding
+
+## Command palette
+
+Searchable command interface.
+
+- [`command()`](command.md) : Define a command palette entry
+- [`register_commands()`](register_commands.md) : Register commands for
+  the command palette
+
+## Forms
+
+Structured form input.
+
+- [`tui_form()`](tui_form.md) : Create a form with named inputs and a
+  submit button
+- [`collect_form()`](collect_form.md) : Collect form values from the
+  running app
+
+## Themes
+
+Built-in colour themes.
+
+- [`tui_theme()`](tui_theme.md) : Get a built-in theme CSS string
+- [`list_themes()`](list_themes.md) : List available theme names
+
+## Setup
+
+Installation helpers.
+
+- [`install_python_deps()`](install_python_deps.md) : Install Python
+  dependencies for rtui
+
+# Articles
+
+### Guides
+
+- [Getting Started with rtui](getting-started.md):
+- [Layouts and Widgets](layouts-and-widgets.md):
+- [State, Events, and Reactivity](state-events-reactivity.md):
+- [Charts and Data Visualisation](charts-and-data.md):
+- [Advanced Features](advanced-features.md):
