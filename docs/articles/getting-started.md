@@ -284,3 +284,5 @@ Now that you have the basics, explore these guides:
   charts and ggplot2 rendering
 - **[Advanced Features](advanced-features.md)**: Screens, timers, key
   bindings, command palette, forms, and workers
+- **[Example Gallery](examples.md)**: 12 runnable example apps with
+  progressive complexity

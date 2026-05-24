@@ -49,6 +49,8 @@
     <li><a class="dropdown-item" href="articles/state-events-reactivity.html">State, Events, and Reactivity</a></li>
     <li><a class="dropdown-item" href="articles/charts-and-data.html">Charts and Data Visualisation</a></li>
     <li><a class="dropdown-item" href="articles/advanced-features.html">Advanced Features</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="articles/examples.html">Example Gallery</a></li>
   </ul>
 </li>
       </ul>
@@ -247,6 +249,73 @@
 </div>
 </div>
 <div class="section level2">
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h2>
+<p>rtui ships with 12 runnable examples in <code>inst/examples/</code>:</p>
+<table class="table">
+<colgroup>
+<col width="47%">
+<col width="52%">
+</colgroup>
+<thead><tr>
+<th>Example</th>
+<th>Features</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><strong>01-hello</strong></td>
+<td>Minimal app — text, box, key handler</td>
+</tr>
+<tr>
+<td><strong>02-list-detail</strong></td>
+<td>Master-detail with list_view and update()</td>
+</tr>
+<tr>
+<td><strong>03-data-table</strong></td>
+<td>Interactive data.frame table</td>
+</tr>
+<tr>
+<td><strong>04-dfdiff-explorer</strong></td>
+<td>List-detail with mount state</td>
+</tr>
+<tr>
+<td><strong>05-counter</strong></td>
+<td>Reactive bindings, digits, buttons</td>
+</tr>
+<tr>
+<td><strong>06-form</strong></td>
+<td>tui_form(), confirm dialog, validation</td>
+</tr>
+<tr>
+<td><strong>07-timer</strong></td>
+<td>Stopwatch with set_interval, progress bar, laps</td>
+</tr>
+<tr>
+<td><strong>08-tabs-dashboard</strong></td>
+<td>Tabs, KPI cards, sparklines, charts, themes</td>
+</tr>
+<tr>
+<td><strong>09-todo</strong></td>
+<td>CRUD todo list with confirm delete</td>
+</tr>
+<tr>
+<td><strong>10-charts</strong></td>
+<td>Chart gallery — bar, line, scatter, histogram, heatmap</td>
+</tr>
+<tr>
+<td><strong>11-screens-modal</strong></td>
+<td>push_screen, pop_screen, settings modal</td>
+</tr>
+<tr>
+<td><strong>12-reactive-dashboard</strong></td>
+<td>Reactive formulas, auto-updating sparklines, timers</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb6"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>Rscript inst<span class="op">/</span>examples<span class="op">/</span><span class="dv">05</span><span class="op">-</span>counter<span class="op">.</span><span class="fu">R</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level2">
 <h2 id="showcase-apps">Showcase apps<a class="anchor" aria-label="anchor" href="#showcase-apps"></a>
 </h2>
 <p>rtui ships with 8 demo apps in <code>spikes/</code> that demonstrate real-world usage:</p>
@@ -295,11 +364,11 @@
 </tbody>
 </table>
 <p>Run any showcase from a real terminal:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Windows</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="op">&amp;</span> <span class="st">"C:\Program Files\R\R-4.4.3\bin\Rscript.exe"</span> spikes<span class="op">/</span>showcase_pomodoro<span class="op">.</span><span class="fu">R</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># macOS/Linux</span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>Rscript spikes<span class="op">/</span>showcase_pomodoro<span class="op">.</span><span class="fu">R</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Windows</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="op">&amp;</span> <span class="st">"C:\Program Files\R\R-4.4.3\bin\Rscript.exe"</span> spikes<span class="op">/</span>showcase_pomodoro<span class="op">.</span><span class="fu">R</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># macOS/Linux</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>Rscript spikes<span class="op">/</span>showcase_pomodoro<span class="op">.</span><span class="fu">R</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level2">
@@ -365,7 +434,7 @@
 <h3 id="events--handlers">Events &amp; handlers<a class="anchor" aria-label="anchor" href="#events--handlers"></a>
 </h3>
 <p>Handlers are <code>function(event, state)</code> that return <code>state</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/tui_app.html">tui_app</a></span><span class="op">(</span></span>
 <span>  <span class="va">...</span>,</span>
 <span>  on_mount   <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span>,  <span class="co"># App started</span></span>
@@ -378,7 +447,7 @@
 <span>  on_screen_result <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span>  <span class="co"># Screen dismissed</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><strong>Per-widget-id routing</strong> — pass a named list instead of a function:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">on_click</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  save_btn   <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span>,</span>
 <span>  cancel_btn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">event</span>, <span class="va">state</span><span class="op">)</span> <span class="op">{</span> <span class="va">...</span> <span class="op">}</span>,</span>
@@ -389,7 +458,7 @@
 <h3 id="state">State<a class="anchor" aria-label="anchor" href="#state"></a>
 </h3>
 <p>State is a mutable key-value store passed to every handler:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">state</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="st">"count"</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">state</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"count"</span><span class="op">)</span>        <span class="co"># 10</span></span>
 <span><span class="va">state</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"missing"</span>, <span class="fl">0</span><span class="op">)</span>   <span class="co"># 0 (default)</span></span>
@@ -399,7 +468,7 @@
 <h3 id="reactive-bindings">Reactive bindings<a class="anchor" aria-label="anchor" href="#reactive-bindings"></a>
 </h3>
 <p>Skip manual <code><a href="reference/update.html">update()</a></code> calls — bind state keys to widgets:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/quick_app.html">quick_app</a></span><span class="op">(</span></span>
 <span>  layout <span class="op">=</span> <span class="fu"><a href="reference/vstack.html">vstack</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="reference/digits.html">digits</a></span><span class="op">(</span><span class="st">"0"</span>, id <span class="op">=</span> <span class="st">"display"</span><span class="op">)</span>,</span>
@@ -418,7 +487,7 @@
 <div class="section level3">
 <h3 id="updating-widgets">Updating widgets<a class="anchor" aria-label="anchor" href="#updating-widgets"></a>
 </h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/update.html">update</a></span><span class="op">(</span><span class="va">app</span>, <span class="st">"widget_id"</span>, content <span class="op">=</span> <span class="st">"new text"</span><span class="op">)</span>  <span class="co"># text, static, markdown</span></span>
 <span><span class="fu"><a href="reference/update.html">update</a></span><span class="op">(</span><span class="va">app</span>, <span class="st">"widget_id"</span>, value <span class="op">=</span> <span class="st">"new value"</span><span class="op">)</span>   <span class="co"># input, digits, switch</span></span>
 <span><span class="fu"><a href="reference/update.html">update</a></span><span class="op">(</span><span class="va">app</span>, <span class="st">"widget_id"</span>, label <span class="op">=</span> <span class="st">"new label"</span><span class="op">)</span>   <span class="co"># button, checkbox</span></span>
@@ -429,7 +498,7 @@
 <h3 id="charts">Charts<a class="anchor" aria-label="anchor" href="#charts"></a>
 </h3>
 <p>12 chart types with <code>plot_*()</code> functions:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bar chart</span></span>
 <span><span class="fu"><a href="reference/plot_bar.html">plot_bar</a></span><span class="op">(</span><span class="va">app</span>, <span class="st">"chart_id"</span>,</span>
 <span>         labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span><span class="op">)</span>,</span>
@@ -445,7 +514,7 @@
 <div class="section level3">
 <h3 id="themes">Themes<a class="anchor" aria-label="anchor" href="#themes"></a>
 </h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Apply a built-in theme</span></span>
 <span><span class="va">css</span> <span class="op">=</span> <span class="fu"><a href="reference/tui_theme.html">tui_theme</a></span><span class="op">(</span><span class="st">"dracula"</span><span class="op">)</span></span>
 <span></span>
@@ -457,7 +526,7 @@
 <div class="section level3">
 <h3 id="screens-and-dialogs">Screens and dialogs<a class="anchor" aria-label="anchor" href="#screens-and-dialogs"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># One-line confirmation dialog</span></span>
 <span><span class="fu"><a href="reference/confirm.html">confirm</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"Delete this item?"</span><span class="op">)</span></span>
 <span></span>
@@ -472,7 +541,7 @@
 <div class="section level3">
 <h3 id="timers">Timers<a class="anchor" aria-label="anchor" href="#timers"></a>
 </h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/set_timer.html">set_timer</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="fl">2</span>, <span class="st">"my_timer"</span><span class="op">)</span>     <span class="co"># One-shot (2 seconds)</span></span>
 <span><span class="fu"><a href="reference/set_interval.html">set_interval</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="fl">1</span>, <span class="st">"tick"</span><span class="op">)</span>      <span class="co"># Repeating (every 1 second)</span></span>
 <span><span class="fu"><a href="reference/clear_timer.html">clear_timer</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="st">"tick"</span><span class="op">)</span>           <span class="co"># Cancel</span></span></code></pre></div>
@@ -480,7 +549,7 @@
 <div class="section level3">
 <h3 id="command-palette">Command palette<a class="anchor" aria-label="anchor" href="#command-palette"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/register_commands.html">register_commands</a></span><span class="op">(</span><span class="va">state</span><span class="op">$</span><span class="va">app</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="reference/command.html">command</a></span><span class="op">(</span><span class="st">"Reset Data"</span>, <span class="st">"reset"</span>, <span class="st">"Clear all data"</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="reference/command.html">command</a></span><span class="op">(</span><span class="st">"Export CSV"</span>, <span class="st">"export"</span>, <span class="st">"Save to CSV file"</span><span class="op">)</span></span>

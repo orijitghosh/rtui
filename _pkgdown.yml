@@ -30,6 +30,9 @@ navbar:
         href: articles/charts-and-data.html
       - text: Advanced Features
         href: articles/advanced-features.html
+      - text: "---"
+      - text: Example Gallery
+        href: articles/examples.html
 
 reference:
 - title: App lifecycle
@@ -195,3 +198,4 @@ articles:
   - state-events-reactivity
   - charts-and-data
   - advanced-features
+  - examples

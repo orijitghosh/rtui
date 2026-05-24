@@ -9,7 +9,7 @@
 ## Features
 
 | Category | Highlights |
-|------------------------------------|------------------------------------|
+|----|----|
 | **Widgets** | Button, Input, TextArea, Select, Checkbox, Switch, RadioSet, DataTable, OptionList, SelectionList, Tabs, Tree, DirectoryTree, ProgressBar, Sparkline, Digits, Markdown, RichLog, Loading, Rule, and more |
 | **Layouts** | `vstack()`, `hstack()`, `grid()`, `center()`, `middle()`, `scroll()`, `collapsible()`, `tabs()` |
 | **Charts** | 12 chart types via plotext — bar, line, scatter, histogram, box, heatmap, candlestick, stacked/grouped bar, and more. Plus `plot_ggplot()` to render ggplot2 objects in the terminal |
@@ -34,12 +34,9 @@ devtools::install_local("path/to/rtui")
 rtui::install_python_deps()
 ```
 
-**Requirements:** R >= 4.1, Python >= 3.9 (not Microsoft Store Python on Windows).
+**Requirements:** R \>= 4.1, Python \>= 3.9 (not Microsoft Store Python on Windows).
 
-> **Important: rtui apps must be run from a real terminal** (Windows Terminal,
-> iTerm2, Terminal.app, or any xterm-compatible terminal). They will **not**
-> work in the RStudio console, R GUI, Jupyter notebooks, or any embedded
-> console. Save your code as a `.R` file and run it with `Rscript`.
+> **Important: rtui apps must be run from a real terminal** (Windows Terminal, iTerm2, Terminal.app, or any xterm-compatible terminal). They will **not** work in the RStudio console, R GUI, Jupyter notebooks, or any embedded console. Save your code as a `.R` file and run it with `Rscript`.
 
 ### Windows setup
 
@@ -54,9 +51,7 @@ use_virtualenv("r-rtui", required = TRUE)
 
 ## Quick start
 
-> **Reminder:** All examples below must be saved as `.R` files and run from
-> a real terminal with `Rscript my_app.R`. They will not work from RStudio
-> or R GUI.
+> **Reminder:** All examples below must be saved as `.R` files and run from a real terminal with `Rscript my_app.R`. They will not work from RStudio or R GUI.
 
 ### Hello world
 
@@ -133,12 +128,37 @@ quick_app(
 
 ------------------------------------------------------------------------
 
+## Examples
+
+rtui ships with 12 runnable examples in `inst/examples/`:
+
+| Example | Features |
+|---------|----------|
+| **01-hello** | Minimal app — text, box, key handler |
+| **02-list-detail** | Master-detail with list_view and update() |
+| **03-data-table** | Interactive data.frame table |
+| **04-dfdiff-explorer** | List-detail with mount state |
+| **05-counter** | Reactive bindings, digits, buttons |
+| **06-form** | tui_form(), confirm dialog, validation |
+| **07-timer** | Stopwatch with set_interval, progress bar, laps |
+| **08-tabs-dashboard** | Tabs, KPI cards, sparklines, charts, themes |
+| **09-todo** | CRUD todo list with confirm delete |
+| **10-charts** | Chart gallery — bar, line, scatter, histogram, heatmap |
+| **11-screens-modal** | push_screen, pop_screen, settings modal |
+| **12-reactive-dashboard** | Reactive formulas, auto-updating sparklines, timers |
+
+``` powershell
+Rscript inst/examples/05-counter.R
+```
+
+------------------------------------------------------------------------
+
 ## Showcase apps
 
 rtui ships with 8 demo apps in `spikes/` that demonstrate real-world usage:
 
 | App | Description |
-|------------------------------------|------------------------------------|
+|----|----|
 | **Stock Tracker** | Live (simulated) stock prices, candlestick charts, sparklines |
 | **System Monitor** | Real-time CPU, memory, disk usage with sparklines and process table |
 | **Log Viewer** | Coloured log output with severity filter, search, and pause/resume |

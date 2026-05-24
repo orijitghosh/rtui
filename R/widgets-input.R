@@ -7,6 +7,33 @@
 #' @param validators Optional character vector of validators. Supported:
 #'   `"number"`, `"integer"`, `"url"`, or `"regex:PATTERN"`.
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' # Text input with change and submit handlers
+#' quick_app(
+#'   layout = vstack(
+#'     input(placeholder = "Type your name...", id = "name"),
+#'     input(placeholder = "Age", id = "age", validators = "integer"),
+#'     static("", id = "output"),
+#'     id = "root"
+#'   ),
+#'   on_submit = list(
+#'     name = function(event, state) {
+#'       update(state$app, "output",
+#'              content = paste("Hello,", event$value))
+#'       state
+#'     }
+#'   ),
+#'   on_change = list(
+#'     name = function(event, state) {
+#'       # event$value contains the current text
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 input <- function(placeholder = "", value = "", id = NULL, classes = NULL,
                   tooltip = NULL, validators = NULL) {
@@ -32,6 +59,30 @@ input <- function(placeholder = "", value = "", id = NULL, classes = NULL,
 #' @param classes Optional CSS classes (character vector).
 #' @param tooltip Optional tooltip text shown on hover.
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     button("Click Me", id = "btn", tooltip = "Press to greet"),
+#'     button("Disabled", id = "off"),
+#'     static("", id = "msg"),
+#'     id = "root"
+#'   ),
+#'   on_mount = function(event, state) {
+#'     update(state$app, "off", disabled = TRUE)
+#'     state
+#'   },
+#'   on_click = list(
+#'     btn = function(event, state) {
+#'       update(state$app, "msg", content = "Hello!")
+#'       update(state$app, "btn", label = "Clicked!")
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 button <- function(label, id = NULL, classes = NULL, tooltip = NULL) {
   if (!is.character(label) || length(label) != 1L) {
@@ -48,6 +99,24 @@ button <- function(label, id = NULL, classes = NULL, tooltip = NULL) {
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     list_view(items = c("Apple", "Banana", "Cherry"), id = "fruits"),
+#'     static("Select a fruit", id = "msg"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     fruits = function(event, state) {
+#'       update(state$app, "msg", content = paste("Selected:", event$value))
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 list_view <- function(items, id = NULL, classes = NULL) {
   if (!is.character(items)) {
@@ -61,6 +130,10 @@ list_view <- function(items, id = NULL, classes = NULL) {
 
 #' Create a data table widget
 #'
+#' A full-featured interactive table with sorting, row/cell/column
+#' selection, and zebra striping. For a quick one-liner data explorer,
+#' see [data_viewer()].
+#'
 #' @param df A data.frame to display.
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
@@ -69,6 +142,40 @@ list_view <- function(items, id = NULL, classes = NULL) {
 #' @param sortable Whether clicking column headers sorts the table (default FALSE).
 #'   When `TRUE`, each click toggles ascending/descending sort.
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' # Interactive sortable table
+#' quick_app(
+#'   layout = vstack(
+#'     header(),
+#'     data_table(mtcars, id = "cars",
+#'                cursor = "row",
+#'                zebra_stripes = TRUE,
+#'                sortable = TRUE),
+#'     footer()
+#'   ),
+#'   bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+#'   on_action = function(event, state) {
+#'     if (event$value == "quit_app") return(quit())
+#'     state
+#'   }
+#' )
+#'
+#' # Dynamically add rows
+#' on_click = list(
+#'   add_btn = function(event, state) {
+#'     new_row <- data.frame(mpg = 25, cyl = 4, disp = 100)
+#'     update(state$app, "cars", add_rows = as.list(new_row))
+#'     state
+#'   },
+#'   clear_btn = function(event, state) {
+#'     update(state$app, "cars", clear_data = TRUE)
+#'     state
+#'   }
+#' )
+#' }
+#'
 #' @export
 data_table <- function(df, id = NULL, classes = NULL,
                        cursor = c("row", "cell", "column", "none"),
@@ -97,6 +204,30 @@ data_table <- function(df, id = NULL, classes = NULL,
 #' @param classes Optional CSS classes (character vector).
 #' @param tooltip Optional tooltip text shown on hover.
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     checkbox("Enable notifications", value = TRUE, id = "notif"),
+#'     checkbox("Dark mode", value = FALSE, id = "dark"),
+#'     static("", id = "status"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     notif = function(event, state) {
+#'       update(state$app, "status",
+#'              content = paste("Notifications:", event$value))
+#'       state
+#'     },
+#'     dark = function(event, state) {
+#'       dark_toggle(state$app, event$value)
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 checkbox <- function(label, value = FALSE, id = NULL, classes = NULL,
                      tooltip = NULL) {
@@ -119,6 +250,14 @@ checkbox <- function(label, value = FALSE, id = NULL, classes = NULL,
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' # See radio_set() for a complete example
+#' radio_button("Option A")
+#' radio_button("Option B", value = TRUE)  # pre-selected
+#' }
+#'
 #' @export
 radio_button <- function(label, value = FALSE, id = NULL, classes = NULL) {
   if (!is.character(label) || length(label) != 1L) {
@@ -138,6 +277,31 @@ radio_button <- function(label, value = FALSE, id = NULL, classes = NULL) {
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     static("Choose a size:"),
+#'     radio_set(
+#'       radio_button("Small"),
+#'       radio_button("Medium", value = TRUE),
+#'       radio_button("Large"),
+#'       id = "size"
+#'     ),
+#'     static("", id = "chosen"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     size = function(event, state) {
+#'       update(state$app, "chosen",
+#'              content = paste("Selected:", event$value))
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 radio_set <- function(..., id = NULL, classes = NULL) {
   children <- list(...)
@@ -156,6 +320,30 @@ radio_set <- function(..., id = NULL, classes = NULL) {
 #' @param classes Optional CSS classes (character vector).
 #' @param tooltip Optional tooltip text shown on hover.
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     # Simple options
+#'     select(c("Red", "Green", "Blue"), id = "color",
+#'            prompt = "Pick a colour..."),
+#'     # Named options (display => value)
+#'     select(c("Small (S)" = "s", "Medium (M)" = "m", "Large (L)" = "l"),
+#'            id = "size"),
+#'     static("", id = "result"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     color = function(event, state) {
+#'       update(state$app, "result",
+#'              content = paste("Colour:", event$value))
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 select <- function(options, value = NULL, prompt = "Select...",
                    id = NULL, classes = NULL, tooltip = NULL) {
@@ -181,6 +369,24 @@ select <- function(options, value = NULL, prompt = "Select...",
 #' @param classes Optional CSS classes (character vector).
 #' @param tooltip Optional tooltip text shown on hover.
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     hstack(static("Dark mode: "), switch_input(value = TRUE, id = "dark")),
+#'     hstack(static("Sound: "), switch_input(value = FALSE, id = "sound")),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     dark = function(event, state) {
+#'       dark_toggle(state$app, event$value)
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 switch_input <- function(value = FALSE, id = NULL, classes = NULL,
                          tooltip = NULL) {
@@ -205,6 +411,22 @@ switch_input <- function(value = FALSE, id = NULL, classes = NULL,
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     static("Phone:"),
+#'     masked_input(template = "999-999-9999", id = "phone"),
+#'     static("Postcode:"),
+#'     masked_input(template = "AA99 9AA", id = "postcode"),
+#'     static("Date:"),
+#'     masked_input(template = "99/99/9999", id = "date"),
+#'     id = "root"
+#'   )
+#' )
+#' }
+#'
 #' @export
 masked_input <- function(template, value = NULL, placeholder = "",
                          id = NULL, classes = NULL) {
@@ -227,11 +449,50 @@ masked_input <- function(template, value = NULL, placeholder = "",
 
 #' Create a multi-line text area widget
 #' @param value Initial text content.
-#' @param language Optional language for syntax highlighting.
+#' @param language Optional language for syntax highlighting (e.g. `"r"`,
+#'   `"python"`, `"json"`, `"markdown"`, `"sql"`).
 #' @param show_line_numbers Show line numbers.
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' # Code editor with syntax highlighting
+#' quick_app(
+#'   layout = vstack(
+#'     text_area(value = "x <- 1:10\nmean(x)\nsd(x)",
+#'               language = "r",
+#'               show_line_numbers = TRUE,
+#'               id = "editor"),
+#'     button("Run", id = "run"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     editor = function(event, state) {
+#'       state$set("code", event$value)
+#'       state
+#'     }
+#'   )
+#' )
+#'
+#' # Markdown editor with live preview
+#' quick_app(
+#'   layout = hstack(
+#'     text_area(value = "# Title\n\nSome **bold** text.",
+#'               id = "editor", show_line_numbers = TRUE),
+#'     markdown("", id = "preview"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     editor = function(event, state) {
+#'       update(state$app, "preview", content = event$value)
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 text_area <- function(value = "", language = NULL, show_line_numbers = FALSE,
                       id = NULL, classes = NULL) {
@@ -254,10 +515,41 @@ text_area <- function(value = "", language = NULL, show_line_numbers = FALSE,
 }
 
 #' Create an option list widget
+#'
+#' A scrollable list of selectable options. Fires `on_change` events
+#' when the user highlights or selects an item.
+#'
 #' @param items Character vector of option items.
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     option_list(items = c("Apple", "Banana", "Cherry", "Date"),
+#'                 id = "fruits"),
+#'     static("Pick a fruit", id = "msg"),
+#'     button("Update list", id = "update_btn"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     fruits = function(event, state) {
+#'       update(state$app, "msg", content = paste("Picked:", event$value))
+#'       state
+#'     }
+#'   ),
+#'   on_click = list(
+#'     update_btn = function(event, state) {
+#'       # Replace items dynamically
+#'       update(state$app, "fruits", items = c("Fig", "Grape", "Kiwi"))
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 option_list <- function(items, id = NULL, classes = NULL) {
   if (!is.character(items)) {
@@ -270,10 +562,34 @@ option_list <- function(items, id = NULL, classes = NULL) {
 }
 
 #' Create a selection list (multi-select)
+#'
+#' Like [option_list()] but allows the user to toggle multiple items on/off.
+#'
 #' @param items Character vector of items.
 #' @param id Optional widget id.
 #' @param classes Optional CSS classes (character vector).
 #' @return An `rtui_spec` list.
+#'
+#' @examples
+#' \dontrun{
+#' quick_app(
+#'   layout = vstack(
+#'     static("Select permissions:"),
+#'     selection_list(items = c("Read", "Write", "Execute"),
+#'                    id = "perms"),
+#'     static("", id = "chosen"),
+#'     id = "root"
+#'   ),
+#'   on_change = list(
+#'     perms = function(event, state) {
+#'       update(state$app, "chosen",
+#'              content = paste("Selected:", toString(event$value)))
+#'       state
+#'     }
+#'   )
+#' )
+#' }
+#'
 #' @export
 selection_list <- function(items, id = NULL, classes = NULL) {
   if (!is.character(items)) {

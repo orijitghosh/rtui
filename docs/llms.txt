@@ -141,6 +141,31 @@ quick_app(
 
 ------------------------------------------------------------------------
 
+## Examples
+
+rtui ships with 12 runnable examples in `inst/examples/`:
+
+| Example | Features |
+|----|----|
+| **01-hello** | Minimal app — text, box, key handler |
+| **02-list-detail** | Master-detail with list_view and update() |
+| **03-data-table** | Interactive data.frame table |
+| **04-dfdiff-explorer** | List-detail with mount state |
+| **05-counter** | Reactive bindings, digits, buttons |
+| **06-form** | tui_form(), confirm dialog, validation |
+| **07-timer** | Stopwatch with set_interval, progress bar, laps |
+| **08-tabs-dashboard** | Tabs, KPI cards, sparklines, charts, themes |
+| **09-todo** | CRUD todo list with confirm delete |
+| **10-charts** | Chart gallery — bar, line, scatter, histogram, heatmap |
+| **11-screens-modal** | push_screen, pop_screen, settings modal |
+| **12-reactive-dashboard** | Reactive formulas, auto-updating sparklines, timers |
+
+``` powershell
+Rscript inst/examples/05-counter.R
+```
+
+------------------------------------------------------------------------
+
 ## Showcase apps
 
 rtui ships with 8 demo apps in `spikes/` that demonstrate real-world
@@ -604,3 +629,4 @@ Installation helpers.
 - [State, Events, and Reactivity](state-events-reactivity.md):
 - [Charts and Data Visualisation](charts-and-data.md):
 - [Advanced Features](advanced-features.md):
+- [Example Gallery](examples.md):

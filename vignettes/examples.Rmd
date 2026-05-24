@@ -1,0 +1,217 @@
+---
+title: "Example Gallery"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example Gallery}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+rtui ships with 12 ready-to-run example apps in `inst/examples/`. Each one
+is self-contained and demonstrates a progressively richer set of features.
+
+> **Terminal only:** Save as `.R` files and run from a real terminal with
+> `Rscript`. These will **not** work in RStudio or R GUI.
+
+## Running examples
+
+```r
+# From inside the rtui project directory:
+Rscript inst/examples/05-counter.R
+
+# Or after installing the package:
+system.file("examples", "05-counter.R", package = "rtui") |>
+  source()
+```
+
+## 01 — Hello World
+
+**Features:** `text()`, `box()`, `vstack()`, key handler, `quit()`.
+
+The simplest possible rtui app — a styled greeting with a quit key.
+
+```{r}
+library(rtui)
+
+app <- tui_app(
+  layout = vstack(
+    box(
+      text("Hello from rtui!", id = "greeting"),
+      border = "round", title = "Welcome"
+    ),
+    text("Press 'q' to quit.", id = "hint"),
+    id = "root"
+  ),
+  on_key = function(event, state) {
+    if (event$key == "q") return(quit(state))
+    state
+  }
+)
+
+app$run()
+```
+
+## 02 — List-Detail
+
+**Features:** `list_view()`, `on_change`, `update()`, per-widget routing.
+
+A master-detail pattern: select an item on the left, see its content on
+the right.
+
+## 03 — Data Table
+
+**Features:** `data_table()`, displaying data frames.
+
+Pass any data.frame directly to `data_table()` for an interactive,
+scrollable table view.
+
+## 04 — dfdiff Explorer
+
+**Features:** `list_view()`, `static()`, `on_mount`, state timestamps.
+
+A more complete list-detail explorer with named sections and mount-time
+state initialization.
+
+## 05 — Reactive Counter
+
+**Features:** `reactive()` bindings, `digits()`, `button()`, click
+handlers, `notify()`.
+
+The classic counter app — but with reactive bindings so `state$set("count", n)`
+automatically updates the digit display.
+
+```{r}
+library(rtui)
+
+quick_app(
+  title = "Counter",
+  layout = vstack(
+    header(),
+    center(vstack(
+      digits("0", id = "display"),
+      hstack(
+        button("-1", id = "dec"),
+        button("Reset", id = "reset"),
+        button("+1", id = "inc")
+      )
+    )),
+    footer(),
+    id = "root"
+  ),
+  reactive = reactive(count = "display"),
+  on_mount = function(event, state) {
+    state$set("count", 0L)
+    state
+  },
+  on_click = list(
+    inc = function(event, state) {
+      state$set("count", state$get("count", 0L) + 1L)
+      state
+    },
+    dec = function(event, state) {
+      state$set("count", state$get("count", 0L) - 1L)
+      state
+    },
+    reset = function(event, state) {
+      state$set("count", 0L)
+      notify(state$app, "Counter reset.", severity = "info")
+      state
+    }
+  )
+)
+```
+
+## 06 — Contact Form
+
+**Features:** `tui_form()`, `input()`, `select()`, `checkbox()`,
+`confirm()` dialog, `on_screen_result`.
+
+A structured form with validation, confirmation dialog before submission,
+and status feedback.
+
+## 07 — Stopwatch
+
+**Features:** `set_interval()`, `clear_timer()`, `progress_bar()`,
+`log_view()`, key bindings with `binding()`.
+
+Start/pause/reset stopwatch with lap tracking. Press Space to toggle,
+`d` for dark mode.
+
+## 08 — Tabbed Dashboard
+
+**Features:** `tabs()`, `tab_pane()`, `data_table()`, `sparkline()`,
+`plot_bar()`, `digits()`, `tui_theme()`.
+
+A three-tab sales dashboard with KPI cards, sparkline trends, a sortable
+data table, and a bar chart — styled with the Catppuccin theme.
+
+## 09 — Todo List
+
+**Features:** `option_list()`, `on_submit`, dynamic list updates,
+`confirm()` dialog, CRUD operations.
+
+Add tasks by typing and pressing Enter, mark them done, delete with
+confirmation, and clear all completed items.
+
+## 10 — Chart Gallery
+
+**Features:** `plot_bar()`, `plot_line()`, `plot_scatter()`, `plot_hist()`,
+`plot_heatmap()`, tabs, Dracula theme.
+
+Five chart types in a tabbed view, each with sample data.
+
+## 11 — Screens & Modals
+
+**Features:** `push_screen()`, `pop_screen()`, `tui_screen()`,
+`confirm()`, `alert()`, screen results.
+
+A multi-screen app with a settings modal (input, select, switch) that
+returns results to the main screen.
+
+## 12 — Reactive Dashboard
+
+**Features:** `reactive()` with formula bindings, `set_interval()`,
+auto-updating sparklines, `log_view()`, multiple reactive targets, Nord
+theme.
+
+A simulated system monitor that updates CPU/memory/disk every 2 seconds.
+Reactive formulas auto-update digits and progress bars. Warnings are
+logged and notified.
+
+```{r}
+reactive = reactive(
+  cpu = list(
+    ~ update(.app, "cpu_display", value = paste0(.x, "%")),
+    ~ update(.app, "cpu_bar", progress = .x)
+  ),
+  mem = list(
+    ~ update(.app, "mem_display", value = paste0(.x, "%")),
+    ~ update(.app, "mem_bar", progress = .x)
+  )
+)
+```
+
+## Showcase apps
+
+Beyond these examples, rtui includes 8 full showcase apps in `spikes/`:
+
+| App | Highlights |
+|-----|------------|
+| Stock Tracker | Live prices, candlestick charts, sparklines |
+| System Monitor | CPU/memory/disk gauges, process table |
+| Log Viewer | Severity filter, search, pause/resume |
+| CSV Explorer | Browse R datasets, 5 chart types |
+| ggplot Explorer | 8 ggplot2 plots rendered in terminal |
+| Pomodoro Timer | Big-digit countdown, work/break cycles |
+| Git Dashboard | Commit log, contributor charts |
+| Markdown Notes | CRUD notes with live markdown preview |
+
+Run any showcase:
+
+```bash
+Rscript spikes/showcase_pomodoro.R
+```

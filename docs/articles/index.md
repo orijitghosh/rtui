@@ -7,3 +7,4 @@
 - [State, Events, and Reactivity](state-events-reactivity.md):
 - [Charts and Data Visualisation](charts-and-data.md):
 - [Advanced Features](advanced-features.md):
+- [Example Gallery](examples.md):
