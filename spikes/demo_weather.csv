@@ -1,0 +1,21 @@
+City,Month,TempHigh,TempLow,Rainfall_mm,Humidity,WindSpeed_kmh
+Tokyo,Jan,10,2,52,55,15
+Tokyo,Apr,19,10,125,62,18
+Tokyo,Jul,31,24,154,75,14
+Tokyo,Oct,22,14,198,68,16
+London,Jan,8,2,55,81,20
+London,Apr,14,6,42,65,18
+London,Jul,24,14,45,60,15
+London,Oct,15,8,69,76,22
+New York,Jan,4,-3,87,62,24
+New York,Apr,18,7,101,56,21
+New York,Jul,30,21,117,66,16
+New York,Oct,18,9,95,63,19
+Sydney,Jan,27,19,100,65,17
+Sydney,Apr,23,15,128,68,14
+Sydney,Jul,17,8,98,62,16
+Sydney,Oct,22,13,77,60,19
+Mumbai,Jan,32,19,1,60,12
+Mumbai,Apr,34,25,2,68,15
+Mumbai,Jul,31,25,618,85,20
+Mumbai,Oct,33,24,64,72,10

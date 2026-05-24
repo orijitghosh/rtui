@@ -1,0 +1,30 @@
+Package: rtui
+Title: R Bindings for Textual Terminal User Interfaces
+Version: 0.1.0
+Authors@R:
+    person("Arijit Ghosh", , , "arijitghosh2009@gmail.com", role = c("aut", "cre"))
+Description: Idiomatic R bindings to Python's Textual framework, enabling R
+    users to author full-screen terminal user interfaces (TUIs) with panels,
+    focus management, event loops, and CSS-like styling without writing Python.
+    Uses 'reticulate' to bridge R and Python in a single process.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports:
+    reticulate (>= 1.35),
+    R6,
+    rlang,
+    cli
+Suggests:
+    testthat (>= 3.0.0),
+    withr,
+    covr,
+    ggplot2,
+    knitr,
+    rmarkdown,
+    pkgdown
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+URL: https://github.com/orijitghosh/rtui
+BugReports: https://github.com/orijitghosh/rtui/issues

@@ -1,0 +1,197 @@
+url: ~
+template:
+  bootstrap: 5
+  bootswatch: darkly
+  bslib:
+    pkgdown-nav-height: 64px
+
+home:
+  title: "rtui - Terminal UIs from R"
+  description: >
+    Build full-screen terminal user interfaces from R using Python's
+    Textual framework. 35+ widgets, 12 chart types, reactive state,
+    screens, timers, themes, and more.
+
+navbar:
+  structure:
+    left:  [intro, reference, articles]
+    right: [search, github]
+  components:
+    articles:
+      text: Guides
+      menu:
+      - text: Getting Started
+        href: articles/getting-started.html
+      - text: Layouts and Widgets
+        href: articles/layouts-and-widgets.html
+      - text: State, Events, and Reactivity
+        href: articles/state-events-reactivity.html
+      - text: Charts and Data Visualisation
+        href: articles/charts-and-data.html
+      - text: Advanced Features
+        href: articles/advanced-features.html
+
+reference:
+- title: App lifecycle
+  desc: Create and run TUI applications.
+  contents:
+  - tui_app
+  - quick_app
+  - quit
+
+- title: Convenience apps
+  desc: One-call apps for common tasks.
+  contents:
+  - data_viewer
+  - browse_files
+
+- title: Layout containers
+  desc: Arrange widgets spatially.
+  contents:
+  - vstack
+  - hstack
+  - grid
+  - center
+  - middle
+  - scroll
+  - container
+  - box
+
+- title: Navigation widgets
+  desc: Tabs, headers, footers, collapsibles, and trees.
+  contents:
+  - header
+  - footer
+  - tabs
+  - tab_pane
+  - collapsible
+  - content_switcher
+  - tree
+  - directory_tree
+
+- title: Display widgets
+  desc: Show text, data, and visual indicators.
+  contents:
+  - text
+  - static
+  - markdown
+  - digits
+  - pretty_table
+  - sparkline
+  - progress_bar
+  - rule
+  - loading
+  - placeholder
+  - log_view
+
+- title: Input widgets
+  desc: Buttons, text fields, selects, and lists.
+  contents:
+  - button
+  - input
+  - text_area
+  - masked_input
+  - checkbox
+  - switch_input
+  - select
+  - radio_set
+  - radio_button
+  - data_table
+  - option_list
+  - selection_list
+  - list_view
+
+- title: Charts
+  desc: Terminal charts powered by plotext.
+  contents:
+  - text_plot
+  - plot_bar
+  - plot_line
+  - plot_scatter
+  - plot_hist
+  - plot_box
+  - plot_heatmap
+  - plot_candlestick
+  - plot_stacked_bar
+  - plot_multiple_bar
+  - plot_error
+  - plot_event
+  - plot_ggplot
+
+- title: Widget updates
+  desc: Modify widgets at runtime.
+  contents:
+  - update
+  - notify
+  - log_write
+  - dark_toggle
+  - copy_to_clipboard
+
+- title: Events
+  desc: Event constructors (internal/testing).
+  contents:
+  - event_change
+  - event_click
+  - event_key
+
+- title: State and reactivity
+  desc: Manage mutable app state.
+  contents:
+  - tui_state
+  - reactive
+
+- title: Screens and dialogs
+  desc: Multi-screen apps and modal dialogs.
+  contents:
+  - tui_screen
+  - push_screen
+  - pop_screen
+  - confirm
+  - alert
+
+- title: Timers and workers
+  desc: Scheduled and repeating tasks.
+  contents:
+  - set_timer
+  - set_interval
+  - clear_timer
+  - set_worker
+  - cancel_worker
+
+- title: Key bindings
+  desc: Keyboard shortcuts and actions.
+  contents:
+  - binding
+
+- title: Command palette
+  desc: Searchable command interface.
+  contents:
+  - command
+  - register_commands
+
+- title: Forms
+  desc: Structured form input.
+  contents:
+  - tui_form
+  - collect_form
+
+- title: Themes
+  desc: Built-in colour themes.
+  contents:
+  - tui_theme
+  - list_themes
+
+- title: Setup
+  desc: Installation helpers.
+  contents:
+  - install_python_deps
+
+articles:
+- title: Guides
+  navbar: ~
+  contents:
+  - getting-started
+  - layouts-and-widgets
+  - state-events-reactivity
+  - charts-and-data
+  - advanced-features

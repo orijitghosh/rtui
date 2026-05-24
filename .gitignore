@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store
+*.o
+*.so
+*.dll
+
+# AI/planning artifacts — do not publish
+.claude/
+rtui_PRD.md
+HANDOFF.md
+
+# pkgdown build output (deploy from CI or rebuild)
+docs/

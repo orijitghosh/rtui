@@ -1,0 +1,729 @@
+---
+title: "Layouts and Widgets"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Layouts and Widgets}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+rtui provides 35+ widgets and 9 layout containers. This guide covers every one
+with practical examples you can copy and run.
+
+> **Terminal only:** All examples in this guide must be saved as `.R` files
+> and run from a real terminal with `Rscript my_app.R`. rtui apps do **not**
+> work in RStudio, R GUI, Jupyter, or any embedded R console. See
+> [Getting Started](getting-started.html) for setup instructions.
+
+## How layouts work
+
+Layouts are built by nesting container functions. Each container accepts child
+widgets as arguments and arranges them according to its rules:
+
+```{r}
+library(rtui)
+
+# Vertical stack with a horizontal row inside
+quick_app(
+  title = "Layout Demo",
+  layout = vstack(
+    header(),
+    text("Top section", id = "top"),
+    hstack(
+      text("Left", id = "left"),
+      text("Right", id = "right")
+    ),
+    footer()
+  ),
+  bindings = list(binding("q", "quit_app", "Quit", priority = TRUE)),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  }
+)
+```
+
+Every widget and container accepts optional `id` and `classes` parameters.
+The `id` is used for event handling and updates; `classes` are used for CSS
+styling.
+
+## Layout containers
+
+### vstack() -- Vertical stacking
+
+Children are stacked top to bottom. This is the most common container:
+
+```{r}
+vstack(
+  text("Line 1"),
+  text("Line 2"),
+  text("Line 3"),
+  id = "my_stack"
+)
+```
+
+### hstack() -- Horizontal stacking
+
+Children are placed side by side, left to right:
+
+```{r}
+hstack(
+  button("Save", id = "save"),
+  button("Cancel", id = "cancel"),
+  button("Help", id = "help")
+)
+```
+
+### grid() -- CSS grid layout
+
+Arrange children in a grid with specified rows and columns:
+
+```{r}
+grid(
+  text("Cell 1"), text("Cell 2"),
+  text("Cell 3"), text("Cell 4"),
+  cols = 2,
+  id = "my_grid"
+)
+```
+
+You can set `rows`, `cols`, or both. Use CSS for fine-grained control over
+column/row sizes:
+
+```{r}
+quick_app(
+  layout = vstack(
+    grid(
+      text("Sidebar"), text("Main content"),
+      cols = 2, id = "layout"
+    )
+  ),
+  css = "
+    #layout {
+      grid-size: 2;
+      grid-columns: 1fr 3fr;
+      height: 1fr;
+    }
+  "
+)
+```
+
+### center() and middle() -- Alignment
+
+`center()` centres children horizontally; `middle()` centres vertically.
+Combine them for perfect centring:
+
+```{r}
+center(
+  middle(
+    text("I'm in the exact centre!")
+  )
+)
+```
+
+### scroll() -- Scrollable container
+
+Wraps content in a scrollable viewport:
+
+```{r}
+scroll(
+  text("Line 1"),
+  text("Line 2"),
+  # ... many more lines
+  text("Line 100"),
+  id = "scroller"
+)
+```
+
+### box() -- Bordered container
+
+Wraps a single child with an optional border and title:
+
+```{r}
+box(
+  text("Important content"),
+  border = "round",
+  title = "Notice"
+)
+```
+
+Border styles: `"none"`, `"round"`, `"heavy"`, `"double"`.
+
+### collapsible() -- Expandable section
+
+A section that can be collapsed/expanded by clicking:
+
+```{r}
+collapsible(
+  "Advanced Settings",
+  input(placeholder = "API endpoint", id = "endpoint"),
+  checkbox("Enable debug mode", id = "debug"),
+  collapsed = TRUE,
+  id = "advanced"
+)
+```
+
+### tabs() and tab_pane() -- Tabbed content
+
+Organise content into switchable tabs:
+
+```{r}
+tabs(
+  tab_pane("Overview",
+    text("Dashboard overview here"),
+    title = "Overview", id = "tab1"
+  ),
+  tab_pane("Details",
+    text("Detailed information here"),
+    title = "Details", id = "tab2"
+  ),
+  tab_pane("Settings",
+    text("App settings here"),
+    title = "Settings", id = "tab3"
+  ),
+  id = "main_tabs"
+)
+```
+
+### container() -- Plain block
+
+A minimal container with no special layout behaviour. Useful as a CSS
+styling target:
+
+```{r}
+container(
+  text("Styled content"),
+  id = "panel",
+  classes = "highlight"
+)
+```
+
+## Display widgets
+
+### text() -- Plain text
+
+Displays a text string. Updateable via `content`:
+
+```{r}
+text("Hello world", id = "greeting")
+
+# Update later
+update(state$app, "greeting", content = "Goodbye world")
+```
+
+### static() -- Rich text
+
+Like `text()` but supports
+[Rich markup](https://rich.readthedocs.io/en/latest/markup.html) for colours,
+bold, italic, etc.:
+
+```{r}
+static("[bold red]Error:[/bold red] Something went wrong", id = "msg")
+static("[green]Status:[/green] All systems operational", id = "status")
+```
+
+### markdown() -- Rendered Markdown
+
+Renders Markdown content with headings, lists, code blocks, and more:
+
+```{r}
+markdown("# Welcome\n\nThis is **markdown** content.\n\n- Item 1\n- Item 2",
+         id = "docs")
+
+# Update content dynamically
+update(state$app, "docs", content = "# Updated\n\nNew content here.")
+```
+
+### digits() -- Large number display
+
+Shows text in a large, blocky font -- ideal for counters, clocks, and
+dashboards:
+
+```{r}
+digits("12:34", id = "clock")
+digits("0", id = "counter")
+
+# Update the display
+update(state$app, "clock", value = "12:35")
+```
+
+Supports digits 0-9, colons, spaces, and periods.
+
+### pretty_table() -- Rich-formatted table
+
+Renders a data.frame as a formatted table (non-interactive):
+
+```{r}
+pretty_table(
+  head(mtcars, 5),
+  title = "Motor Trend Cars",
+  id = "info_table"
+)
+```
+
+### sparkline() -- Inline mini chart
+
+A compact line chart for showing trends:
+
+```{r}
+sparkline(c(1, 4, 2, 8, 5, 3, 9, 6), id = "trend")
+
+# Update with new data
+update(state$app, "trend", data = c(3, 7, 2, 5, 8, 1, 4))
+```
+
+### progress_bar() -- Progress indicator
+
+```{r}
+progress_bar(total = 100, progress = 0, id = "pb")
+
+# Update progress from a handler
+update(state$app, "pb", progress = 42)
+```
+
+Options: `show_eta` (estimated time), `show_percentage`.
+
+### rule() -- Horizontal divider
+
+A horizontal line, optionally with a centred label:
+
+```{r}
+rule()                          # plain line
+rule(label = "Section Break")   # labelled line
+```
+
+### loading() -- Loading spinner
+
+An animated loading indicator:
+
+```{r}
+loading(id = "spinner")
+
+# Show/hide it
+update(state$app, "spinner", display = TRUE)
+update(state$app, "spinner", display = FALSE)
+```
+
+### placeholder() -- Placeholder area
+
+A labelled placeholder useful during development:
+
+```{r}
+placeholder("Chart goes here", id = "ph")
+```
+
+### log_view() -- Scrolling log output
+
+An append-only scrolling log, ideal for status messages and debug output:
+
+```{r}
+log_view(id = "logs", max_lines = 500)
+
+# Append lines from a handler
+log_write(state$app, "logs", "Server started on port 8080")
+log_write(state$app, "logs",
+          "[bold green]OK[/bold green] Connected",
+          markup = TRUE)
+```
+
+## Input widgets
+
+### button() -- Clickable button
+
+```{r}
+button("Click Me", id = "btn", tooltip = "Does something cool")
+
+# Handle clicks
+on_click = list(
+  btn = function(event, state) {
+    notify(state$app, "Button clicked!")
+    state
+  }
+)
+```
+
+Update the label or disable it at runtime:
+
+```{r}
+update(state$app, "btn", label = "Clicked!")
+update(state$app, "btn", disabled = TRUE)
+```
+
+### input() -- Single-line text input
+
+```{r}
+input(
+  placeholder = "Enter your name...",
+  value = "",
+  id = "name_input",
+  tooltip = "Type here",
+  validators = "number"  # optional validation
+)
+```
+
+Validators: `"number"`, `"integer"`, `"url"`, or `"regex:PATTERN"`.
+
+Handle value changes and submission (Enter key):
+
+```{r}
+on_change = list(
+  name_input = function(event, state) {
+    # event$value has the current text
+    state
+  }
+),
+on_submit = list(
+  name_input = function(event, state) {
+    notify(state$app, paste("Hello,", event$value))
+    state
+  }
+)
+```
+
+### text_area() -- Multi-line editor
+
+```{r}
+text_area(
+  value = "Edit me...",
+  language = "r",            # syntax highlighting
+  show_line_numbers = TRUE,
+  id = "editor"
+)
+```
+
+The `language` parameter enables syntax highlighting. Supported languages
+include `"r"`, `"python"`, `"javascript"`, `"markdown"`, `"json"`, `"sql"`,
+and many more.
+
+### masked_input() -- Formatted input
+
+Input with a fixed template for structured data:
+
+```{r}
+masked_input(template = "999-999-9999", id = "phone")
+masked_input(template = "AA99 9AA", id = "postcode")
+```
+
+Template characters: `A` (letter), `9` (digit), `!` (force uppercase),
+`>` (force uppercase following), `<` (force lowercase following). All other
+characters are literal separators.
+
+### checkbox() -- Toggle with label
+
+```{r}
+checkbox("Enable notifications", value = TRUE, id = "notif")
+
+on_change = list(
+  notif = function(event, state) {
+    # event$value is TRUE or FALSE
+    state
+  }
+)
+```
+
+### switch_input() -- Toggle switch
+
+```{r}
+switch_input(value = FALSE, id = "dark_mode")
+```
+
+### select() -- Dropdown menu
+
+```{r}
+# Simple options
+select(c("Small", "Medium", "Large"), id = "size")
+
+# Named options (display => value)
+select(
+  c("Small (S)" = "s", "Medium (M)" = "m", "Large (L)" = "l"),
+  prompt = "Pick a size...",
+  id = "size"
+)
+```
+
+### radio_set() and radio_button() -- Radio group
+
+```{r}
+radio_set(
+  radio_button("Option A"),
+  radio_button("Option B"),
+  radio_button("Option C", value = TRUE),  # pre-selected
+  id = "choice"
+)
+```
+
+### data_table() -- Interactive data table
+
+A full-featured interactive table with sorting and row selection:
+
+```{r}
+data_table(
+  mtcars,
+  id = "cars_table",
+  cursor = "row",          # "cell", "row", "column", "none"
+  zebra_stripes = TRUE,
+  sortable = TRUE
+)
+```
+
+Update at runtime -- add rows, clear data:
+
+```{r}
+# Add rows (pass a data.frame as a list)
+update(state$app, "cars_table", add_rows = as.list(new_df))
+
+# Clear all data
+update(state$app, "cars_table", clear_data = TRUE)
+```
+
+### option_list() -- Selectable list
+
+A scrollable list of options. Fires change events on selection:
+
+```{r}
+option_list(
+  items = c("Apple", "Banana", "Cherry", "Date"),
+  id = "fruits"
+)
+
+# Update items dynamically
+update(state$app, "fruits", items = c("Fig", "Grape", "Kiwi"))
+```
+
+### selection_list() -- Multi-select list
+
+Like `option_list()` but allows multiple selections:
+
+```{r}
+selection_list(
+  items = c("Read", "Write", "Execute"),
+  id = "permissions"
+)
+```
+
+### list_view() -- General purpose list
+
+```{r}
+list_view(
+  items = c("Item 1", "Item 2", "Item 3"),
+  id = "my_list"
+)
+```
+
+## Navigation widgets
+
+### header() and footer()
+
+The header displays the app title; the footer shows key bindings:
+
+```{r}
+vstack(
+  header(show_clock = TRUE),
+  text("Content"),
+  footer()
+)
+```
+
+### tree() -- Custom tree view
+
+Display hierarchical data:
+
+```{r}
+tree(
+  label = "Project",
+  data = list(
+    src = list("main.R", "utils.R", "app.R"),
+    tests = list("test-main.R", "test-utils.R"),
+    "README.md"
+  ),
+  id = "project_tree"
+)
+```
+
+### directory_tree() -- File system browser
+
+Browse a real directory:
+
+```{r}
+directory_tree(path = ".", id = "files")
+```
+
+Fires click events with the selected file path:
+
+```{r}
+on_click = list(
+  files = function(event, state) {
+    path <- event$value$path
+    notify(state$app, paste("Selected:", path))
+    state
+  }
+)
+```
+
+### content_switcher() -- Show one child at a time
+
+```{r}
+content_switcher(
+  text("Page 1 content", id = "page1"),
+  text("Page 2 content", id = "page2"),
+  initial = "page1",
+  id = "switcher"
+)
+```
+
+## Common widget properties
+
+Most widgets support these runtime updates:
+
+```{r}
+# Show / hide a widget
+update(state$app, "widget_id", display = TRUE)
+update(state$app, "widget_id", display = FALSE)
+
+# Enable / disable a widget
+update(state$app, "widget_id", disabled = TRUE)
+update(state$app, "widget_id", disabled = FALSE)
+
+# Change text content (text, static, markdown)
+update(state$app, "widget_id", content = "New text")
+
+# Change value (input, digits, switch)
+update(state$app, "widget_id", value = "new value")
+
+# Change button/checkbox label
+update(state$app, "widget_id", label = "New Label")
+```
+
+## CSS styling
+
+rtui supports Textual's CSS dialect for fine-grained styling. Pass a CSS
+string to the `css` parameter:
+
+```{r}
+quick_app(
+  layout = vstack(
+    text("Styled!", id = "styled_text"),
+    id = "root"
+  ),
+  css = "
+    #styled_text {
+      color: cyan;
+      text-style: bold;
+      text-align: center;
+      padding: 2;
+      border: heavy green;
+    }
+    #root {
+      align: center middle;
+    }
+  "
+)
+```
+
+Common CSS properties:
+
+- `background`, `color` -- colours
+- `width`, `height` -- sizes (`auto`, `1fr`, `50%`, `30`, etc.)
+- `padding`, `margin` -- spacing
+- `border` -- `none`, `tall`, `heavy`, `round`, `double`
+- `text-align` -- `left`, `center`, `right`
+- `text-style` -- `bold`, `italic`, `underline`, `reverse`
+- `display` -- `block`, `none`
+- `dock` -- `top`, `bottom`, `left`, `right`
+- `align` -- `left top`, `center middle`, `right bottom`
+
+Combine themes with your own CSS by concatenating:
+
+```{r}
+css = paste0(
+  tui_theme("dracula"),
+  "
+  #sidebar { width: 30; border-right: tall $accent; }
+  #main { width: 1fr; padding: 1; }
+  "
+)
+```
+
+The `$accent`, `$surface`, `$text`, and `$text-muted` variables from Textual
+are available in your CSS.
+
+## Tooltips
+
+Many widgets support a `tooltip` parameter that shows hover text:
+
+```{r}
+button("Save", id = "save", tooltip = "Save the current document")
+input(placeholder = "Search...", id = "search", tooltip = "Type to filter")
+```
+
+## Example: Dashboard layout
+
+Here's a complete dashboard layout combining multiple concepts:
+
+```{r}
+library(rtui)
+
+quick_app(
+  title = "Dashboard",
+  layout = vstack(
+    header(),
+    hstack(
+      # Sidebar
+      vstack(
+        static("[bold]Navigation[/bold]"),
+        rule(),
+        option_list(
+          items = c("Overview", "Reports", "Settings"),
+          id = "nav"
+        ),
+        id = "sidebar"
+      ),
+      # Main content
+      vstack(
+        static("[bold]Welcome to the Dashboard[/bold]", id = "title"),
+        rule(),
+        hstack(
+          box(digits("42", id = "metric1"), border = "round", title = "Users"),
+          box(digits("128", id = "metric2"), border = "round", title = "Sales"),
+          box(digits("99%", id = "metric3"), border = "round", title = "Uptime")
+        ),
+        text_plot(id = "chart"),
+        id = "main"
+      ),
+      id = "content"
+    ),
+    footer()
+  ),
+  on_mount = function(event, state) {
+    plot_bar(state$app, "chart",
+             labels = c("Mon", "Tue", "Wed", "Thu", "Fri"),
+             values = c(120, 200, 150, 180, 220),
+             title = "Weekly Activity",
+             color = "cyan")
+    state
+  },
+  bindings = list(
+    binding("q", "quit_app", "Quit", priority = TRUE)
+  ),
+  on_action = function(event, state) {
+    if (event$value == "quit_app") return(quit())
+    state
+  },
+  css = paste0(
+    tui_theme("catppuccin"),
+    "
+    #sidebar { width: 25; padding: 1; border-right: tall $accent; }
+    #main { width: 1fr; padding: 1; }
+    #chart { height: 1fr; }
+    "
+  )
+)
+```

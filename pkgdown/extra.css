@@ -1,0 +1,354 @@
+/*
+ * rtui pkgdown theme — terminal-inspired dark design
+ * Palette: Catppuccin Mocha meets terminal green/cyan accents
+ */
+
+/* ── Foundations ────────────────────────────────────────────────── */
+
+:root {
+  --rtui-bg:         #1a1410;   /* deep espresso */
+  --rtui-bg-surface: #231c15;   /* warm dark brown */
+  --rtui-bg-card:    #2e2419;   /* card brown */
+  --rtui-bg-code:    #151010;   /* near-black warm */
+  --rtui-text:       #e8dcc8;   /* warm cream */
+  --rtui-text-muted: #b8a88e;   /* tan */
+  --rtui-accent:     #e09f5e;   /* amber/burnt orange */
+  --rtui-accent2:    #d4764e;   /* rust */
+  --rtui-green:      #8fae6b;   /* olive green */
+  --rtui-cyan:       #c1a05e;   /* golden wheat */
+  --rtui-pink:       #c47a5a;   /* terracotta */
+  --rtui-yellow:     #e8c170;   /* harvest gold */
+  --rtui-red:        #bf5b4b;   /* brick red */
+  --rtui-border:     #4a3828;   /* warm border */
+  --rtui-glow:       rgba(224, 159, 94, 0.2);
+}
+
+body {
+  background-color: var(--rtui-bg) !important;
+  color: var(--rtui-text) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ── Navbar ────────────────────────────────────────────────────── */
+
+.navbar {
+  background: var(--rtui-bg-surface) !important;
+  border-bottom: 2px solid var(--rtui-border) !important;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+}
+
+.navbar-brand {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+  color: var(--rtui-accent) !important;
+  letter-spacing: 0.02em;
+}
+
+.navbar-brand::before {
+  content: "> ";
+  color: var(--rtui-yellow);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--rtui-text-muted) !important;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  color: var(--rtui-accent) !important;
+}
+
+/* ── Headings ──────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6,
+.page-header h1 {
+  color: var(--rtui-text) !important;
+  font-weight: 700;
+}
+
+h1 {
+  border-bottom: 2px solid var(--rtui-accent);
+  padding-bottom: 0.4em;
+  margin-bottom: 1em;
+}
+
+h2 {
+  color: var(--rtui-accent) !important;
+  border-bottom: 1px solid var(--rtui-border);
+  padding-bottom: 0.3em;
+  margin-top: 2em;
+}
+
+h3 {
+  color: var(--rtui-accent2) !important;
+}
+
+/* ── Links ─────────────────────────────────────────────────────── */
+
+a {
+  color: var(--rtui-accent) !important;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--rtui-cyan) !important;
+  text-decoration: underline;
+}
+
+/* ── Code blocks ───────────────────────────────────────────────── */
+
+pre {
+  background-color: var(--rtui-bg-code) !important;
+  color: var(--rtui-text) !important;
+  border: 1px solid var(--rtui-border) !important;
+  border-radius: 8px !important;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace !important;
+  font-size: 0.875rem !important;
+}
+
+pre code {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: inherit !important;
+}
+
+pre {
+  padding: 1em 1.25em !important;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Terminal-style prompt indicator on code blocks */
+pre::before {
+  content: "R";
+  position: absolute;
+  top: 0.4em;
+  right: 0.6em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--rtui-accent);
+  opacity: 0.4;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace !important;
+  font-size: 0.875em;
+}
+
+/* Inline code */
+p code, li code, td code, .alert code {
+  background-color: var(--rtui-bg-card) !important;
+  color: var(--rtui-cyan) !important;
+  padding: 0.15em 0.4em !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--rtui-border);
+  font-size: 0.85em;
+}
+
+/* ── Tables ────────────────────────────────────────────────────── */
+
+.table {
+  color: var(--rtui-text) !important;
+  border-color: var(--rtui-border) !important;
+}
+
+.table th {
+  background-color: var(--rtui-bg-card) !important;
+  color: var(--rtui-accent) !important;
+  border-color: var(--rtui-border) !important;
+  font-weight: 600;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.table td {
+  border-color: var(--rtui-border) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(49, 50, 68, 0.4) !important;
+  color: var(--rtui-text) !important;
+}
+
+/* ── Cards and sections ────────────────────────────────────────── */
+
+.card {
+  background-color: var(--rtui-bg-card) !important;
+  border: 1px solid var(--rtui-border) !important;
+  border-radius: 8px !important;
+}
+
+.card-header {
+  background-color: var(--rtui-bg-surface) !important;
+  border-bottom: 1px solid var(--rtui-border) !important;
+}
+
+/* ── Reference page ────────────────────────────────────────────── */
+
+.section-title {
+  color: var(--rtui-accent2) !important;
+}
+
+dt {
+  color: var(--rtui-accent) !important;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+dd {
+  color: var(--rtui-text-muted);
+}
+
+/* Function signature */
+.ref-heading {
+  border-left: 3px solid var(--rtui-accent);
+  padding-left: 0.75em;
+}
+
+/* ── Sidebar / TOC ─────────────────────────────────────────────── */
+
+.sidebar, .pkgdown-sidebar {
+  background-color: var(--rtui-bg-surface) !important;
+}
+
+.sidebar a, .pkgdown-sidebar a {
+  color: var(--rtui-text-muted) !important;
+}
+
+.sidebar a:hover, .pkgdown-sidebar a:hover,
+.sidebar a.active, .pkgdown-sidebar a.active {
+  color: var(--rtui-accent) !important;
+}
+
+/* ── Blockquotes (used for callout boxes) ──────────────────────── */
+
+blockquote {
+  background-color: var(--rtui-bg-card) !important;
+  border-left: 4px solid var(--rtui-yellow) !important;
+  border-radius: 0 8px 8px 0;
+  padding: 1em 1.25em !important;
+  color: var(--rtui-text) !important;
+  margin: 1.5em 0;
+}
+
+blockquote strong {
+  color: var(--rtui-yellow) !important;
+}
+
+/* ── Footer ────────────────────────────────────────────────────── */
+
+.pkgdown-footer, footer {
+  background-color: var(--rtui-bg-surface) !important;
+  border-top: 1px solid var(--rtui-border) !important;
+  color: var(--rtui-text-muted) !important;
+}
+
+/* ── Dropdown menus ────────────────────────────────────────────── */
+
+.dropdown-menu {
+  background-color: var(--rtui-bg-card) !important;
+  border: 1px solid var(--rtui-border) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dropdown-item {
+  color: var(--rtui-text) !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--rtui-bg-surface) !important;
+  color: var(--rtui-accent) !important;
+}
+
+/* ── Search ────────────────────────────────────────────────────── */
+
+.form-control, .search-input {
+  background-color: var(--rtui-bg-code) !important;
+  border: 1px solid var(--rtui-border) !important;
+  color: var(--rtui-text) !important;
+}
+
+.form-control:focus, .search-input:focus {
+  border-color: var(--rtui-accent) !important;
+  box-shadow: 0 0 0 3px var(--rtui-glow) !important;
+}
+
+/* ── Badges / labels ───────────────────────────────────────────── */
+
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75em;
+}
+
+/* ── Home page hero tweaks ─────────────────────────────────────── */
+
+.page-header {
+  background: linear-gradient(135deg, var(--rtui-bg-surface), var(--rtui-bg-card)) !important;
+  border-bottom: 2px solid var(--rtui-accent);
+  padding: 2em 0 !important;
+}
+
+.page-header .lead {
+  color: var(--rtui-text-muted) !important;
+  font-size: 1.15rem;
+}
+
+/* ── Horizontal rules ──────────────────────────────────────────── */
+
+hr {
+  border-color: var(--rtui-border) !important;
+  opacity: 0.6;
+}
+
+/* ── Scrollbar styling ─────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--rtui-bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rtui-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--rtui-accent);
+}
+
+/* ── Selection highlight ───────────────────────────────────────── */
+
+::selection {
+  background-color: var(--rtui-accent);
+  color: var(--rtui-bg);
+}
+
+/* ── Smooth transitions ───────────────────────────────────────── */
+
+*, *::before, *::after {
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+/* Don't transition layout properties */
+pre, code, img, svg {
+  transition: none !important;
+}
+
+/* ── Import monospace font ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
